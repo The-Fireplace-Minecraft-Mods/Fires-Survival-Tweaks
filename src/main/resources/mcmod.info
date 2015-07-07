@@ -1,0 +1,19 @@
+[
+{
+  "modid": "realstonetools",
+  "name": "Real Stone Tools",
+  "description": "Fixes the Stone Tools' recipes",
+  "version": "2.0.1.0",
+  "mcversion": "1.8",
+  "url": "http://goo.gl/c30xia",
+  "updateUrl": "http://goo.gl/c30xia",
+  "authorList": ["The_Fireplace"],
+  "credits": "Authored by The_Fireplace",
+  "logoFile": "logo.png",
+  "screenshots": [],
+  "dependencies": [],
+  "requiredMods": [],
+  "dependants": [],
+  "useDependencyInformation": true
+}
+]
