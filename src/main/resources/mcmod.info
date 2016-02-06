@@ -2,9 +2,9 @@
 {
   "modid": "realstonetools",
   "name": "Real Stone Tools",
-  "description": "Fixes the Stone Tools' recipes",
-  "version": "2.0.1.0",
-  "mcversion": "1.8",
+  "description": "Fixes the recipes for Stone Tools.",
+  "version": "4.0.1.0",
+  "mcversion": "1.8.9",
   "url": "http://goo.gl/c30xia",
   "updateUrl": "http://goo.gl/c30xia",
   "authorList": ["The_Fireplace"],
