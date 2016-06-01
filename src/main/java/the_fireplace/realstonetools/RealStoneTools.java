@@ -17,17 +17,17 @@ import java.util.ArrayList;
 public class RealStoneTools {
 	@EventHandler
 	public void init(FMLInitializationEvent event){
-		ItemStack axe = new ItemStack(Items.stone_axe);
-		ItemStack hoe = new ItemStack(Items.stone_hoe);
-		ItemStack sword = new ItemStack(Items.stone_sword);
-		ItemStack shovel = new ItemStack(Items.stone_shovel);
-		ItemStack pickaxe = new ItemStack(Items.stone_pickaxe);
+		ItemStack axe = new ItemStack(Items.STONE_AXE);
+		ItemStack hoe = new ItemStack(Items.STONE_HOE);
+		ItemStack sword = new ItemStack(Items.STONE_SWORD);
+		ItemStack shovel = new ItemStack(Items.STONE_SHOVEL);
+		ItemStack pickaxe = new ItemStack(Items.STONE_PICKAXE);
 		removeRecipe(axe);
 		removeRecipe(hoe);
 		removeRecipe(sword);
 		removeRecipe(shovel);
 		removeRecipe(pickaxe);
-		ItemStack stone = new ItemStack(Blocks.stone);
+		ItemStack stone = new ItemStack(Blocks.STONE);
 		GameRegistry.addRecipe(new ShapedOreRecipe(axe, "rr", "rs", " s", 'r', stone, 's', "stickWood"));
 		GameRegistry.addRecipe(new ShapedOreRecipe(axe, "rr", "sr", "s ", 'r', stone, 's', "stickWood"));
 		GameRegistry.addRecipe(new ShapedOreRecipe(hoe, "rr", " s", " s", 'r', stone, 's', "stickWood"));
