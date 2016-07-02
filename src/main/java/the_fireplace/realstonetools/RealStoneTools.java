@@ -13,7 +13,7 @@ import net.minecraftforge.oredict.ShapedOreRecipe;
 
 import java.util.ArrayList;
 
-@Mod(modid="realstonetools", name="Real Stone Tools")
+@Mod(modid="realstonetools", name="Real Stone Tools", acceptedMinecraftVersions="[1.9.4,1.10.2]")
 public class RealStoneTools {
 	@EventHandler
 	public void init(FMLInitializationEvent event){
