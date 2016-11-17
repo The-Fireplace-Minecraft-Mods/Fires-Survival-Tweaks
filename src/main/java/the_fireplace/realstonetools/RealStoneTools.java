@@ -13,7 +13,7 @@ import net.minecraftforge.oredict.ShapedOreRecipe;
 
 import java.util.ArrayList;
 
-@Mod(modid="realstonetools", name="Real Stone Tools", acceptedMinecraftVersions="[1.9.4,1.10.2]")
+@Mod(modid="realstonetools", name="Real Stone Tools", acceptedMinecraftVersions="[1.11,)")
 public class RealStoneTools {
 	@EventHandler
 	public void init(FMLInitializationEvent event){
@@ -42,7 +42,7 @@ public class RealStoneTools {
 		for(int scan = 0;scan < recipes.size();scan++){
 			IRecipe tmpRecipe = (IRecipe) recipes.get(scan);
 			recipeResult = tmpRecipe.getRecipeOutput();
-			if(recipeResult != null){
+			if(recipeResult.func_190926_b()){
 				if(recipeResult.getItem() == resultItem.getItem() && recipeResult.getItemDamage() == resultItem.getItemDamage()){
 					recipes.remove(scan);
 					scan--;
