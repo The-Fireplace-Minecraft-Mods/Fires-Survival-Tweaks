@@ -42,7 +42,7 @@ public class RealStoneTools {
 		for(int scan = 0;scan < recipes.size();scan++){
 			IRecipe tmpRecipe = (IRecipe) recipes.get(scan);
 			recipeResult = tmpRecipe.getRecipeOutput();
-			if(recipeResult.func_190926_b()){
+			if(!recipeResult.isEmpty()){
 				if(recipeResult.getItem() == resultItem.getItem() && recipeResult.getItemDamage() == resultItem.getItemDamage()){
 					recipes.remove(scan);
 					scan--;
