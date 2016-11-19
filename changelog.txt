@@ -1,2 +1,3 @@
 Fixed Cobblestone Pickaxes not being removed
 Updated mappings
+Added an update json

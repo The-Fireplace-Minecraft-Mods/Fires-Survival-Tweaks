@@ -13,7 +13,7 @@ import net.minecraftforge.oredict.ShapedOreRecipe;
 
 import java.util.ArrayList;
 
-@Mod(modid="realstonetools", name="Real Stone Tools", acceptedMinecraftVersions="[1.11,)")
+@Mod(modid="realstonetools", name="Real Stone Tools", acceptedMinecraftVersions="[1.11,)", updateJSON = "http://thefireplace.bitnamiapp.com/jsons/realstonetools.json")
 public class RealStoneTools {
 	@EventHandler
 	public void init(FMLInitializationEvent event){
