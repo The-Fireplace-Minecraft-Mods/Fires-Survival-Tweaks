@@ -27,7 +27,7 @@ public class CommonEvents {
         if (ConfigValues.ENABLE_BPB)
             if (!event.getItemStack().isEmpty() && event.getItemStack().getItem() == Items.BLAZE_POWDER) {
                 if (event.getWorld().getBlockState(event.getPos()).getBlock() instanceof BlockNetherWart && event.getWorld().getBlockState(event.getPos().down()).getBlock() == Blocks.SOUL_SAND) {
-                    if (!MinecraftForge.EVENT_BUS.post(new BlockEvent.CropGrowEvent.Pre(event.getWorld(), event.getPos(), event.getWorld().getBlockState(event.getPos())))){
+                    if (!MinecraftForge.EVENT_BUS.post(new BlockEvent.CropGrowEvent.Pre(event.getWorld(), event.getPos(), event.getWorld().getBlockState(event.getPos())))) {
                         IBlockState preState = event.getWorld().getBlockState(event.getPos());
                         if (applyBlazePowder(event.getItemStack(), event.getWorld(), event.getPos(), event.getEntityPlayer())) {
                             if (!event.getWorld().isRemote) {
@@ -41,20 +41,20 @@ public class CommonEvents {
     }
 
     @SubscribeEvent
-    public void cropGrow(BlockEvent.CropGrowEvent.Post event){
-        if(ConfigValues.ENABLE_F2S && !event.getWorld().isRemote)
-        if(event.getWorld().getBlockState(event.getPos().down()).getBlock() instanceof BlockFarmland){
-            if(event.getWorld().rand.nextInt(50) == 0){
-                event.getWorld().setBlockState(event.getPos().down(), Blocks.SAND.getDefaultState().withProperty(BlockSand.VARIANT, BlockSand.EnumType.RED_SAND));
+    public void cropGrow(BlockEvent.CropGrowEvent.Post event) {
+        if (ConfigValues.ENABLE_F2S && !event.getWorld().isRemote)
+            if (event.getWorld().getBlockState(event.getPos().down()).getBlock() instanceof BlockFarmland) {
+                if (event.getWorld().rand.nextInt(50) == 0) {
+                    event.getWorld().setBlockState(event.getPos().down(), Blocks.SAND.getDefaultState().withProperty(BlockSand.VARIANT, BlockSand.EnumType.RED_SAND));
+                }
             }
-        }
     }
 
     @SubscribeEvent
-    public void bonemealEvent(BonemealEvent event){
-        if(ConfigValues.ENABLE_F2S && !event.getWorld().isRemote && event.getResult() == Event.Result.DEFAULT)
-            if(event.getWorld().getBlockState(event.getPos().down()).getBlock() instanceof BlockFarmland){
-                if(event.getWorld().rand.nextInt(20) == 0){
+    public void bonemealEvent(BonemealEvent event) {
+        if (ConfigValues.ENABLE_F2S && !event.getWorld().isRemote && event.getResult() == Event.Result.DEFAULT)
+            if (event.getWorld().getBlockState(event.getPos().down()).getBlock() instanceof BlockFarmland) {
+                if (event.getWorld().rand.nextInt(20) == 0) {
                     event.getWorld().setBlockState(event.getPos().down(), Blocks.SAND.getDefaultState().withProperty(BlockSand.VARIANT, BlockSand.EnumType.RED_SAND));
                 }
             }
