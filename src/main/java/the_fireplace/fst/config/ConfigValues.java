@@ -15,4 +15,8 @@ public class ConfigValues {
     public static final boolean ENABLE_BPB_DEFAULT = true;
     public static boolean ENABLE_BPB;
     public static final String ENABLE_BPB_NAME = "enable_bpb";
+
+    public static final boolean ENABLE_F2S_DEFAULT = true;
+    public static boolean ENABLE_F2S;
+    public static final String ENABLE_F2S_NAME = "enable_f2s";
 }

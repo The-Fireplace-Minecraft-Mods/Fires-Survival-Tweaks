@@ -4,3 +4,5 @@ enable_cha=Enable Craftable Horse Armor
 enable_cha.tooltip=Whether Horse Armor crafting recipes are enabled.
 enable_bpb=Enable Blaze Powder Bonemeal
 enable_bpb.tooltip=Whether Blaze Powder acts as Bonemeal on Nether Warts
+enable_f2s=Enable Farmland Decay
+enable_f2s.tooltip=Whether Farmland can decay in to Red Sand after time
