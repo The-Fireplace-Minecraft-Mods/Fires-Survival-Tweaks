@@ -2,8 +2,8 @@ variables:
   CACHE_DIR: "$CI_PROJECT_DIR/build"
   CACHE_DIR2: "$CI_PROJECT_DIR/.gradle"
   
-  ORIG_ARTIFACTS: "$CI_PROJECT_DIR/build/libs/RealStoneTools-Forge-*.jar"
-  ARTIFACTS: "$CI_PROJECT_DIR/RealStoneTools-Forge-*.jar"
+  ORIG_ARTIFACTS: "$CI_PROJECT_DIR/build/libs/FiresSurvivalTweaks-1.11.2-*.jar"
+  ARTIFACTS: "$CI_PROJECT_DIR/FiresSurvivalTweaks-1.11.2-*.jar"
 
 cache:
  paths:
@@ -18,10 +18,21 @@ stages:
 deploy:
   stage: deploy
   script:
+  - ./gradlew clean build curseforge uploadToModsIO -PcurseForgeApiKey=$curseForgeApiKey -PmodsioApiKey=$modsioApiKey
+  - cp $ORIG_ARTIFACTS .
+  when: manual
+  artifacts:
+    name: "FiresSurvivalTweaks-1.11.2-$(cat $CACHE_DIR/.version)"
+    paths:
+    - $ARTIFACTS
+
+deployMaven:
+  stage: deploy
+  script:
   - ./gradlew clean build uploadArchives curseforge uploadToModsIO -PcurseForgeApiKey=$curseForgeApiKey -PmodsioApiKey=$modsioApiKey
   - cp $ORIG_ARTIFACTS .
   when: manual
   artifacts:
-    name: "RealStoneTools-Forge-$(cat $CACHE_DIR/.version)"
+    name: "FiresSurvivalTweaks-1.11.2-$(cat $CACHE_DIR/.version)"
     paths:
     - $ARTIFACTS

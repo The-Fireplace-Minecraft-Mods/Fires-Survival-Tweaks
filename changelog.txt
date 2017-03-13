@@ -1,3 +1,1 @@
-Fixed Cobblestone Pickaxes not being removed
-Updated mappings
-Added an update json
+The mod is now Fire's Survival Tweaks.

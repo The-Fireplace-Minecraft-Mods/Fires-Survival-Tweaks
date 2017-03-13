@@ -1,12 +1,12 @@
 [
 {
-  "modid": "realstonetools",
-  "name": "Real Stone Tools",
-  "description": "Fixes the recipes for Stone Tools.",
+  "modid": "firessurvivaltweaks",
+  "name": "Fire's Survival Tweaks",
+  "description": "Making balance changes to survival.",
   "version": "${version}",
-  "mcversion": "1.11",
-  "url": "http://mods.curse.com/mc-mods/minecraft/232464-real-stone-tools",
-  "updateUrl": "http://mods.curse.com/mc-mods/minecraft/232464-real-stone-tools",
+  "mcversion": "",
+  "url": "https://mods.curse.com/mc-mods/minecraft/232464-fires-survival-tweaks",
+  "updateUrl": "https://mods.curse.com/mc-mods/minecraft/232464-fires-survival-tweaks",
   "authorList": ["The_Fireplace"],
   "credits": "",
   "logoFile": "logo.png",

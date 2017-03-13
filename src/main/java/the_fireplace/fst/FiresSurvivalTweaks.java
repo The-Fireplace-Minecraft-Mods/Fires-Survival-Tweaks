@@ -1,4 +1,4 @@
-package the_fireplace.realstonetools;
+package the_fireplace.fst;
 
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -13,8 +13,10 @@ import net.minecraftforge.oredict.ShapedOreRecipe;
 
 import java.util.ArrayList;
 
-@Mod(modid="realstonetools", name="Real Stone Tools", acceptedMinecraftVersions="[1.11,)", updateJSON = "http://thefireplace.bitnamiapp.com/jsons/realstonetools.json")
-public class RealStoneTools {
+@Mod(modid= FiresSurvivalTweaks.MODID, name= FiresSurvivalTweaks.MODNAME, acceptedMinecraftVersions="[1.11,)", updateJSON = "http://thefireplace.bitnamiapp.com/jsons/fst.json", dependencies="after:*")
+public class FiresSurvivalTweaks {
+	public static final String MODID = "firessurvivaltweaks";
+	public static final String MODNAME = "Fire's Survival Tweaks";
 	@EventHandler
 	public void init(FMLInitializationEvent event){
 		ItemStack axe = new ItemStack(Items.STONE_AXE);
