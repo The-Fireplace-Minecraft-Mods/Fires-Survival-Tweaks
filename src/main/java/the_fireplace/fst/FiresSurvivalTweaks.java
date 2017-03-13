@@ -26,12 +26,14 @@ public class FiresSurvivalTweaks {
 
 	public static Configuration config;
 	public static Property ENABLE_RST_PROPERTY;
+	public static Property ENABLE_CHA_PROPERTY;
 
 	@SidedProxy(clientSide = "the_fireplace."+MODID+".network.ClientProxy", serverSide = "the_fireplace."+MODID+".network.CommonProxy")
 	public static CommonProxy proxy;
 
 	public static void syncConfig() {
 		ConfigValues.ENABLE_RST = ENABLE_RST_PROPERTY.getBoolean();
+		ConfigValues.ENABLE_CHA = ENABLE_CHA_PROPERTY.getBoolean();
 		if (config.hasChanged())
 			config.save();
 	}
@@ -41,6 +43,7 @@ public class FiresSurvivalTweaks {
 		config = new Configuration(event.getSuggestedConfigurationFile());
 		config.load();
 		ENABLE_RST_PROPERTY = config.get(Configuration.CATEGORY_GENERAL, ConfigValues.ENABLE_RST_NAME, ConfigValues.ENABLE_RST_DEFAULT, proxy.translateToLocal(ConfigValues.ENABLE_RST_NAME + ".tooltip"));
+		ENABLE_CHA_PROPERTY = config.get(Configuration.CATEGORY_GENERAL, ConfigValues.ENABLE_CHA_NAME, ConfigValues.ENABLE_CHA_DEFAULT, proxy.translateToLocal(ConfigValues.ENABLE_CHA_NAME + ".tooltip"));
 		syncConfig();
 	}
 
@@ -48,6 +51,8 @@ public class FiresSurvivalTweaks {
 	public void init(FMLInitializationEvent event){
 		if(ConfigValues.ENABLE_RST)
 			initRst();
+		if(ConfigValues.ENABLE_CHA)
+			initCha();
 	}
 	private void removeRecipes(ItemStack resultItem){
 		ItemStack recipeResult;
@@ -82,5 +87,13 @@ public class FiresSurvivalTweaks {
 		GameRegistry.addRecipe(new ShapedOreRecipe(sword, "r", "r", "s", 'r', stone, 's', "stickWood"));
 		GameRegistry.addRecipe(new ShapedOreRecipe(shovel, "r", "s", "s", 'r', stone, 's', "stickWood"));
 		GameRegistry.addRecipe(new ShapedOreRecipe(pickaxe, "rrr", " s ", " s ", 'r', stone, 's', "stickWood"));
+	}
+	public void initCha(){
+		ItemStack iron = new ItemStack(Items.IRON_HORSE_ARMOR);
+		ItemStack gold = new ItemStack(Items.GOLDEN_HORSE_ARMOR);
+		ItemStack diamond = new ItemStack(Items.DIAMOND_HORSE_ARMOR);
+		GameRegistry.addRecipe(new ShapedOreRecipe(iron, "l l", "ili", "i i", 'l', "leather", 'i', "ingotIron"));
+		GameRegistry.addRecipe(new ShapedOreRecipe(gold, "l l", "ili", "i i", 'l', "leather", 'i', "ingotGold"));
+		GameRegistry.addRecipe(new ShapedOreRecipe(diamond, "l l", "ili", "i i", 'l', "leather", 'i', "gemDiamond"));
 	}
 }
