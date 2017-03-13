@@ -2,3 +2,5 @@ enable_rst=Enable Real Stone Tools
 enable_rst.tooltip=Whether Real Stone Tool recipes are enabled, and default ones disabled.
 enable_cha=Enable Craftable Horse Armor
 enable_cha.tooltip=Whether Horse Armor crafting recipes are enabled.
+enable_bpb=Enable Blaze Powder Bonemeal
+enable_bpb.tooltip=Whether Blaze Powder acts as Bonemeal on Nether Warts
