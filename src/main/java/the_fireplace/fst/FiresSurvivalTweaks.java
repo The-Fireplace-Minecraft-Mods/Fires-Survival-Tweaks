@@ -54,7 +54,6 @@ public class FiresSurvivalTweaks {
         ENABLE_BPB_PROPERTY.setRequiresMcRestart(false);
         ENABLE_BPB_PROPERTY.setRequiresWorldRestart(false);
         syncConfig();
-
     }
 
     @EventHandler
