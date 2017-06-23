@@ -6,3 +6,7 @@ enable_bpb=Enable Blaze Powder Bonemeal
 enable_bpb.tooltip=Whether Blaze Powder acts as Bonemeal on Nether Warts
 enable_f2s=Enable Farmland Decay
 enable_f2s.tooltip=Whether Farmland can decay in to Red Sand after time
+enable_ses=Enable Silverfish Egg Gen
+enable_ses.tooltip=Whether Silverfish Eggs get generated in the world as ore
+enable_seb=Enable Silverfish Egg Blend
+enable_seb.tooltip=Whether Silverfish Eggs have the same break speed as stone

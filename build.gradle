@@ -29,15 +29,15 @@ allprojects {
     targetCompatibility = 1.8
 }
 
-version = "1.0.0"
+version = "1.0.1"
 group= "the_fireplace.fst"
 archivesBaseName = "FiresSurvivalTweaks-1.11.2"
 
 minecraft {
-    version = "1.11.2-13.20.0.2255"
+    version = "1.11.2-13.20.0.2315"
     runDir = "run"
     replace '${version}', project.version
-    mappings = "snapshot_20170308"
+    mappings = "stable_31"
 }
 
 dependencies {
@@ -92,7 +92,7 @@ curseforge {
   project {
     id = '232464'
     changelog = file('changelog.txt')
-    releaseType = 'beta'
+    releaseType = 'release'
     addGameVersion '1.11.2'
     addGameVersion '1.11'
 	addGameVersion 'Java 8'

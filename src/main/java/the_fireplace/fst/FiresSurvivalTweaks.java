@@ -17,6 +17,7 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 import the_fireplace.fst.config.ConfigValues;
 import the_fireplace.fst.network.CommonProxy;
+import the_fireplace.fst.worldgen.WorldGeneratorSilverfish;
 
 import java.util.ArrayList;
 
@@ -30,6 +31,8 @@ public class FiresSurvivalTweaks {
     public static Property ENABLE_CHA_PROPERTY;
     public static Property ENABLE_BPB_PROPERTY;
     public static Property ENABLE_F2S_PROPERTY;
+    public static Property ENABLE_SES_PROPERTY;
+    public static Property ENABLE_SEB_PROPERTY;
 
     @SidedProxy(clientSide = "the_fireplace." + MODID + ".network.ClientProxy", serverSide = "the_fireplace." + MODID + ".network.CommonProxy")
     public static CommonProxy proxy;
@@ -39,6 +42,8 @@ public class FiresSurvivalTweaks {
         ConfigValues.ENABLE_CHA = ENABLE_CHA_PROPERTY.getBoolean();
         ConfigValues.ENABLE_BPB = ENABLE_BPB_PROPERTY.getBoolean();
         ConfigValues.ENABLE_F2S = ENABLE_F2S_PROPERTY.getBoolean();
+        ConfigValues.ENABLE_SES = ENABLE_SES_PROPERTY.getBoolean();
+        ConfigValues.ENABLE_SEB = ENABLE_SEB_PROPERTY.getBoolean();
         if (config.hasChanged())
             config.save();
     }
@@ -51,6 +56,8 @@ public class FiresSurvivalTweaks {
         ENABLE_CHA_PROPERTY = config.get(Configuration.CATEGORY_GENERAL, ConfigValues.ENABLE_CHA_NAME, ConfigValues.ENABLE_CHA_DEFAULT, proxy.translateToLocal(ConfigValues.ENABLE_CHA_NAME + ".tooltip"));
         ENABLE_BPB_PROPERTY = config.get(Configuration.CATEGORY_GENERAL, ConfigValues.ENABLE_BPB_NAME, ConfigValues.ENABLE_BPB_DEFAULT, proxy.translateToLocal(ConfigValues.ENABLE_BPB_NAME + ".tooltip"));
         ENABLE_F2S_PROPERTY = config.get(Configuration.CATEGORY_GENERAL, ConfigValues.ENABLE_F2S_NAME, ConfigValues.ENABLE_F2S_DEFAULT, proxy.translateToLocal(ConfigValues.ENABLE_F2S_NAME + ".tooltip"));
+        ENABLE_SES_PROPERTY = config.get(Configuration.CATEGORY_GENERAL, ConfigValues.ENABLE_SES_NAME, ConfigValues.ENABLE_SES_DEFAULT, proxy.translateToLocal(ConfigValues.ENABLE_SES_NAME + ".tooltip"));
+        ENABLE_SEB_PROPERTY = config.get(Configuration.CATEGORY_GENERAL, ConfigValues.ENABLE_SEB_NAME, ConfigValues.ENABLE_SEB_DEFAULT, proxy.translateToLocal(ConfigValues.ENABLE_SEB_NAME + ".tooltip"));
         ENABLE_BPB_PROPERTY.setRequiresMcRestart(false);
         ENABLE_BPB_PROPERTY.setRequiresWorldRestart(false);
         syncConfig();
@@ -62,6 +69,8 @@ public class FiresSurvivalTweaks {
             initRst();
         if (ConfigValues.ENABLE_CHA)
             initCha();
+        if(ConfigValues.ENABLE_SES)
+            GameRegistry.registerWorldGenerator(new WorldGeneratorSilverfish(), 50);
         MinecraftForge.EVENT_BUS.register(new CommonEvents());
     }
 

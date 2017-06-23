@@ -1,5 +1,6 @@
 package the_fireplace.fst;
 
+import com.google.common.eventbus.Subscribe;
 import net.minecraft.block.BlockFarmland;
 import net.minecraft.block.BlockNetherWart;
 import net.minecraft.block.BlockSand;
@@ -7,11 +8,14 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.ItemTool;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.player.BonemealEvent;
+import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.fml.common.eventhandler.Event;
@@ -58,6 +62,16 @@ public class CommonEvents {
                     event.getWorld().setBlockState(event.getPos().down(), Blocks.SAND.getDefaultState().withProperty(BlockSand.VARIANT, BlockSand.EnumType.RED_SAND));
                 }
             }
+    }
+
+    @SubscribeEvent
+    public void breakSpeed(PlayerEvent.BreakSpeed event){
+    	if(ConfigValues.ENABLE_SEB && event.getState().getBlock() == Blocks.MONSTER_EGG){
+    		if(Blocks.MONSTER_EGG.getBlockHardness(null, null, null) != Blocks.STONE.getBlockHardness(null, null, null))
+    			Blocks.MONSTER_EGG.setHardness(Blocks.STONE.getBlockHardness(null, null, null));
+    		event.setNewSpeed(event.getEntityPlayer().getDigSpeed(Blocks.STONE.getDefaultState(), event.getPos()));
+		    System.out.println(event.getNewSpeed());
+	    }
     }
 
     public static boolean applyBlazePowder(ItemStack stack, World worldIn, BlockPos target, EntityPlayer player) {
