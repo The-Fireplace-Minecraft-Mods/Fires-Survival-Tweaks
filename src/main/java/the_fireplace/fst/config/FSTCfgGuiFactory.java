@@ -14,32 +14,32 @@ import java.util.Set;
 @SideOnly(Side.CLIENT)
 public class FSTCfgGuiFactory implements IModGuiFactory {
 
-    @Override
-    public void initialize(Minecraft minecraftInstance) {
-    }
+	@Override
+	public void initialize(Minecraft minecraftInstance) {
+	}
 
-    @Override
-    public boolean hasConfigGui() {
-        return true;
-    }
+	@Override
+	public boolean hasConfigGui() {
+		return true;
+	}
 
-    @Override
-    public GuiScreen createConfigGui(GuiScreen parentScreen) {
-        return new FSTConfigGui(parentScreen);
-    }
+	@Override
+	public GuiScreen createConfigGui(GuiScreen parentScreen) {
+		return new FSTConfigGui(parentScreen);
+	}
 
-    @Override
-    public Class<? extends GuiScreen> mainConfigGuiClass() {
-        return FSTConfigGui.class;
-    }
+	@Override
+	public Class<? extends GuiScreen> mainConfigGuiClass() {
+		return FSTConfigGui.class;
+	}
 
-    @Override
-    public Set<RuntimeOptionCategoryElement> runtimeGuiCategories() {
-        return null;
-    }
+	@Override
+	public Set<RuntimeOptionCategoryElement> runtimeGuiCategories() {
+		return null;
+	}
 
-    @Override
-    public RuntimeOptionGuiHandler getHandlerFor(RuntimeOptionCategoryElement element) {
-        return null;
-    }
+	@Override
+	public RuntimeOptionGuiHandler getHandlerFor(RuntimeOptionCategoryElement element) {
+		return null;
+	}
 }

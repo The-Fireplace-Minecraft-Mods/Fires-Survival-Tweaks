@@ -14,8 +14,8 @@ import the_fireplace.fst.FiresSurvivalTweaks;
 @SideOnly(Side.CLIENT)
 public class FSTConfigGui extends GuiConfig {
 
-    public FSTConfigGui(GuiScreen parentScreen) {
-        super(parentScreen, new ConfigElement(FiresSurvivalTweaks.config.getCategory(Configuration.CATEGORY_GENERAL)).getChildElements(), FiresSurvivalTweaks.MODID, true,
-                true, GuiConfig.getAbridgedConfigPath(FiresSurvivalTweaks.config.toString()));
-    }
+	public FSTConfigGui(GuiScreen parentScreen) {
+		super(parentScreen, new ConfigElement(FiresSurvivalTweaks.config.getCategory(Configuration.CATEGORY_GENERAL)).getChildElements(), FiresSurvivalTweaks.MODID, true,
+				true, GuiConfig.getAbridgedConfigPath(FiresSurvivalTweaks.config.toString()));
+	}
 }
