@@ -2,9 +2,11 @@ package the_fireplace.fst;
 
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.CraftingManager;
-import net.minecraft.item.crafting.IRecipe;
+import net.minecraft.item.crafting.*;
+import net.minecraft.util.NonNullList;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.common.config.Property;
@@ -13,15 +15,15 @@ import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraftforge.oredict.OreIngredient;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 import the_fireplace.fst.config.ConfigValues;
 import the_fireplace.fst.network.CommonProxy;
 import the_fireplace.fst.worldgen.WorldGeneratorSilverfish;
 
-import java.util.ArrayList;
-
-@Mod(modid = FiresSurvivalTweaks.MODID, name = FiresSurvivalTweaks.MODNAME, acceptedMinecraftVersions = "[1.11,)", updateJSON = "http://thefireplace.bitnamiapp.com/jsons/fst.json", dependencies = "after:*;after:fluidity", guiFactory = "the_fireplace.fst.config.FSTCfgGuiFactory")
+@Mod(modid = FiresSurvivalTweaks.MODID, name = FiresSurvivalTweaks.MODNAME, acceptedMinecraftVersions = "[1.12,)", updateJSON = "https://bitbucket.org/The_Fireplace/minecraft-mod-updates/raw/master/fst.json", dependencies = "after:*;after:fluidity", guiFactory = "the_fireplace.fst.config.FSTCfgGuiFactory")
 public class FiresSurvivalTweaks {
 	public static final String MODID = "fst";
 	public static final String MODNAME = "Fire's Survival Tweaks";
@@ -60,62 +62,53 @@ public class FiresSurvivalTweaks {
 		ENABLE_SEB_PROPERTY = config.get(Configuration.CATEGORY_GENERAL, ConfigValues.ENABLE_SEB_NAME, ConfigValues.ENABLE_SEB_DEFAULT, proxy.translateToLocal(ConfigValues.ENABLE_SEB_NAME + ".tooltip"));
 		ENABLE_BPB_PROPERTY.setRequiresMcRestart(false);
 		ENABLE_BPB_PROPERTY.setRequiresWorldRestart(false);
+		ENABLE_SEB_PROPERTY.setRequiresMcRestart(false);
+		ENABLE_SEB_PROPERTY.setRequiresWorldRestart(false);
 		syncConfig();
 	}
 
 	@EventHandler
 	public void init(FMLInitializationEvent event) {
-		if (ConfigValues.ENABLE_RST)
-			initRst();
-		if (ConfigValues.ENABLE_CHA)
-			initCha();
 		if (ConfigValues.ENABLE_SES)
 			GameRegistry.registerWorldGenerator(new WorldGeneratorSilverfish(), 50);
 		MinecraftForge.EVENT_BUS.register(new CommonEvents());
 	}
 
-	private void removeRecipes(ItemStack resultItem) {
-		ItemStack recipeResult;
-		ArrayList recipes = (ArrayList) CraftingManager.getInstance().getRecipeList();
-		for (int scan = 0; scan < recipes.size(); scan++) {
-			IRecipe tmpRecipe = (IRecipe) recipes.get(scan);
-			recipeResult = tmpRecipe.getRecipeOutput();
-			if (!recipeResult.isEmpty()) {
-				if (recipeResult.getItem() == resultItem.getItem() && recipeResult.getItemDamage() == resultItem.getItemDamage()) {
-					recipes.remove(scan);
-					scan--;
+	public static void replaceCobbleWithStoneInRecipesFor(ItemStack stack) {
+		for(IRecipe obj : CraftingManager.REGISTRY)
+		{
+			if(obj.getRecipeOutput().isItemEqual(stack))
+			{
+				NonNullList<Ingredient> lst = obj.getIngredients();
+				for (int x = 0; x < lst.size(); x++)
+				{
+					for(ItemStack stack2:lst.get(x).getMatchingStacks())
+						if(stack2.getItem().equals(Item.getItemFromBlock(Blocks.COBBLESTONE)))
+							lst.set(x, new OreIngredient("stone"));
 				}
 			}
 		}
 	}
 
-	public void initRst() {
+	public static void initRst() {
 		ItemStack axe = new ItemStack(Items.STONE_AXE);
 		ItemStack hoe = new ItemStack(Items.STONE_HOE);
 		ItemStack sword = new ItemStack(Items.STONE_SWORD);
 		ItemStack shovel = new ItemStack(Items.STONE_SHOVEL);
 		ItemStack pickaxe = new ItemStack(Items.STONE_PICKAXE);
-		removeRecipes(axe);
-		removeRecipes(hoe);
-		removeRecipes(sword);
-		removeRecipes(shovel);
-		removeRecipes(pickaxe);
-		ItemStack stone = new ItemStack(Blocks.STONE);
-		GameRegistry.addRecipe(new ShapedOreRecipe(axe, "rr", "rs", " s", 'r', stone, 's', "stickWood"));
-		GameRegistry.addRecipe(new ShapedOreRecipe(axe, "rr", "sr", "s ", 'r', stone, 's', "stickWood"));
-		GameRegistry.addRecipe(new ShapedOreRecipe(hoe, "rr", " s", " s", 'r', stone, 's', "stickWood"));
-		GameRegistry.addRecipe(new ShapedOreRecipe(hoe, "rr", "s ", "s ", 'r', stone, 's', "stickWood"));
-		GameRegistry.addRecipe(new ShapedOreRecipe(sword, "r", "r", "s", 'r', stone, 's', "stickWood"));
-		GameRegistry.addRecipe(new ShapedOreRecipe(shovel, "r", "s", "s", 'r', stone, 's', "stickWood"));
-		GameRegistry.addRecipe(new ShapedOreRecipe(pickaxe, "rrr", " s ", " s ", 'r', stone, 's', "stickWood"));
+		replaceCobbleWithStoneInRecipesFor(axe);
+		replaceCobbleWithStoneInRecipesFor(hoe);
+		replaceCobbleWithStoneInRecipesFor(sword);
+		replaceCobbleWithStoneInRecipesFor(shovel);
+		replaceCobbleWithStoneInRecipesFor(pickaxe);
 	}
 
-	public void initCha() {
+	public static void initCha() {
 		ItemStack iron = new ItemStack(Items.IRON_HORSE_ARMOR);
 		ItemStack gold = new ItemStack(Items.GOLDEN_HORSE_ARMOR);
 		ItemStack diamond = new ItemStack(Items.DIAMOND_HORSE_ARMOR);
-		GameRegistry.addRecipe(new ShapedOreRecipe(iron, "l l", "ili", "i i", 'l', "leather", 'i', "ingotIron"));
-		GameRegistry.addRecipe(new ShapedOreRecipe(gold, "l l", "ili", "i i", 'l', "leather", 'i', "ingotGold"));
-		GameRegistry.addRecipe(new ShapedOreRecipe(diamond, "l l", "ili", "i i", 'l', "leather", 'i', "gemDiamond"));
+		ForgeRegistries.RECIPES.register(new ShapedOreRecipe(new ResourceLocation("minecraft", "iron_horse_armor"), iron, "l l", "ili", "i i", 'l', "leather", 'i', "ingotIron").setRegistryName("iron_horse_armor"));
+		ForgeRegistries.RECIPES.register(new ShapedOreRecipe(new ResourceLocation("minecraft", "gold_horse_armor"), gold, "l l", "ili", "i i", 'l', "leather", 'i', "ingotGold").setRegistryName("gold_horse_armor"));
+		ForgeRegistries.RECIPES.register(new ShapedOreRecipe(new ResourceLocation("minecraft", "diamond_horse_armor"), diamond, "l l", "ili", "i i", 'l', "leather", 'i', "gemDiamond").setRegistryName("diamond_horse_armor"));
 	}
 }

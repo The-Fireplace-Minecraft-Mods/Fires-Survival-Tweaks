@@ -67,7 +67,6 @@ public class CommonEvents {
 			if (Blocks.MONSTER_EGG.getBlockHardness(null, null, null) != Blocks.STONE.getBlockHardness(null, null, null))
 				Blocks.MONSTER_EGG.setHardness(Blocks.STONE.getBlockHardness(null, null, null));
 			event.setNewSpeed(event.getEntityPlayer().getDigSpeed(Blocks.STONE.getDefaultState(), event.getPos()));
-			System.out.println(event.getNewSpeed());
 		}
 	}
 
