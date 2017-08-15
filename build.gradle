@@ -29,17 +29,17 @@ allprojects {
     targetCompatibility = 1.8
 }
 
-version = "1.0.1"
+version = "1.1.0"
 group= "the_fireplace.fst"
-archivesBaseName = "FiresSurvivalTweaks-1.12"
+archivesBaseName = "FiresSurvivalTweaks-1.12.1"
 
 minecraft {
-    version = "1.12-14.21.1.2387"
+    version = "1.12.1-14.22.0.2456"
     runDir = "run"
     replace '${version}', project.version
-    mappings = "snapshot_20170628"
+    mappings = "snapshot_20170815"
 	
-	clientRunArgs += "-uuid=0b1ec5ad-cb2a-43b7-995d-889320eb2e5b -username=The_Fireplace"
+	clientRunArgs += "--uuid=0b1ec5ad-cb2a-43b7-995d-889320eb2e5b --username=The_Fireplace"
 }
 
 dependencies {
@@ -94,7 +94,8 @@ curseforge {
   project {
     id = '232464'
     changelog = file('changelog.txt')
-    releaseType = 'release'
+    releaseType = 'beta'
+	addGameVersion '1.12.1'
 	addGameVersion '1.12'
 	addGameVersion 'Java 8'
     mainArtifact(jar) {
@@ -116,7 +117,7 @@ modsIO {
     project{
 		artifact = new File(jar.destinationDir, archivesBaseName+"-"+version+".jar")
 		modid = "1227"
-		minecraft = "1.12"
+		minecraft = "1.12.1"
 		try{changelog = file('changelog.txt').text}catch(Exception e){changelog=""}
 		tag = "beta"
 		current = true
@@ -135,16 +136,16 @@ uploadArchives {
                     project {
                         name project.archivesBaseName
                         packaging "jar"
-                        description "Real Stone Tools"
-                        url "https://github.com/The-Fireplace/Real-Stone-Tools"
+                        description "Fire's Survival Tweaks"
+                        url "https://github.com/The-Fireplace/Fires-Survival-Tweaks"
                         issueManagement {
                             system "github"
-                            url "https://github.com/The-Fireplace/Real-Stone-Tools/issues"
+                            url "https://github.com/The-Fireplace/Fires-Survival-Tweaks/issues"
                         }
                         licenses {
                             license {
                                 name "License"
-                                url "https://github.com/The-Fireplace/Real-Stone-Tools/blob/master/LICENSE"
+                                url "https://github.com/The-Fireplace/Fires-Survival-Tweaks/blob/master/LICENSE"
                                 distribution "repo"
                             }
                         }

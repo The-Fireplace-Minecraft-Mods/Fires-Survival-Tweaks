@@ -35,6 +35,8 @@ public class FiresSurvivalTweaks {
 	public static Property ENABLE_F2S_PROPERTY;
 	public static Property ENABLE_SES_PROPERTY;
 	public static Property ENABLE_SEB_PROPERTY;
+	public static Property ENABLE_RRS_PROPERTY;
+	public static Property ENABLE_RFB_PROPERTY;
 
 	@SidedProxy(clientSide = "the_fireplace." + MODID + ".network.ClientProxy", serverSide = "the_fireplace." + MODID + ".network.CommonProxy")
 	public static CommonProxy proxy;
@@ -46,6 +48,8 @@ public class FiresSurvivalTweaks {
 		ConfigValues.ENABLE_F2S = ENABLE_F2S_PROPERTY.getBoolean();
 		ConfigValues.ENABLE_SES = ENABLE_SES_PROPERTY.getBoolean();
 		ConfigValues.ENABLE_SEB = ENABLE_SEB_PROPERTY.getBoolean();
+		ConfigValues.ENABLE_RRS = ENABLE_RRS_PROPERTY.getBoolean();
+		ConfigValues.ENABLE_RFB = ENABLE_RFB_PROPERTY.getBoolean();
 		if (config.hasChanged())
 			config.save();
 	}
@@ -54,16 +58,14 @@ public class FiresSurvivalTweaks {
 	public void preInit(FMLPreInitializationEvent event) {
 		config = new Configuration(event.getSuggestedConfigurationFile());
 		config.load();
-		ENABLE_RST_PROPERTY = config.get(Configuration.CATEGORY_GENERAL, ConfigValues.ENABLE_RST_NAME, ConfigValues.ENABLE_RST_DEFAULT, proxy.translateToLocal(ConfigValues.ENABLE_RST_NAME + ".tooltip"));
-		ENABLE_CHA_PROPERTY = config.get(Configuration.CATEGORY_GENERAL, ConfigValues.ENABLE_CHA_NAME, ConfigValues.ENABLE_CHA_DEFAULT, proxy.translateToLocal(ConfigValues.ENABLE_CHA_NAME + ".tooltip"));
+		ENABLE_RST_PROPERTY = config.get(Configuration.CATEGORY_GENERAL, ConfigValues.ENABLE_RST_NAME, ConfigValues.ENABLE_RST_DEFAULT, proxy.translateToLocal(ConfigValues.ENABLE_RST_NAME + ".tooltip")).setRequiresMcRestart(true).setRequiresWorldRestart(true);
+		ENABLE_CHA_PROPERTY = config.get(Configuration.CATEGORY_GENERAL, ConfigValues.ENABLE_CHA_NAME, ConfigValues.ENABLE_CHA_DEFAULT, proxy.translateToLocal(ConfigValues.ENABLE_CHA_NAME + ".tooltip")).setRequiresMcRestart(true).setRequiresWorldRestart(true);
 		ENABLE_BPB_PROPERTY = config.get(Configuration.CATEGORY_GENERAL, ConfigValues.ENABLE_BPB_NAME, ConfigValues.ENABLE_BPB_DEFAULT, proxy.translateToLocal(ConfigValues.ENABLE_BPB_NAME + ".tooltip"));
 		ENABLE_F2S_PROPERTY = config.get(Configuration.CATEGORY_GENERAL, ConfigValues.ENABLE_F2S_NAME, ConfigValues.ENABLE_F2S_DEFAULT, proxy.translateToLocal(ConfigValues.ENABLE_F2S_NAME + ".tooltip"));
-		ENABLE_SES_PROPERTY = config.get(Configuration.CATEGORY_GENERAL, ConfigValues.ENABLE_SES_NAME, ConfigValues.ENABLE_SES_DEFAULT, proxy.translateToLocal(ConfigValues.ENABLE_SES_NAME + ".tooltip"));
+		ENABLE_SES_PROPERTY = config.get(Configuration.CATEGORY_GENERAL, ConfigValues.ENABLE_SES_NAME, ConfigValues.ENABLE_SES_DEFAULT, proxy.translateToLocal(ConfigValues.ENABLE_SES_NAME + ".tooltip")).setRequiresMcRestart(true).setRequiresWorldRestart(true);
 		ENABLE_SEB_PROPERTY = config.get(Configuration.CATEGORY_GENERAL, ConfigValues.ENABLE_SEB_NAME, ConfigValues.ENABLE_SEB_DEFAULT, proxy.translateToLocal(ConfigValues.ENABLE_SEB_NAME + ".tooltip"));
-		ENABLE_BPB_PROPERTY.setRequiresMcRestart(false);
-		ENABLE_BPB_PROPERTY.setRequiresWorldRestart(false);
-		ENABLE_SEB_PROPERTY.setRequiresMcRestart(false);
-		ENABLE_SEB_PROPERTY.setRequiresWorldRestart(false);
+		ENABLE_RRS_PROPERTY = config.get(Configuration.CATEGORY_GENERAL, ConfigValues.ENABLE_RRS_NAME, ConfigValues.ENABLE_RRS_DEFAULT, proxy.translateToLocal(ConfigValues.ENABLE_RRS_NAME + ".tooltip"));
+		ENABLE_RFB_PROPERTY = config.get(Configuration.CATEGORY_GENERAL, ConfigValues.ENABLE_RFB_NAME, ConfigValues.ENABLE_RFB_DEFAULT, proxy.translateToLocal(ConfigValues.ENABLE_RFB_NAME + ".tooltip"));
 		syncConfig();
 	}
 
@@ -71,7 +73,6 @@ public class FiresSurvivalTweaks {
 	public void init(FMLInitializationEvent event) {
 		if (ConfigValues.ENABLE_SES)
 			GameRegistry.registerWorldGenerator(new WorldGeneratorSilverfish(), 50);
-		MinecraftForge.EVENT_BUS.register(new CommonEvents());
 	}
 
 	public static void replaceCobbleWithStoneInRecipesFor(ItemStack stack) {

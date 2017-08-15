@@ -10,3 +10,7 @@ enable_ses=Enable Silverfish Egg Gen
 enable_ses.tooltip=Whether Silverfish Eggs get generated in the world as ore
 enable_seb=Enable Silverfish Egg Blend
 enable_seb.tooltip=Whether Silverfish Eggs have the same break speed as stone
+enable_rrs=Enable Rockslides
+enable_rrs.tooltip=Whether Rockslides are enabled
+enable_rfb=Enable Falling Block Triggering
+enable_rfb.tooltip=Whether Falling Blocks will randomly trigger around the player

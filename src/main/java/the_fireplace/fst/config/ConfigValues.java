@@ -27,4 +27,12 @@ public class ConfigValues {
 	public static final boolean ENABLE_SEB_DEFAULT = true;
 	public static boolean ENABLE_SEB;
 	public static final String ENABLE_SEB_NAME = "enable_seb";
+
+	public static final boolean ENABLE_RRS_DEFAULT = true;
+	public static boolean ENABLE_RRS;
+	public static final String ENABLE_RRS_NAME = "enable_rrs";
+
+	public static final boolean ENABLE_RFB_DEFAULT = true;
+	public static boolean ENABLE_RFB;
+	public static final String ENABLE_RFB_NAME = "enable_rfb";
 }
