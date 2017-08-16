@@ -1,9 +1,7 @@
 [Fire's Survival Tweaks](https://minecraft.curseforge.com/projects/fires-survival-tweaks)
 ============================================================================
 
-[![Curse Forge](http://cf.way2muchnoise.eu/short_250836_downloads.svg)](https://minecraft.curseforge.com/projects/fires-survival-tweaks)
-
-Starts where all others end
+[![Curse Forge](http://cf.way2muchnoise.eu/short_232464_downloads.svg)](https://minecraft.curseforge.com/projects/fires-survival-tweaks)
 
 [Issue Reporting](https://github.com/The-Fireplace/Fires-Survival-Tweaks/issues)
 ------------------------------------------------------------------
