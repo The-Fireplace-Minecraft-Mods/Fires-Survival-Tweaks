@@ -1,3 +1,3 @@
-Updated to 1.12.1
-Added Rockslides
-Added Falling Block Triggering
+Fixed rockslides and random block triggering ignoring the config settings
+Fixed rockslides occuring far too often
+Fixed falling rocks being offset by half a block and getting stuck

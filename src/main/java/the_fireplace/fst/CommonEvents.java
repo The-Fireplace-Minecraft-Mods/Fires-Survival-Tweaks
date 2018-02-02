@@ -38,9 +38,8 @@ public class CommonEvents {
 					if (!MinecraftForge.EVENT_BUS.post(new BlockEvent.CropGrowEvent.Pre(event.getWorld(), event.getPos(), event.getWorld().getBlockState(event.getPos())))) {
 						IBlockState preState = event.getWorld().getBlockState(event.getPos());
 						if (applyBlazePowder(event.getItemStack(), event.getWorld(), event.getPos(), event.getEntityPlayer())) {
-							if (!event.getWorld().isRemote) {
+							if (!event.getWorld().isRemote)
 								event.getWorld().playEvent(2005, event.getPos(), 0);
-							}
 							MinecraftForge.EVENT_BUS.post(new BlockEvent.CropGrowEvent.Post(event.getWorld(), event.getPos(), preState, event.getWorld().getBlockState(event.getPos())));
 						}
 					}
@@ -50,17 +49,15 @@ public class CommonEvents {
 
 	@SubscribeEvent
 	public static void playerUpdate(TickEvent.PlayerTickEvent event){
-		if(!event.player.world.isRemote && event.player.world.getWorldTime() % 40 == 0){
+		if((ConfigValues.ENABLE_RRS || ConfigValues.ENABLE_RFB) && !event.player.world.isRemote && event.player.world.getWorldTime() % 40 == 0){
 			BlockPos pos = new BlockPos(event.player).add(rand.nextInt(10)-5, rand.nextInt(12)-6, rand.nextInt(10)-5);
 			IBlockState state = event.player.world.getBlockState(pos);
 			IBlockState downState = event.player.world.getBlockState(pos.down());
 			Block block = state.getBlock();
-			if(block == Blocks.STONE)
-				System.out.println(downState);
-			if(block instanceof BlockFalling)
+			if(ConfigValues.ENABLE_RFB && block instanceof BlockFalling)
 				event.player.world.scheduleUpdate(pos, block, 4);
-			else if(/*rand.nextInt(1100) == 0 && */(block == Blocks.STONE || block == Blocks.NETHERRACK) && (event.player.world.isAirBlock(pos.down()) || BlockFalling.canFallThrough(downState))){
-				EntityFallingBlock stone = new EntityFallingBlock(event.player.world, pos.getX(), pos.getY(), pos.getZ(), state);
+			else if(ConfigValues.ENABLE_RRS && rand.nextInt(1100) == 0 && (block == Blocks.STONE || block == Blocks.NETHERRACK) && (event.player.world.isAirBlock(pos.down()) || BlockFalling.canFallThrough(downState))){
+				EntityFallingBlock stone = new EntityFallingBlock(event.player.world, pos.getX() + 0.5f, pos.getY(), pos.getZ() + 0.5f, state);
 				event.player.world.spawnEntity(stone);
 				for(int i=0;i< EnumFacing.values().length;i++){
 					if(rand.nextInt(2) == 0){

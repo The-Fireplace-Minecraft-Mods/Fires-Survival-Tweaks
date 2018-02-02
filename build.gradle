@@ -31,10 +31,10 @@ allprojects {
 
 version = "1.1.0"
 group= "the_fireplace.fst"
-archivesBaseName = "FiresSurvivalTweaks-1.12.1"
+archivesBaseName = "FiresSurvivalTweaks-1.12.2"
 
 minecraft {
-    version = "1.12.1-14.22.0.2456"
+    version = "1.12.2-14.23.1.2555"
     runDir = "run"
     replace '${version}', project.version
     mappings = "snapshot_20170815"
@@ -95,6 +95,7 @@ curseforge {
     id = '232464'
     changelog = file('changelog.txt')
     releaseType = 'beta'
+	addGameVersion '1.12.2'
 	addGameVersion '1.12.1'
 	addGameVersion '1.12'
 	addGameVersion 'Java 8'
@@ -117,7 +118,7 @@ modsIO {
     project{
 		artifact = new File(jar.destinationDir, archivesBaseName+"-"+version+".jar")
 		modid = "1227"
-		minecraft = "1.12.1"
+		minecraft = "1.12.2"
 		try{changelog = file('changelog.txt').text}catch(Exception e){changelog=""}
 		tag = "beta"
 		current = true
