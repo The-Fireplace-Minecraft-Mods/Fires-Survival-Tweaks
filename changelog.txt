@@ -1,3 +1,2 @@
-Fixed rockslides and random block triggering ignoring the config settings
-Fixed rockslides occuring far too often
-Fixed falling rocks being offset by half a block and getting stuck
+Added en_UD.lang
+Fixed config gui not saving changes
