@@ -29,7 +29,7 @@ allprojects {
     targetCompatibility = 1.8
 }
 
-version = "1.1.1"
+version = "1.1.2"
 group= "the_fireplace.fst"
 archivesBaseName = "FiresSurvivalTweaks-1.12.2"
 
@@ -38,6 +38,8 @@ minecraft {
     runDir = "run"
     replace '${version}', project.version
     mappings = "snapshot_20170815"
+	
+	useDepAts = true
 	
 	clientRunArgs += "--uuid=0b1ec5ad-cb2a-43b7-995d-889320eb2e5b --username=The_Fireplace"
 }
@@ -58,6 +60,10 @@ processResources
     from(sourceSets.main.resources.srcDirs) {
         exclude 'mcmod.info'
     }
+
+    from fileTree(dir: file("."), includes: ["README.md", "LICENSE", "changelog.txt"])
+
+    rename "(.+_at.cfg)", 'META-INF/$1'
 }
 
 task showVersion {
@@ -76,6 +82,10 @@ task showVersion {
     }
     
     outputs.upToDateWhen { false }
+}
+
+jar {
+    manifest { attributes "FMLAT": "FST_at.cfg" }
 }
 
 task deobfJar(type: Jar) {

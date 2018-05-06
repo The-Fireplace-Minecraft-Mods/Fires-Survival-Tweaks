@@ -6,7 +6,7 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import the_fireplace.fst.config.ConfigValues;
 
-@Mod.EventBusSubscriber
+@Mod.EventBusSubscriber(modid=FiresSurvivalTweaks.MODID)
 public class RegistryEvents {
 	@SubscribeEvent
 	public static void recipeRegister(RegistryEvent<IRecipe> event){

@@ -3,6 +3,8 @@ package the_fireplace.fst;
 import net.minecraft.block.*;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.item.EntityFallingBlock;
+import net.minecraft.entity.monster.EntityMagmaCube;
+import net.minecraft.entity.monster.EntitySlime;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -11,6 +13,7 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.event.entity.player.BonemealEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
@@ -19,16 +22,19 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.Event;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
+import net.minecraftforge.fml.relauncher.ReflectionHelper;
 import the_fireplace.fst.config.ConfigValues;
 
+import java.lang.reflect.Method;
 import java.util.Random;
 
 /**
  * @author The_Fireplace
  */
-@Mod.EventBusSubscriber
+@Mod.EventBusSubscriber(modid=FiresSurvivalTweaks.MODID)
 public class CommonEvents {
 	private static final Random rand = new Random();
+	//public static final Method setSlimeSize = ReflectionHelper.findMethod(EntityMagmaCube.class, "setSlimeSize", "func_70799_a", int.class, boolean.class);
 
 	@SubscribeEvent
 	public static void blockInteract(PlayerInteractEvent.RightClickBlock event) {
@@ -45,6 +51,42 @@ public class CommonEvents {
 					}
 				}
 			}
+	}
+
+	@SubscribeEvent
+	public static void livingUpdate(LivingEvent.LivingUpdateEvent event){
+		World world = event.getEntityLiving().world;
+		if(world.isRemote || !(event.getEntityLiving() instanceof EntitySlime) || world.getTotalWorldTime() % 20 != 0 || (!ConfigValues.ENABLE_S2M && !ConfigValues.ENABLE_MCG))
+			return;
+		EntitySlime slime = (EntitySlime) event.getEntityLiving();
+
+		if(ConfigValues.ENABLE_S2M && !(slime instanceof EntityMagmaCube)){
+			if(world.getBlockState(slime.getPosition().down()).getBlock() == Blocks.MAGMA){
+				EntityMagmaCube newCube = new EntityMagmaCube(world);
+				//try {
+					//setSlimeSize.invoke(newCube, slime.getSlimeSize(), false);
+					newCube.setSlimeSize(slime.getSlimeSize(), false);
+					newCube.setPositionAndRotation(slime.posX, slime.posY, slime.posZ, slime.rotationYaw, slime.rotationPitch);
+					world.removeEntity(slime);
+					world.spawnEntity(newCube);
+					newCube.setPositionAndRotation(slime.posX, slime.posY, slime.posZ, slime.rotationYaw, slime.rotationPitch);
+					world.setBlockToAir(slime.getPosition().down());
+				//}catch(Exception e){
+					//e.printStackTrace();
+				//}
+			}
+		}else if(ConfigValues.ENABLE_MCG && slime instanceof EntityMagmaCube && (ConfigValues.MCG_LIMIT == 0 || slime.getSlimeSize() < ConfigValues.MCG_LIMIT)){
+			if(world.getBlockState(slime.getPosition().down()).getBlock() == Blocks.MAGMA) {
+				EntityMagmaCube magmaCube = (EntityMagmaCube) slime;
+				//try {
+					//setSlimeSize.invoke(magmaCube, magmaCube.getSlimeSize() + 1, false);
+					magmaCube.setSlimeSize(magmaCube.getSlimeSize()+1, false);
+					world.setBlockToAir(magmaCube.getPosition().down());
+				//} catch (Exception e) {
+					//e.printStackTrace();
+				//}
+			}
+		}
 	}
 
 	@SubscribeEvent

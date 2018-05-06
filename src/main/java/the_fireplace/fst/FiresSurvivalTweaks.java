@@ -37,6 +37,9 @@ public class FiresSurvivalTweaks {
 	public static Property ENABLE_SEB_PROPERTY;
 	public static Property ENABLE_RRS_PROPERTY;
 	public static Property ENABLE_RFB_PROPERTY;
+	public static Property ENABLE_S2M_PROPERTY;
+	public static Property ENABLE_MCG_PROPERTY;
+	public static Property MCG_LIMIT_PROPERTY;
 
 	@SidedProxy(clientSide = "the_fireplace." + MODID + ".network.ClientProxy", serverSide = "the_fireplace." + MODID + ".network.CommonProxy")
 	public static CommonProxy proxy;
@@ -50,6 +53,9 @@ public class FiresSurvivalTweaks {
 		ConfigValues.ENABLE_SEB = ENABLE_SEB_PROPERTY.getBoolean();
 		ConfigValues.ENABLE_RRS = ENABLE_RRS_PROPERTY.getBoolean();
 		ConfigValues.ENABLE_RFB = ENABLE_RFB_PROPERTY.getBoolean();
+		ConfigValues.ENABLE_S2M = ENABLE_S2M_PROPERTY.getBoolean();
+		ConfigValues.ENABLE_MCG = ENABLE_MCG_PROPERTY.getBoolean();
+		ConfigValues.MCG_LIMIT = MCG_LIMIT_PROPERTY.getInt();
 		if (config.hasChanged())
 			config.save();
 	}
@@ -66,6 +72,10 @@ public class FiresSurvivalTweaks {
 		ENABLE_SEB_PROPERTY = config.get(Configuration.CATEGORY_GENERAL, ConfigValues.ENABLE_SEB_NAME, ConfigValues.ENABLE_SEB_DEFAULT, proxy.translateToLocal(ConfigValues.ENABLE_SEB_NAME + ".tooltip"));
 		ENABLE_RRS_PROPERTY = config.get(Configuration.CATEGORY_GENERAL, ConfigValues.ENABLE_RRS_NAME, ConfigValues.ENABLE_RRS_DEFAULT, proxy.translateToLocal(ConfigValues.ENABLE_RRS_NAME + ".tooltip"));
 		ENABLE_RFB_PROPERTY = config.get(Configuration.CATEGORY_GENERAL, ConfigValues.ENABLE_RFB_NAME, ConfigValues.ENABLE_RFB_DEFAULT, proxy.translateToLocal(ConfigValues.ENABLE_RFB_NAME + ".tooltip"));
+		ENABLE_S2M_PROPERTY = config.get(Configuration.CATEGORY_GENERAL, ConfigValues.ENABLE_S2M_NAME, ConfigValues.ENABLE_S2M_DEFAULT, proxy.translateToLocal(ConfigValues.ENABLE_S2M_NAME + ".tooltip"));
+		ENABLE_MCG_PROPERTY = config.get(Configuration.CATEGORY_GENERAL, ConfigValues.ENABLE_MCG_NAME, ConfigValues.ENABLE_MCG_DEFAULT, proxy.translateToLocal(ConfigValues.ENABLE_MCG_NAME + ".tooltip"));
+		MCG_LIMIT_PROPERTY = config.get(Configuration.CATEGORY_GENERAL, ConfigValues.MCG_LIMIT_NAME, ConfigValues.MCG_LIMIT_DEFAULT, proxy.translateToLocal(ConfigValues.MCG_LIMIT_NAME + ".tooltip"));
+		MCG_LIMIT_PROPERTY.setMinValue(0);
 		syncConfig();
 	}
 

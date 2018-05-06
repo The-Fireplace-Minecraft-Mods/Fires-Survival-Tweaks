@@ -28,11 +28,23 @@ public class ConfigValues {
 	public static boolean ENABLE_SEB;
 	public static final String ENABLE_SEB_NAME = "enable_seb";
 
-	public static final boolean ENABLE_RRS_DEFAULT = true;
+	public static final boolean ENABLE_RRS_DEFAULT = false;
 	public static boolean ENABLE_RRS;
 	public static final String ENABLE_RRS_NAME = "enable_rrs";
 
 	public static final boolean ENABLE_RFB_DEFAULT = true;
 	public static boolean ENABLE_RFB;
 	public static final String ENABLE_RFB_NAME = "enable_rfb";
+
+	public static final boolean ENABLE_S2M_DEFAULT = true;
+	public static boolean ENABLE_S2M;
+	public static final String ENABLE_S2M_NAME = "enable_s2m";
+
+	public static final boolean ENABLE_MCG_DEFAULT = true;
+	public static boolean ENABLE_MCG;
+	public static final String ENABLE_MCG_NAME = "enable_mcg";
+
+	public static final int MCG_LIMIT_DEFAULT = 0;
+	public static int MCG_LIMIT;
+	public static final String MCG_LIMIT_NAME = "mcg_limit";
 }
