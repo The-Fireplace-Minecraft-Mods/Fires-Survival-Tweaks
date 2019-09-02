@@ -23,7 +23,7 @@ import the_fireplace.fst.config.ConfigValues;
 import the_fireplace.fst.network.CommonProxy;
 import the_fireplace.fst.worldgen.WorldGeneratorSilverfish;
 
-@Mod(modid = FiresSurvivalTweaks.MODID, name = FiresSurvivalTweaks.MODNAME, acceptedMinecraftVersions = "[1.12,)", updateJSON = "https://bitbucket.org/The_Fireplace/minecraft-mod-updates/raw/master/fst.json", dependencies = "after:*;after:fluidity", guiFactory = "the_fireplace.fst.config.FSTCfgGuiFactory")
+@Mod(modid = FiresSurvivalTweaks.MODID, name = FiresSurvivalTweaks.MODNAME, acceptedMinecraftVersions = "[1.12,1.13)", updateJSON = "https://bitbucket.org/The_Fireplace/minecraft-mod-updates/raw/master/fst.json", dependencies = "after:*;after:fluidity", guiFactory = "the_fireplace.fst.config.FSTCfgGuiFactory", acceptableRemoteVersions = "*")
 public class FiresSurvivalTweaks {
 	public static final String MODID = "fst";
 	public static final String MODNAME = "Fire's Survival Tweaks";
@@ -40,6 +40,7 @@ public class FiresSurvivalTweaks {
 	public static Property ENABLE_S2M_PROPERTY;
 	public static Property ENABLE_MCG_PROPERTY;
 	public static Property MCG_LIMIT_PROPERTY;
+	public static Property ENABLE_STAIR_RECIPE_REPLACEMENT_PROPERTY;
 
 	@SidedProxy(clientSide = "the_fireplace." + MODID + ".network.ClientProxy", serverSide = "the_fireplace." + MODID + ".network.CommonProxy")
 	public static CommonProxy proxy;
@@ -56,6 +57,7 @@ public class FiresSurvivalTweaks {
 		ConfigValues.ENABLE_S2M = ENABLE_S2M_PROPERTY.getBoolean();
 		ConfigValues.ENABLE_MCG = ENABLE_MCG_PROPERTY.getBoolean();
 		ConfigValues.MCG_LIMIT = MCG_LIMIT_PROPERTY.getInt();
+		ConfigValues.ENABLE_STAIR_RECIPE_REPLACEMENT = ENABLE_STAIR_RECIPE_REPLACEMENT_PROPERTY.getBoolean();
 		if (config.hasChanged())
 			config.save();
 	}
@@ -76,6 +78,7 @@ public class FiresSurvivalTweaks {
 		ENABLE_MCG_PROPERTY = config.get(Configuration.CATEGORY_GENERAL, ConfigValues.ENABLE_MCG_NAME, ConfigValues.ENABLE_MCG_DEFAULT, proxy.translateToLocal(ConfigValues.ENABLE_MCG_NAME + ".tooltip"));
 		MCG_LIMIT_PROPERTY = config.get(Configuration.CATEGORY_GENERAL, ConfigValues.MCG_LIMIT_NAME, ConfigValues.MCG_LIMIT_DEFAULT, proxy.translateToLocal(ConfigValues.MCG_LIMIT_NAME + ".tooltip"));
 		MCG_LIMIT_PROPERTY.setMinValue(0);
+		ENABLE_STAIR_RECIPE_REPLACEMENT_PROPERTY = config.get(Configuration.CATEGORY_GENERAL, ConfigValues.ENABLE_STAIR_RECIPE_REPLACEMENT_NAME, ConfigValues.ENABLE_STAIR_RECIPE_REPLACEMENT_DEFAULT, proxy.translateToLocal(ConfigValues.ENABLE_STAIR_RECIPE_REPLACEMENT_NAME + ".tooltip"));
 		syncConfig();
 	}
 
@@ -101,7 +104,7 @@ public class FiresSurvivalTweaks {
 		}
 	}
 
-	public static void initRst() {
+	public static void initRealStoneTools() {
 		ItemStack axe = new ItemStack(Items.STONE_AXE);
 		ItemStack hoe = new ItemStack(Items.STONE_HOE);
 		ItemStack sword = new ItemStack(Items.STONE_SWORD);
@@ -114,12 +117,18 @@ public class FiresSurvivalTweaks {
 		replaceCobbleWithStoneInRecipesFor(pickaxe);
 	}
 
-	public static void initCha() {
+	public static void initCraftableHorseArmor() {
 		ItemStack iron = new ItemStack(Items.IRON_HORSE_ARMOR);
 		ItemStack gold = new ItemStack(Items.GOLDEN_HORSE_ARMOR);
 		ItemStack diamond = new ItemStack(Items.DIAMOND_HORSE_ARMOR);
 		ForgeRegistries.RECIPES.register(new ShapedOreRecipe(new ResourceLocation("minecraft", "iron_horse_armor"), iron, "l l", "ili", "i i", 'l', "leather", 'i', "ingotIron").setRegistryName("iron_horse_armor"));
 		ForgeRegistries.RECIPES.register(new ShapedOreRecipe(new ResourceLocation("minecraft", "gold_horse_armor"), gold, "l l", "ili", "i i", 'l', "leather", 'i', "ingotGold").setRegistryName("gold_horse_armor"));
 		ForgeRegistries.RECIPES.register(new ShapedOreRecipe(new ResourceLocation("minecraft", "diamond_horse_armor"), diamond, "l l", "ili", "i i", 'l', "leather", 'i', "gemDiamond").setRegistryName("diamond_horse_armor"));
+	}
+
+	public static void replaceStairRecipes() {
+		for(IRecipe obj : CraftingManager.REGISTRY)
+			if(obj.getRecipeOutput().getCount() == 4 && obj.getRecipeOutput().getItem().getRegistryName().getPath().contains("stairs"))
+				obj.getRecipeOutput().setCount(8);
 	}
 }

@@ -17,29 +17,25 @@ buildscript {
 }
 
 plugins {
-    id "com.matthewprenger.cursegradle" version "1.0.9"
+    id "com.matthewprenger.cursegradle" version "1.4.0"
 }
 apply plugin: 'net.minecraftforge.gradle.forge'
 apply plugin: 'net.cazzar.gradle.modsio'
-apply plugin: 'maven'
-apply plugin: 'maven-publish'
 
 allprojects {
     sourceCompatibility = 1.8
     targetCompatibility = 1.8
 }
 
-version = "1.1.2"
+version = "1.1.3"
 group= "the_fireplace.fst"
 archivesBaseName = "FiresSurvivalTweaks-1.12.2"
 
 minecraft {
-    version = "1.12.2-14.23.1.2555"
+    version = "1.12.2-14.23.5.2768"
     runDir = "run"
     replace '${version}', project.version
-    mappings = "snapshot_20170815"
-	
-	useDepAts = true
+    mappings = "stable_39"
 	
 	clientRunArgs += "--uuid=0b1ec5ad-cb2a-43b7-995d-889320eb2e5b --username=The_Fireplace"
 }
@@ -64,24 +60,6 @@ processResources
     from fileTree(dir: file("."), includes: ["README.md", "LICENSE", "changelog.txt"])
 
     rename "(.+_at.cfg)", 'META-INF/$1'
-}
-
-task showVersion {
-    description "Displays the current version"
-    group "help"
-    
-    compileJava.dependsOn showVersion
-    deobfCompileDummyTask.dependsOn showVersion
-    extractMcpMappings.dependsOn showVersion
-  
-    doLast {
-        def versionFile = new File(buildDir, '.version');
-    
-        versionFile.getParentFile().mkdirs();
-        versionFile.text = version;
-    }
-    
-    outputs.upToDateWhen { false }
 }
 
 jar {
@@ -132,47 +110,5 @@ modsIO {
 		try{changelog = file('changelog.txt').text}catch(Exception e){changelog=""}
 		tag = "beta"
 		current = true
-    }
-}
-
-uploadArchives {
-    repositories {
-        mavenDeployer {
-            if (project.hasProperty("local_maven")) {
-                repository(url: "file://${local_maven}")
-                pom {
-                    groupId = project.group
-                    version = project.version
-                    artifactId = project.archivesBaseName
-                    project {
-                        name project.archivesBaseName
-                        packaging "jar"
-                        description "Fire's Survival Tweaks"
-                        url "https://github.com/The-Fireplace/Fires-Survival-Tweaks"
-                        issueManagement {
-                            system "github"
-                            url "https://github.com/The-Fireplace/Fires-Survival-Tweaks/issues"
-                        }
-                        licenses {
-                            license {
-                                name "License"
-                                url "https://github.com/The-Fireplace/Fires-Survival-Tweaks/blob/master/LICENSE"
-                                distribution "repo"
-                            }
-                        }
-                        developers {
-                            developer {
-                                id "fireplace"
-                                name "The_Fireplace"
-                                roles {
-                                    role "owner"
-                                    role "developer"
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
     }
 }

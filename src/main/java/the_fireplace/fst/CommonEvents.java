@@ -34,18 +34,16 @@ import java.util.Random;
 @Mod.EventBusSubscriber(modid=FiresSurvivalTweaks.MODID)
 public class CommonEvents {
 	private static final Random rand = new Random();
-	//public static final Method setSlimeSize = ReflectionHelper.findMethod(EntityMagmaCube.class, "setSlimeSize", "func_70799_a", int.class, boolean.class);
 
 	@SubscribeEvent
 	public static void blockInteract(PlayerInteractEvent.RightClickBlock event) {
-		if (ConfigValues.ENABLE_BPB)
+		if (ConfigValues.ENABLE_BPB && !event.getWorld().isRemote)
 			if (!event.getItemStack().isEmpty() && event.getItemStack().getItem() == Items.BLAZE_POWDER) {
 				if (event.getWorld().getBlockState(event.getPos()).getBlock() instanceof BlockNetherWart && event.getWorld().getBlockState(event.getPos().down()).getBlock() == Blocks.SOUL_SAND) {
 					if (!MinecraftForge.EVENT_BUS.post(new BlockEvent.CropGrowEvent.Pre(event.getWorld(), event.getPos(), event.getWorld().getBlockState(event.getPos())))) {
 						IBlockState preState = event.getWorld().getBlockState(event.getPos());
 						if (applyBlazePowder(event.getItemStack(), event.getWorld(), event.getPos(), event.getEntityPlayer())) {
-							if (!event.getWorld().isRemote)
-								event.getWorld().playEvent(2005, event.getPos(), 0);
+							event.getWorld().playEvent(2005, event.getPos(), 0);
 							MinecraftForge.EVENT_BUS.post(new BlockEvent.CropGrowEvent.Post(event.getWorld(), event.getPos(), preState, event.getWorld().getBlockState(event.getPos())));
 						}
 					}
@@ -63,28 +61,18 @@ public class CommonEvents {
 		if(ConfigValues.ENABLE_S2M && !(slime instanceof EntityMagmaCube)){
 			if(world.getBlockState(slime.getPosition().down()).getBlock() == Blocks.MAGMA){
 				EntityMagmaCube newCube = new EntityMagmaCube(world);
-				//try {
-					//setSlimeSize.invoke(newCube, slime.getSlimeSize(), false);
 					newCube.setSlimeSize(slime.getSlimeSize(), false);
 					newCube.setPositionAndRotation(slime.posX, slime.posY, slime.posZ, slime.rotationYaw, slime.rotationPitch);
 					world.removeEntity(slime);
 					world.spawnEntity(newCube);
 					newCube.setPositionAndRotation(slime.posX, slime.posY, slime.posZ, slime.rotationYaw, slime.rotationPitch);
 					world.setBlockToAir(slime.getPosition().down());
-				//}catch(Exception e){
-					//e.printStackTrace();
-				//}
 			}
 		}else if(ConfigValues.ENABLE_MCG && slime instanceof EntityMagmaCube && (ConfigValues.MCG_LIMIT == 0 || slime.getSlimeSize() < ConfigValues.MCG_LIMIT)){
 			if(world.getBlockState(slime.getPosition().down()).getBlock() == Blocks.MAGMA) {
 				EntityMagmaCube magmaCube = (EntityMagmaCube) slime;
-				//try {
-					//setSlimeSize.invoke(magmaCube, magmaCube.getSlimeSize() + 1, false);
 					magmaCube.setSlimeSize(magmaCube.getSlimeSize()+1, false);
 					world.setBlockToAir(magmaCube.getPosition().down());
-				//} catch (Exception e) {
-					//e.printStackTrace();
-				//}
 			}
 		}
 	}
@@ -119,26 +107,22 @@ public class CommonEvents {
 	@SubscribeEvent
 	public static void cropGrow(BlockEvent.CropGrowEvent.Post event) {
 		if (ConfigValues.ENABLE_F2S && !event.getWorld().isRemote)
-			if (event.getWorld().getBlockState(event.getPos().down()).getBlock() instanceof BlockFarmland) {
-				if (event.getWorld().rand.nextInt(100) == 0) {
+			if (event.getWorld().getBlockState(event.getPos().down()).getBlock() instanceof BlockFarmland)
+				if (event.getWorld().rand.nextInt(100) == 0)
 					event.getWorld().setBlockState(event.getPos().down(), Blocks.SAND.getDefaultState().withProperty(BlockSand.VARIANT, BlockSand.EnumType.RED_SAND));
-				}
-			}
 	}
 
 	@SubscribeEvent
 	public static void bonemealEvent(BonemealEvent event) {
 		if (ConfigValues.ENABLE_F2S && !event.getWorld().isRemote && event.getResult() == Event.Result.DEFAULT)
-			if (event.getWorld().getBlockState(event.getPos().down()).getBlock() instanceof BlockFarmland) {
-				if (event.getWorld().rand.nextInt(25) == 0) {
+			if (event.getWorld().getBlockState(event.getPos().down()).getBlock() instanceof BlockFarmland)
+				if (event.getWorld().rand.nextInt(25) == 0)
 					event.getWorld().setBlockState(event.getPos().down(), Blocks.SAND.getDefaultState().withProperty(BlockSand.VARIANT, BlockSand.EnumType.RED_SAND));
-				}
-			}
 	}
 
 	@SubscribeEvent
 	public static void breakSpeed(PlayerEvent.BreakSpeed event) {
-		if (ConfigValues.ENABLE_SEB && event.getState().getBlock() == Blocks.MONSTER_EGG) {
+		if (ConfigValues.ENABLE_SEB && !event.getEntity().world.isRemote && event.getState().getBlock() == Blocks.MONSTER_EGG) {
 			if (Blocks.MONSTER_EGG.getBlockHardness(null, null, null) != Blocks.STONE.getBlockHardness(null, null, null))
 				Blocks.MONSTER_EGG.setHardness(Blocks.STONE.getBlockHardness(null, null, null));
 			event.setNewSpeed(event.getEntityPlayer().getDigSpeed(Blocks.STONE.getDefaultState(), event.getPos()));
@@ -146,19 +130,19 @@ public class CommonEvents {
 	}
 
 	public static boolean applyBlazePowder(ItemStack stack, World worldIn, BlockPos target, EntityPlayer player) {
-		IBlockState iblockstate = worldIn.getBlockState(target);
+		if (!worldIn.isRemote) {
+			IBlockState iblockstate = worldIn.getBlockState(target);
 
-		if (iblockstate.getBlock() instanceof BlockNetherWart) {
-			int currage = iblockstate.getValue(BlockNetherWart.AGE);
-			if (currage < 3) {
-				if (!worldIn.isRemote) {
+			if (iblockstate.getBlock() instanceof BlockNetherWart) {
+				int currage = iblockstate.getValue(BlockNetherWart.AGE);
+				if (currage < 3) {
 					iblockstate = iblockstate.getBlock().getDefaultState().withProperty(BlockNetherWart.AGE, worldIn.rand.nextInt(3 - currage) + currage + 1);
 					worldIn.setBlockState(target, iblockstate);
 					if (!player.capabilities.isCreativeMode)
 						stack.shrink(1);
-				}
 
-				return true;
+					return true;
+				}
 			}
 		}
 

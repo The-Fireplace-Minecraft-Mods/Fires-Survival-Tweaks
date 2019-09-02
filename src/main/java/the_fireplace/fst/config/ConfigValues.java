@@ -47,4 +47,8 @@ public class ConfigValues {
 	public static final int MCG_LIMIT_DEFAULT = 0;
 	public static int MCG_LIMIT;
 	public static final String MCG_LIMIT_NAME = "mcg_limit";
+
+	public static final boolean ENABLE_STAIR_RECIPE_REPLACEMENT_DEFAULT = true;
+	public static boolean ENABLE_STAIR_RECIPE_REPLACEMENT;
+	public static final String ENABLE_STAIR_RECIPE_REPLACEMENT_NAME = "enable_stair_recipe_replacement";
 }
