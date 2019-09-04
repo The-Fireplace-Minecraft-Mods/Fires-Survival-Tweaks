@@ -22,3 +22,5 @@ mcg_limit=Magma Cube Growth Limit
 mcg_limit.tooltip=Set this to 0 for unlimited growth of Magma Cubes. Otherwise, this is the max Magma Cube size from Magma Cube Growth. Does not shrink Magma Cubes that have already grown.
 enable_stair_recipe_replacement=Enable Stair Recipe Replacement
 enable_stair_recipe_replacement.tooltip=If enabled, the stair recipes will be replaced with recipes that output 8 Stairs instead of 4.
+enable_silk_spawners=Enable Silk Spawners
+enable_silk_spawners.tooltip=If enabled, spawners can be mined with a silk touch pickaxe.

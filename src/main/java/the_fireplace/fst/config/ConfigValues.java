@@ -51,4 +51,8 @@ public class ConfigValues {
 	public static final boolean ENABLE_STAIR_RECIPE_REPLACEMENT_DEFAULT = true;
 	public static boolean ENABLE_STAIR_RECIPE_REPLACEMENT;
 	public static final String ENABLE_STAIR_RECIPE_REPLACEMENT_NAME = "enable_stair_recipe_replacement";
+
+	public static final boolean ENABLE_SILK_SPAWNERS_DEFAULT = true;
+	public static boolean ENABLE_SILK_SPAWNERS;
+	public static final String ENABLE_SILK_SPAWNERS_NAME = "enable_silk_spawners";
 }

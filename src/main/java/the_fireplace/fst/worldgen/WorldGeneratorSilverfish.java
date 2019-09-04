@@ -21,11 +21,11 @@ public class WorldGeneratorSilverfish implements IWorldGenerator {
 	private void generateSurface(World world, Random random, int BlockX, int BlockZ) {
 		int maxY = 255;
 		int minY = 1;
-		for (int i = minY; i < maxY; i++) {
+		for (int i = minY; i < maxY*2; i++) {
 			if (random.nextInt(i+2) <= 1) {
 				int Xcoord = BlockX + random.nextInt(16);
 				int Zcoord = BlockZ + random.nextInt(16);
-				int Ycoord = random.nextInt(maxY - minY) + minY;
+				int Ycoord = i/2;
 				//BlockMatcher.forBlock(Blocks.STONE)
 				(new WorldGenMinable(Blocks.MONSTER_EGG.getDefaultState(), 2, p_apply_1_ -> {
 					if (p_apply_1_ != null && p_apply_1_.getBlock() == Blocks.STONE)

@@ -2,17 +2,29 @@ package the_fireplace.fst;
 
 import net.minecraft.block.*;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.item.EntityFallingBlock;
+import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.monster.EntityMagmaCube;
 import net.minecraft.entity.monster.EntitySlime;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
+import net.minecraft.init.Enchantments;
 import net.minecraft.init.Items;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemPickaxe;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTBase;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagString;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.tileentity.TileEntityMobSpawner;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.event.entity.player.BonemealEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
@@ -22,6 +34,7 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.Event;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
+import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import net.minecraftforge.fml.relauncher.ReflectionHelper;
 import the_fireplace.fst.config.ConfigValues;
 
@@ -32,8 +45,44 @@ import java.util.Random;
  * @author The_Fireplace
  */
 @Mod.EventBusSubscriber(modid=FiresSurvivalTweaks.MODID)
-public class CommonEvents {
+public class ServerEvents {
 	private static final Random rand = new Random();
+
+	@SubscribeEvent
+	public static void onBlockBreak(BlockEvent.BreakEvent e) {
+		if(!e.getWorld().isRemote && ConfigValues.ENABLE_SILK_SPAWNERS ) {
+			if(e.getPlayer() == null)
+				return;
+			IBlockState breakState = e.getState();
+			TileEntity breakTe = e.getWorld().getTileEntity(e.getPos());
+			ItemStack tool = e.getPlayer().getHeldItem(e.getPlayer().getActiveHand());
+			if(breakState.getBlock() instanceof BlockMobSpawner && tool.getItem() instanceof ItemPickaxe && breakTe instanceof TileEntityMobSpawner) {
+				for(NBTBase nbt: tool.getEnchantmentTagList())
+					if(nbt instanceof NBTTagCompound && Enchantments.SILK_TOUCH.equals(Enchantment.getEnchantmentByID(((NBTTagCompound) nbt).getByte("id")))) {
+						e.setExpToDrop(0);
+						ItemStack spawnerStack = new ItemStack(Blocks.MOB_SPAWNER);
+						NBTTagCompound dropItemCompound = new NBTTagCompound();
+						NBTTagCompound spawnerNbt = ((TileEntityMobSpawner) breakTe).getSpawnerBaseLogic().writeToNBT(new NBTTagCompound());
+						dropItemCompound.setTag("spawnerdata", spawnerNbt);
+						spawnerStack.setTagCompound(dropItemCompound);
+						spawnerStack.setStackDisplayName(ForgeRegistries.ENTITIES.getValue(new ResourceLocation(((NBTTagCompound)spawnerNbt.getTag("SpawnData")).getString("id"))).getName() + " Spawner");
+						Block.spawnAsEntity(e.getWorld(), e.getPos(), spawnerStack);
+						break;
+					}
+			}
+		}
+	}
+
+	@SubscribeEvent
+	public static void onBlockPlace(BlockEvent.PlaceEvent e) {
+		if(!e.getWorld().isRemote) {
+			ItemStack place = e.getPlayer().getHeldItem(e.getPlayer().getActiveHand());
+			TileEntity te = e.getWorld().getTileEntity(e.getPos());
+			if(place.getItem().equals(Item.getItemFromBlock(Blocks.MOB_SPAWNER)) && place.getTagCompound() != null && te instanceof TileEntityMobSpawner) {
+				((TileEntityMobSpawner) te).getSpawnerBaseLogic().readFromNBT(place.getTagCompound().getCompoundTag("spawnerdata"));
+			}
+		}
+	}
 
 	@SubscribeEvent
 	public static void blockInteract(PlayerInteractEvent.RightClickBlock event) {

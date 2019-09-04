@@ -41,6 +41,7 @@ public class FiresSurvivalTweaks {
 	public static Property ENABLE_MCG_PROPERTY;
 	public static Property MCG_LIMIT_PROPERTY;
 	public static Property ENABLE_STAIR_RECIPE_REPLACEMENT_PROPERTY;
+	public static Property ENABLE_SILK_SPAWNERS_PROPERTY;
 
 	@SidedProxy(clientSide = "the_fireplace." + MODID + ".network.ClientProxy", serverSide = "the_fireplace." + MODID + ".network.CommonProxy")
 	public static CommonProxy proxy;
@@ -58,6 +59,7 @@ public class FiresSurvivalTweaks {
 		ConfigValues.ENABLE_MCG = ENABLE_MCG_PROPERTY.getBoolean();
 		ConfigValues.MCG_LIMIT = MCG_LIMIT_PROPERTY.getInt();
 		ConfigValues.ENABLE_STAIR_RECIPE_REPLACEMENT = ENABLE_STAIR_RECIPE_REPLACEMENT_PROPERTY.getBoolean();
+		ConfigValues.ENABLE_SILK_SPAWNERS = ENABLE_SILK_SPAWNERS_PROPERTY.getBoolean();
 		if (config.hasChanged())
 			config.save();
 	}
@@ -79,6 +81,7 @@ public class FiresSurvivalTweaks {
 		MCG_LIMIT_PROPERTY = config.get(Configuration.CATEGORY_GENERAL, ConfigValues.MCG_LIMIT_NAME, ConfigValues.MCG_LIMIT_DEFAULT, proxy.translateToLocal(ConfigValues.MCG_LIMIT_NAME + ".tooltip"));
 		MCG_LIMIT_PROPERTY.setMinValue(0);
 		ENABLE_STAIR_RECIPE_REPLACEMENT_PROPERTY = config.get(Configuration.CATEGORY_GENERAL, ConfigValues.ENABLE_STAIR_RECIPE_REPLACEMENT_NAME, ConfigValues.ENABLE_STAIR_RECIPE_REPLACEMENT_DEFAULT, proxy.translateToLocal(ConfigValues.ENABLE_STAIR_RECIPE_REPLACEMENT_NAME + ".tooltip"));
+		ENABLE_SILK_SPAWNERS_PROPERTY = config.get(Configuration.CATEGORY_GENERAL, ConfigValues.ENABLE_SILK_SPAWNERS_NAME, ConfigValues.ENABLE_SILK_SPAWNERS_DEFAULT, proxy.translateToLocal(ConfigValues.ENABLE_SILK_SPAWNERS_NAME + ".tooltip"));
 		syncConfig();
 	}
 

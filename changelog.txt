@@ -1,2 +1,3 @@
-Added en_UD.lang
-Fixed config gui not saving changes
+Revamped Silverfish spawning logic
+Added Silk Spawners
+Made the mod possible to run server-side only
