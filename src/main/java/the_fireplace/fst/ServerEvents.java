@@ -32,6 +32,7 @@ import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.Event;
+import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
@@ -73,14 +74,13 @@ public class ServerEvents {
 		}
 	}
 
-	@SubscribeEvent
+	@SubscribeEvent(priority = EventPriority.HIGHEST)
 	public static void onBlockPlace(BlockEvent.PlaceEvent e) {
 		if(!e.getWorld().isRemote) {
-			ItemStack place = e.getPlayer().getHeldItem(e.getPlayer().getActiveHand());
+			ItemStack place = e.getItemInHand();
 			TileEntity te = e.getWorld().getTileEntity(e.getPos());
-			if(place.getItem().equals(Item.getItemFromBlock(Blocks.MOB_SPAWNER)) && place.getTagCompound() != null && te instanceof TileEntityMobSpawner) {
+			if(place.getItem().equals(Item.getItemFromBlock(Blocks.MOB_SPAWNER)) && place.getTagCompound() != null && te instanceof TileEntityMobSpawner)
 				((TileEntityMobSpawner) te).getSpawnerBaseLogic().readFromNBT(place.getTagCompound().getCompoundTag("spawnerdata"));
-			}
 		}
 	}
 
