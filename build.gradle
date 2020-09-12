@@ -27,7 +27,7 @@ allprojects {
     targetCompatibility = 1.8
 }
 
-version = "1.2.0"
+version = "1.2.1"
 group= "the_fireplace.fst"
 archivesBaseName = "FiresSurvivalTweaks-1.12.2"
 
@@ -82,7 +82,7 @@ curseforge {
   project {
     id = '232464'
     changelog = file('changelog.txt')
-    releaseType = 'beta'
+    releaseType = 'release'
 	addGameVersion '1.12.2'
 	addGameVersion '1.12.1'
 	addGameVersion '1.12'
