@@ -1,0 +1,43 @@
+{
+  "schemaVersion": 1,
+  "id": "fst",
+  "version": "${version}",
+
+  "name": "Fire's Survival Tweaks",
+  "description": "Various tweaks for an enhanced survival mode experience.",
+  "authors": [
+    "The_Fireplace"
+  ],
+  "contact": {
+    "homepage": "https://www.curseforge.com/minecraft/mc-mods/fires-survival-tweaks",
+    "sources": "https://github.com/The-Fireplace-Minecraft-Mods/Fires-Survival-Tweaks",
+    "issues": "https://github.com/The-Fireplace-Minecraft-Mods/Fires-Survival-Tweaks/issues"
+  },
+
+  "license": "GPL-3.0-or-later",
+  "icon": "assets/fst/logo.png",
+
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      "the_fireplace.fst.FiresSurvivalTweaks"
+    ],
+    "modmenu": [
+      "the_fireplace.fst.client.ModMenuIntegration"
+    ]
+  },
+  "mixins": [
+    "fst.mixins.json"
+  ],
+
+  "depends": {
+    "fabricloader": ">=0.7.4",
+    "fabric": "*",
+    "fabric-events-interaction-v0": "*",
+    "minecraft": "1.16.*"
+  },
+
+  "suggests": {
+    "modmenu":  ">=4.0.0"
+  }
+}

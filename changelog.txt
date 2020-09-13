@@ -1,3 +1,1 @@
-Revamped Silverfish spawning logic
-Added Silk Spawners
-Made the mod possible to run server-side only
+Rewritten for Fabric and 1.16.2/3
