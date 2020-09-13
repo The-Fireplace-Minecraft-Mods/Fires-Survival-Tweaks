@@ -24,14 +24,12 @@ public abstract class ServerPlayerEntityMixin extends PlayerEntity {
 		if(FiresSurvivalTweaks.config.enableFallingBlockTriggering && getServer() != null && getServer().getTicks() % 40 == 3) {
 			new Thread(() -> {
 				int xOff = random.nextInt(5)-2;
-				int yOff = (random.nextBoolean() ? 1 : -1)*(random.nextInt(3)+2);
+				int yOff = (random.nextBoolean() ? 1 : -1)*(random.nextInt(4)+1);
 				int zOff = random.nextInt(5)-2;
 				BlockPos targetPos = getBlockPos().add(xOff, yOff, zOff);
 				BlockState state = world.getBlockState(targetPos);
-				if(state.getBlock() instanceof FallingBlock) {
-					//TODO test
-					world.updateListeners(targetPos, state, state, 3);
-				}
+				if(state.getBlock() instanceof FallingBlock)
+					world.getBlockTickScheduler().schedule(targetPos, state.getBlock(), ((FallingBlockInvoker)state.getBlock()).invokeGetFallDelay());
 			}).start();
 		}
 	}

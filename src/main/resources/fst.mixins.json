@@ -4,6 +4,7 @@
   "package": "the_fireplace.fst.mixin",
   "compatibilityLevel": "JAVA_8",
   "mixins": [
+    "FallingBlockInvoker",
     "ServerPlayerEntityMixin"
   ],
   "injectors": {
