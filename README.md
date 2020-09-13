@@ -14,7 +14,6 @@ Please include the following:
 
 * Minecraft version
 * Mod version
-* Forge version/build
 * Versions of any mods potentially related to the issue 
 * Any relevant screenshots/videos are greatly appreciated.
 * For crashes:
@@ -26,28 +25,8 @@ Please include the following:
 [Feature Requests](https://github.com/The-Fireplace/Fires-Survival-Tweaks/issues)
 -------------------------------------------------------------------
 
-If you want a new feature added, go ahead an open a [new issue](https://github.com/The-Fireplace/Fires-Survival-Tweaks/issues/new), remove the existing form and describe your
-feature the best you can. The more details you provide the easier it will be to implement it.
+If you want a new feature added, go ahead an open a [new issue](https://github.com/The-Fireplace/Fires-Survival-Tweaks/issues/new).
 You can also talk to me on [Discord](https://discord.gg/29aj3Ah)
-
-Developing with My Mod
-----------------------
-
-If you want to use items or blocks from my mod, add support for, or even develop an addon for my mod, you can easily add it to your development environment! Most
-releases get uploaded to my maven repository.  
-So all you have to do to include the mod is add these lines *(in the appropriate places)* to your build.gradle
-
-    repositories {
-        maven { // The_Fireplace's Mods, and BrainStoneMod
-            url "http://maven.brainstonemod.com"
-        }
-        // Other repos...
-    }
-    
-    dependencies {
-        deobfCompile "the_fireplace.fst:FiresSurvivalTweaks-<MC-Version>:<version>"
-        // Other dependencies
-    }
 
 Setting up a Workspace/Compiling from Source
 --------------------------------------------
