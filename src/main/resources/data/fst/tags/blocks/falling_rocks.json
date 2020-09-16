@@ -9,6 +9,15 @@
     "minecraft:basalt",
     "minecraft:end_stone",
     "minecraft:sandstone",
-    "minecraft:red_sandstone"
+    "minecraft:red_sandstone",
+    "minecraft:coal_ore",
+    "minecraft:diamond_ore",
+    "minecraft:emerald_ore",
+    "minecraft:gold_ore",
+    "minecraft:iron_ore",
+    "minecraft:lapis_ore",
+    "minecraft:nether_gold_ore",
+    "minecraft:nether_quartz_ore",
+    "minecraft:redstone_ore"
   ]
 }

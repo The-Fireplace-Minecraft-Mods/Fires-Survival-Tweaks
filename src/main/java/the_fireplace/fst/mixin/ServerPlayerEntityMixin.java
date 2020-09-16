@@ -35,7 +35,7 @@ public abstract class ServerPlayerEntityMixin extends PlayerEntity {
 					world.getBlockTickScheduler().schedule(targetPos, state.getBlock(), ((FallingBlockInvoker)state.getBlock()).invokeGetFallDelay());
 			}).start();
 		}
-		if(FiresSurvivalTweaks.config.enableRockslides && getServer() != null && getServer().getTicks() % 13000 == 3)
+		if(FiresSurvivalTweaks.config.enableRockslides && getServer() != null && getServer().getTicks() % 13000 == 25)
 			rockslide(getBlockPos());
 	}
 

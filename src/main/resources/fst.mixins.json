@@ -5,7 +5,8 @@
   "compatibilityLevel": "JAVA_8",
   "mixins": [
     "FallingBlockInvoker",
-    "ServerPlayerEntityMixin"
+    "ServerPlayerEntityMixin",
+    "SlimeEntityMixin"
   ],
   "injectors": {
     "defaultRequire": 1
