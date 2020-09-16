@@ -12,6 +12,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import the_fireplace.fst.FiresSurvivalTweaks;
+import the_fireplace.fst.tags.BlockTags;
 
 @Mixin(ServerPlayerEntity.class)
 public abstract class ServerPlayerEntityMixin extends PlayerEntity {
@@ -30,6 +31,18 @@ public abstract class ServerPlayerEntityMixin extends PlayerEntity {
 				BlockState state = world.getBlockState(targetPos);
 				if(state.getBlock() instanceof FallingBlock)
 					world.getBlockTickScheduler().schedule(targetPos, state.getBlock(), ((FallingBlockInvoker)state.getBlock()).invokeGetFallDelay());
+			}).start();
+		}
+		if(FiresSurvivalTweaks.config.enableRockslides && getServer() != null && getServer().getTicks() % 13000 == 3) {
+			new Thread(() -> {
+				int xOff = random.nextInt(7)-3;
+				int yOff = (random.nextBoolean() ? 1 : -1)*(random.nextInt(5)+1);
+				int zOff = random.nextInt(7)-3;
+				BlockPos targetPos = getBlockPos().add(xOff, yOff, zOff);
+				BlockState state = world.getBlockState(targetPos);
+				if(state.getBlock().isIn(BlockTags.FALLING_ROCKS)) {
+					
+				}
 			}).start();
 		}
 	}

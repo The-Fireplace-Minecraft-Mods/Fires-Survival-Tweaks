@@ -1,0 +1,14 @@
+{
+  "replace": false,
+  "values": [
+    "minecraft:stone",
+    "minecraft:diorite",
+    "minecraft:granite",
+    "minecraft:andesite",
+    "minecraft:netherrack",
+    "minecraft:basalt",
+    "minecraft:end_stone",
+    "minecraft:sandstone",
+    "minecraft:red_sandstone"
+  ]
+}
