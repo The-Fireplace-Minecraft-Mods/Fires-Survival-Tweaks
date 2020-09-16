@@ -27,5 +27,4 @@ bin/
 
 # fabric
 run/
-resources/.cache/
 /src/main/resources/.cache/

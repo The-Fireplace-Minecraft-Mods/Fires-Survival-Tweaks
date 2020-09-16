@@ -6,7 +6,7 @@ import net.minecraft.tag.Tag;
 import net.minecraft.util.Identifier;
 import the_fireplace.fst.FiresSurvivalTweaks;
 
-public class BlockTags {
+public class FSTBlockTags {
     public static final Tag.Identified<Block> FALLING_ROCKS = register("falling_rocks");
 
     private static Tag.Identified<Block> register(String id) {
