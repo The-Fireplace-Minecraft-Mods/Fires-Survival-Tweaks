@@ -1,4 +1,4 @@
-package the_fireplace.fst;
+package the_fireplace.fst.logic;
 
 import com.google.common.collect.Sets;
 import net.minecraft.entity.mob.SlimeEntity;
@@ -6,8 +6,7 @@ import net.minecraft.util.math.BlockPos;
 
 import java.util.Set;
 
-public class EntityUtils {
-
+public class SlimeGrowthLogic {
     public static Set<BlockPos> getNearbyBlocks(SlimeEntity slimeEntity) {
         Set<BlockPos> set = Sets.newHashSet();
 

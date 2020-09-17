@@ -6,6 +6,7 @@
   "mixins": [
     "FallingBlockInvoker",
     "ServerPlayerEntityMixin",
+    "ServerWorldMixin",
     "SlimeEntityMixin"
   ],
   "injectors": {
