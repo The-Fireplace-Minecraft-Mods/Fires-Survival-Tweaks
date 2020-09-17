@@ -20,11 +20,12 @@ public class RockslideLogic {
         int yOff = (world.random.nextInt(tremorRange)+1) % Math.min(world.getDimensionHeight()-fieldCenter.getY()-1, fieldCenter.getY()+1);
         int zOff = (world.random.nextBoolean() ? 1 : -1)*world.random.nextInt(tremorRange)+1;
         BlockPos targetPos = fieldCenter.add(xOff, yOff, zOff);
+        //TODO Stability checking based on how many rocks have supports?
         for(BlockPos pos: Lists.newArrayList(targetPos, targetPos.north(), targetPos.north(2), targetPos.south(), targetPos.south(2), targetPos.east(), targetPos.east(2), targetPos.west(), targetPos.west(2), targetPos.north().west(), targetPos.north().east(), targetPos.south().west(), targetPos.south().east(), targetPos.down(), targetPos.down(2), targetPos.up(), targetPos.up(2), targetPos.up().north(), targetPos.up().east(), targetPos.up().south(), targetPos.up().west(), targetPos.down().north(), targetPos.down().south(), targetPos.down().east(), targetPos.down().west())) {
             BlockState state = world.getBlockState(pos);
             if(state.getBlock().isIn(FSTBlockTags.FALLING_ROCKS) && FallingBlock.canFallThrough(world.getBlockState(pos.down()))) {
                 makeBlockFall(world, pos, state);
-                if(world.random.nextInt(tremorRange*tremorRange/(tremorChanceCount/3)+1) == 0)
+                if(world.random.nextInt(tremorRange*tremorRange/((tremorChanceCount/3)+1)+1) == 0)
                     rockslide(world, pos, (int)Math.ceil(tremorRange*0.6), 1);
             }
         }

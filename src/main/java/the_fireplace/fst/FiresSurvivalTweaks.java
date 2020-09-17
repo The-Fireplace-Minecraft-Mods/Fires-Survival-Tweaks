@@ -24,7 +24,7 @@ public class FiresSurvivalTweaks implements ModInitializer {
 		config = AutoConfig.getConfigHolder(ModConfig.class).getConfig();
 
 		//noinspection ConstantConditions
-		if(true) {
+		if(false) {
 			LOGGER.debug("Generating data...");
 			DataGenerator gen = new AdditiveDataGenerator(Paths.get("..", "src", "main", "resources"), Collections.emptySet());
 			gen.install(new BlockTagsProvider(gen));
