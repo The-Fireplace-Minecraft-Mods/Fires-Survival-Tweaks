@@ -6,6 +6,7 @@ import net.minecraft.entity.EntityType;
 import net.minecraft.entity.mob.MagmaCubeEntity;
 import net.minecraft.entity.mob.MobEntity;
 import net.minecraft.entity.mob.SlimeEntity;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.math.BlockPos;
@@ -25,20 +26,36 @@ public abstract class SlimeEntityMixin extends MobEntity {
 
 	@Shadow protected abstract void setSize(int size, boolean heal);
 
+	@Shadow public abstract void remove();
+
 	protected SlimeEntityMixin(EntityType<? extends MobEntity> entityType, World world) {
 		super(entityType, world);
 	}
 
 	@SuppressWarnings("ConstantConditions")
-	@Inject(at = @At(value="TAIL"), method = "tick")
+	@Inject(at = @At(value="TAIL"), method = "tick", cancellable = true)
 	private void tick(CallbackInfo callbackInfo) {
 		boolean isMagma = (Object)this instanceof MagmaCubeEntity;
 		if(!isMagma) {
 			if (FiresSurvivalTweaks.config.enableSlimeGrowth && (FiresSurvivalTweaks.config.slimeSizeLimit <= 0 || this.getSize() < FiresSurvivalTweaks.config.slimeSizeLimit)) {
 				for (BlockPos pos : SlimeGrowthLogic.getNearbyBlocks((SlimeEntity) (Object) this)) {
+					BlockState state = world.getBlockState(pos);
+					if(FiresSurvivalTweaks.config.enableSlimeToMagmaCube && state.isIn(FSTBlockTags.MAGMA_ABSORBABLES)) {
+						world.setBlockState(pos, Blocks.AIR.getDefaultState());
+						MagmaCubeEntity newCube = new MagmaCubeEntity(EntityType.MAGMA_CUBE, world);
+						((MagmaCubeInvoker)newCube).invokeSetSize(getSize(), true);
+						newCube.updatePositionAndAngles(getX(), getY(), getZ(), yaw, pitch);
+						world.spawnEntity(newCube);
+						if(world instanceof ServerWorld) {
+							world.getWorldChunk(pos).remove(this);
+							((ServerWorld) world).unloadEntity(this);
+							//TODO delete entity from world, don't just unload.
+							callbackInfo.cancel();
+						}
+						break;
+					}
 					if(FiresSurvivalTweaks.config.slimeSizeLimit > 0 && this.getSize() >= FiresSurvivalTweaks.config.slimeSizeLimit)
 						break;
-					BlockState state = world.getBlockState(pos);
 					if (state.isIn(FSTBlockTags.SLIME_ABSORBABLES)) {
 						world.setBlockState(pos, Blocks.AIR.getDefaultState());
 						this.setSize(this.getSize() + 1, true);

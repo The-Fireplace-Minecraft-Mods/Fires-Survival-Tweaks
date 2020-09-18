@@ -42,6 +42,7 @@ public abstract class ServerWorldMixin extends World {
 		//noinspection ConstantConditions
 		if(FiresSurvivalTweaks.config.enableRockslides && !tremoring && getServer().getTicks() % 30 == 0) {
 			tremoring = true;
+			//TODO run calculations on another thread?
 			//clear tremor storage and trigger tremors
 			for(Vec3i zonePos: tremorZones.keySet()) {
 				Set<BlockPos> tremorPositions = Sets.newHashSet();
