@@ -27,6 +27,8 @@ public class ModConfig implements ConfigData {
     @ConfigEntry.Gui.Tooltip
     public boolean enableSlimeGrowth = true;
     @ConfigEntry.Gui.Tooltip
+    public boolean enableMagmaCubeToSlime = true;
+    @ConfigEntry.Gui.Tooltip
     public int magmaCubeSizeLimit = 64;
     @ConfigEntry.Gui.Tooltip
     public int slimeSizeLimit = 64;

@@ -6,7 +6,6 @@ import net.minecraft.entity.EntityType;
 import net.minecraft.entity.mob.MagmaCubeEntity;
 import net.minecraft.entity.mob.MobEntity;
 import net.minecraft.entity.mob.SlimeEntity;
-import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.math.BlockPos;
@@ -33,7 +32,7 @@ public abstract class SlimeEntityMixin extends MobEntity {
 	}
 
 	@SuppressWarnings("ConstantConditions")
-	@Inject(at = @At(value="TAIL"), method = "tick", cancellable = true)
+	@Inject(at = @At(value="TAIL"), method = "tick")
 	private void tick(CallbackInfo callbackInfo) {
 		boolean isMagma = (Object)this instanceof MagmaCubeEntity;
 		if(!isMagma) {
@@ -43,15 +42,10 @@ public abstract class SlimeEntityMixin extends MobEntity {
 					if(FiresSurvivalTweaks.config.enableSlimeToMagmaCube && state.isIn(FSTBlockTags.MAGMA_ABSORBABLES)) {
 						world.setBlockState(pos, Blocks.AIR.getDefaultState());
 						MagmaCubeEntity newCube = new MagmaCubeEntity(EntityType.MAGMA_CUBE, world);
-						((MagmaCubeInvoker)newCube).invokeSetSize(getSize(), true);
+						((SlimeInvoker)newCube).invokeSetSize(getSize(), true);
 						newCube.updatePositionAndAngles(getX(), getY(), getZ(), yaw, pitch);
 						world.spawnEntity(newCube);
-						if(world instanceof ServerWorld) {
-							world.getWorldChunk(pos).remove(this);
-							((ServerWorld) world).unloadEntity(this);
-							//TODO delete entity from world, don't just unload.
-							callbackInfo.cancel();
-						}
+						this.remove();
 						break;
 					}
 					if(FiresSurvivalTweaks.config.slimeSizeLimit > 0 && this.getSize() >= FiresSurvivalTweaks.config.slimeSizeLimit)
@@ -64,6 +58,14 @@ public abstract class SlimeEntityMixin extends MobEntity {
 				}
 			}
 		} else {
+			if(FiresSurvivalTweaks.config.enableMagmaCubeToSlime && isTouchingWaterOrRain()) {
+				SlimeEntity newCube = new SlimeEntity(EntityType.SLIME, world);
+				((SlimeInvoker)newCube).invokeSetSize(getSize(), true);
+				newCube.updatePositionAndAngles(getX(), getY(), getZ(), yaw, pitch);
+				world.spawnEntity(newCube);
+				this.remove();
+				return;
+			}
 			if (FiresSurvivalTweaks.config.enableMagmaCubeGrowth && (FiresSurvivalTweaks.config.magmaCubeSizeLimit <= 0 || this.getSize() < FiresSurvivalTweaks.config.magmaCubeSizeLimit)) {
 				for (BlockPos pos : SlimeGrowthLogic.getNearbyBlocks((SlimeEntity) (Object) this)) {
 					if(FiresSurvivalTweaks.config.magmaCubeSizeLimit > 0 && this.getSize() >= FiresSurvivalTweaks.config.magmaCubeSizeLimit)

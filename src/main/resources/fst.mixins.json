@@ -5,7 +5,7 @@
   "compatibilityLevel": "JAVA_8",
   "mixins": [
     "FallingBlockInvoker",
-    "MagmaCubeInvoker",
+    "SlimeInvoker",
     "ServerPlayerEntityMixin",
     "ServerWorldMixin",
     "SlimeEntityMixin"
