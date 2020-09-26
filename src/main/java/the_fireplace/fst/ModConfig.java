@@ -7,17 +7,13 @@ import me.sargunvohra.mcmods.autoconfig1u.annotation.ConfigEntry;
 @Config(name = FiresSurvivalTweaks.MODID)
 public class ModConfig implements ConfigData {
     @ConfigEntry.Gui.Tooltip
-    public boolean enableRealStoneTools = true;
-    @ConfigEntry.Gui.Tooltip
-    public boolean enableCraftableHorseArmor = true;
-    @ConfigEntry.Gui.Tooltip
     public boolean enableBlazePowderNetherCropGrowth = true;
     @ConfigEntry.Gui.Tooltip
     public boolean enableSilverfishEggGeneration = true;
     @ConfigEntry.Gui.Tooltip
     public boolean enableSilverfishEggBlend = true;
     @ConfigEntry.Gui.Tooltip
-    public boolean enableRockslides = true;
+    public boolean enableCaveins = true;
     @ConfigEntry.Gui.Tooltip
     public boolean enableFallingBlockTriggering = true;
     @ConfigEntry.Gui.Tooltip
@@ -32,8 +28,6 @@ public class ModConfig implements ConfigData {
     public int magmaCubeSizeLimit = 64;
     @ConfigEntry.Gui.Tooltip
     public int slimeSizeLimit = 64;
-    @ConfigEntry.Gui.Tooltip
-    public boolean enableStairRecipeReplacement = true;
     @ConfigEntry.Gui.Tooltip
     public boolean enableSilkSpawners = true;
 }

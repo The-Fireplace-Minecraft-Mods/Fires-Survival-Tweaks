@@ -10,10 +10,10 @@ import the_fireplace.fst.tags.FSTBlockTags;
 
 import javax.annotation.Nullable;
 
-public class RockslideLogic {
+public class CaveinLogic {
     public static final int MAX_TREMOR_RANGE = 32;
 
-    public static void rockslide(World world, BlockPos fieldCenter, int tremorRange, int tremorChanceCount) {
+    public static void cavein(World world, BlockPos fieldCenter, int tremorRange, int tremorChanceCount) {
         if(tremorChanceCount <= 0)
             return;
         int xOff = (world.random.nextBoolean() ? 1 : -1)*world.random.nextInt(tremorRange)+1;
@@ -26,10 +26,10 @@ public class RockslideLogic {
             if(state.getBlock().isIn(FSTBlockTags.FALLING_ROCKS) && FallingBlock.canFallThrough(world.getBlockState(pos.down()))) {
                 makeBlockFall(world, pos, state);
                 if(world.random.nextInt(tremorRange*tremorRange/((tremorChanceCount/3)+1)+1) == 0)
-                    rockslide(world, pos, (int)Math.ceil(tremorRange*0.6), 1);
+                    cavein(world, pos, (int)Math.ceil(tremorRange*0.6), 1);
             }
         }
-        rockslide(world, fieldCenter, (int)Math.ceil(tremorRange*0.95), tremorChanceCount - 1);
+        cavein(world, fieldCenter, (int)Math.ceil(tremorRange*0.95), tremorChanceCount - 1);
     }
 
     public static void makeBlockFall(World world, BlockPos pos, @Nullable BlockState state) {

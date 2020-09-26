@@ -17,8 +17,8 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import the_fireplace.fst.FiresSurvivalTweaks;
+import the_fireplace.fst.logic.CaveinLogic;
 import the_fireplace.fst.logic.CoordMath;
-import the_fireplace.fst.logic.RockslideLogic;
 import the_fireplace.fst.tags.FSTBlockTags;
 
 import java.util.Collection;
@@ -40,7 +40,7 @@ public abstract class ServerWorldMixin extends World {
 	@Inject(at = @At(value="TAIL"), method = "tick")
 	private void tick(CallbackInfo callbackInfo) {
 		//noinspection ConstantConditions
-		if(FiresSurvivalTweaks.config.enableRockslides && !tremoring && getServer().getTicks() % 30 == 0) {
+		if(FiresSurvivalTweaks.config.enableCaveins && !tremoring && getServer().getTicks() % 30 == 0) {
 			tremoring = true;
 			//TODO run calculations on another thread?
 			//clear tremor storage and trigger tremors
@@ -49,7 +49,7 @@ public abstract class ServerWorldMixin extends World {
 				addTremorPositions(tremorPositions, zonePos);
 				BlockPos fieldCenter = CoordMath.getFocalPoint(tremorPositions);
 				//Iron Pickaxe breaks 7.5 stone in 3 seconds. So every six seconds with an iron pickaxe without stopping, there is one chance of rockslide.
-				RockslideLogic.rockslide(this, fieldCenter, CoordMath.getAverageDistanceFromFocus(tremorPositions, fieldCenter), tremorPositions.size()-7);
+				CaveinLogic.cavein(this, fieldCenter, CoordMath.getAverageDistanceFromFocus(tremorPositions, fieldCenter), tremorPositions.size()-7);
 			}
 			tremoring = false;
 		}
@@ -59,12 +59,12 @@ public abstract class ServerWorldMixin extends World {
 	private void onBlockChanged(BlockPos pos, BlockState oldBlock, BlockState newBlock, CallbackInfo callbackInfo) {
 		//We cannot do this during worldgen because it will cause StackOverflowError
 		if(getChunkManager().getWorldChunk(pos.getX() >> 4, pos.getZ() >> 4) != null)
-			if(FiresSurvivalTweaks.config.enableRockslides && oldBlock.isIn(FSTBlockTags.FALLING_ROCKS) && !newBlock.isIn(FSTBlockTags.FALLING_ROCKS))
+			if(FiresSurvivalTweaks.config.enableCaveins && oldBlock.isIn(FSTBlockTags.FALLING_ROCKS) && !newBlock.isIn(FSTBlockTags.FALLING_ROCKS))
 				getTremorZone(pos).add(pos);
 	}
 
 	private Set<BlockPos> getTremorZone(BlockPos pos) {
-		Vec3i zone = new Vec3i(pos.getX()/(2*RockslideLogic.MAX_TREMOR_RANGE), pos.getY()/(2*RockslideLogic.MAX_TREMOR_RANGE), pos.getZ()/(2*RockslideLogic.MAX_TREMOR_RANGE));
+		Vec3i zone = new Vec3i(pos.getX()/(2* CaveinLogic.MAX_TREMOR_RANGE), pos.getY()/(2* CaveinLogic.MAX_TREMOR_RANGE), pos.getZ()/(2* CaveinLogic.MAX_TREMOR_RANGE));
 		tremorZones.putIfAbsent(zone, Sets.newHashSet());
 		return tremorZones.get(zone);
 	}

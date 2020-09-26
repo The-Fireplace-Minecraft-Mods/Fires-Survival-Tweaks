@@ -12,7 +12,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import the_fireplace.fst.FiresSurvivalTweaks;
-import the_fireplace.fst.logic.RockslideLogic;
+import the_fireplace.fst.logic.CaveinLogic;
 
 @Mixin(ServerPlayerEntity.class)
 public abstract class ServerPlayerEntityMixin extends PlayerEntity {
@@ -33,7 +33,7 @@ public abstract class ServerPlayerEntityMixin extends PlayerEntity {
 					world.getBlockTickScheduler().schedule(targetPos, state.getBlock(), ((FallingBlockInvoker)state.getBlock()).invokeGetFallDelay());
 			}).start();
 		}
-		if(FiresSurvivalTweaks.config.enableRockslides && getServer() != null && getServer().getTicks() % 1300 == 0 && random.nextInt(1000) == 0)
-			RockslideLogic.rockslide(world, getBlockPos(), 7, 1);
+		if(FiresSurvivalTweaks.config.enableCaveins && getServer() != null && getServer().getTicks() % 1300 == 0 && random.nextInt(1000) == 0)
+			CaveinLogic.cavein(world, getBlockPos(), 7, 1);
 	}
 }
