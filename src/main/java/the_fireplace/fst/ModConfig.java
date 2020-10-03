@@ -8,11 +8,11 @@ import me.sargunvohra.mcmods.autoconfig1u.annotation.ConfigEntry;
 public class ModConfig implements ConfigData {
     @ConfigEntry.Gui.Tooltip
     public boolean enableBlazePowderNetherCropGrowth = true;
-    @ConfigEntry.Gui.Tooltip
-    public boolean enableRandomInfestations = true;
+    /*@ConfigEntry.Gui.Tooltip//TODO in 1.17
+    public boolean enableRandomInfestations = true;*/
     @ConfigEntry.Gui.Tooltip
     public boolean enableInfestedBlockBlend = true;
-    @ConfigEntry.Gui.Tooltip
+    @ConfigEntry.Gui.Tooltip(count = 2)
     public boolean enableCaveins = true;
     @ConfigEntry.Gui.Tooltip
     public boolean enableFallingBlockTriggering = true;

@@ -1,3 +1,26 @@
 {
-
+  "text.autoconfig.fst.title": "Fire's Survival Tweaks Config",
+  "text.autoconfig.fst.option.enableBlazePowderNetherCropGrowth": "Enable Blaze Powder Fertilizer",
+  "text.autoconfig.fst.option.enableBlazePowderNetherCropGrowth.@Tooltip": "Blaze Powder works like Bone Meal when used on Nether Wart.",
+  "text.autoconfig.fst.option.enableInfestedBlockBlend": "Enable Infested Block Blend",
+  "text.autoconfig.fst.option.enableInfestedBlockBlend.@Tooltip": "Silverfish Infested Blocks will break at the same speed as the original block.",
+  "text.autoconfig.fst.option.enableCaveins": "Enable Cave-Ins",
+  "text.autoconfig.fst.option.enableCaveins.@Tooltip[0]": "Destruction sometimes causes cave-ins.",
+  "text.autoconfig.fst.option.enableCaveins.@Tooltip[1]": "More destruction at once = higher chance.",
+  "text.autoconfig.fst.option.enableFallingBlockTriggering": "Enable Falling Block Triggering",
+  "text.autoconfig.fst.option.enableFallingBlockTriggering.@Tooltip": "Blocks that should fall will when the player is near.",
+  "text.autoconfig.fst.option.enableSlimeToMagmaCube": "Enable Slime to Magma Cube",
+  "text.autoconfig.fst.option.enableSlimeToMagmaCube.@Tooltip": "Slimes absorb Magma to turn into Magma Cubes.",
+  "text.autoconfig.fst.option.enableMagmaCubeGrowth": "Enable Magma Cube Growth",
+  "text.autoconfig.fst.option.enableMagmaCubeGrowth.@Tooltip": "Magma Cubes absorb Magma to grow.",
+  "text.autoconfig.fst.option.enableSlimeGrowth": "Enable Slime Growth",
+  "text.autoconfig.fst.option.enableSlimeGrowth.@Tooltip": "Slimes absorb Slime and Honey Blocks to grow.",
+  "text.autoconfig.fst.option.enableMagmaCubeToSlime": "Enable Magma Cube to Slime",
+  "text.autoconfig.fst.option.enableMagmaCubeToSlime.@Tooltip": "Magma Cubes cool to Slime when wet.",
+  "text.autoconfig.fst.option.enableSilkSpawners": "Enable Silk Spawners",
+  "text.autoconfig.fst.option.enableSilkSpawners.@Tooltip": "Silk Touch Pickaxes mine Spawners.",
+  "text.autoconfig.fst.option.magmaCubeSizeLimit": "Magma Cube Size Limit",
+  "text.autoconfig.fst.option.magmaCubeSizeLimit.@Tooltip": "Vanilla natural sizes are 1, 2, and 4.",
+  "text.autoconfig.fst.option.slimeSizeLimit": "Slime Size Limit",
+  "text.autoconfig.fst.option.slimeSizeLimit.@Tooltip": "Vanilla natural sizes are 1, 2, and 4."
 }

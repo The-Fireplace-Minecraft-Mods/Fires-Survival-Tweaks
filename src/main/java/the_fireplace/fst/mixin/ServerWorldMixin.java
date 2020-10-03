@@ -40,7 +40,7 @@ public abstract class ServerWorldMixin extends World {
 	@Inject(at = @At(value="TAIL"), method = "tick")
 	private void tick(CallbackInfo callbackInfo) {
 		//noinspection ConstantConditions
-		if(FiresSurvivalTweaks.config.enableCaveins && !tremoring && getServer().getTicks() % 30 == 0) {
+		if(FiresSurvivalTweaks.config.enableCaveins && !tremoring && getServer().getTicks() % 40 == 0) {
 			tremoring = true;
 			//TODO run calculations on another thread?
 			//clear tremor storage and trigger tremors

@@ -4,3 +4,4 @@ Added option for magma cubes to turn back into slimes when they get wet
 Replaced the buggy old Rockslide mechanics with a new cave-in system
 Removed Real Stone Tools, Craftable Horse Armor, and Stair Recipe Replacement
 Enabled using Pick Block on spawners if the mod is installed on the client
+Temporarily removed Silverfish Ore Gen, it will most likely return for Minecraft 1.17
