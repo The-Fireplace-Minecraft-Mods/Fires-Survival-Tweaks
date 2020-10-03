@@ -4,11 +4,16 @@
   "package": "the_fireplace.fst.mixin",
   "compatibilityLevel": "JAVA_8",
   "mixins": [
+    "BlockMixin",
     "FallingBlockInvoker",
-    "SlimeInvoker",
     "ServerPlayerEntityMixin",
     "ServerWorldMixin",
-    "SlimeEntityMixin"
+    "SlimeEntityMixin",
+    "SlimeInvoker",
+    "SpawnerBlockMixin"
+  ],
+  "client": [
+    "ClientSpawnerBlockMixin"
   ],
   "injectors": {
     "defaultRequire": 1

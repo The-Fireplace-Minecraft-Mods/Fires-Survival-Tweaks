@@ -3,3 +3,4 @@ Greatly improved the slime-related options
 Added option for magma cubes to turn back into slimes when they get wet
 Replaced the buggy old Rockslide mechanics with a new cave-in system
 Removed Real Stone Tools, Craftable Horse Armor, and Stair Recipe Replacement
+Enabled using Pick Block on spawners if the mod is installed on the client
