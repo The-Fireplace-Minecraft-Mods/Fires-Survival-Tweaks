@@ -9,9 +9,9 @@ public class ModConfig implements ConfigData {
     @ConfigEntry.Gui.Tooltip
     public boolean enableBlazePowderNetherCropGrowth = true;
     @ConfigEntry.Gui.Tooltip
-    public boolean enableSilverfishEggGeneration = true;
+    public boolean enableRandomInfestations = true;
     @ConfigEntry.Gui.Tooltip
-    public boolean enableSilverfishEggBlend = true;
+    public boolean enableInfestedBlockBlend = true;
     @ConfigEntry.Gui.Tooltip
     public boolean enableCaveins = true;
     @ConfigEntry.Gui.Tooltip
