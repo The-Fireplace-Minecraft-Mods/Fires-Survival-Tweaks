@@ -4,9 +4,12 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3i;
 
 import javax.annotation.Nullable;
+import java.util.Collection;
 
 public class CoordMath {
-    public static BlockPos getFocalPoint(Iterable<BlockPos> positions) {
+    public static BlockPos getFocalPoint(Collection<BlockPos> positions) {
+        if(positions.isEmpty())
+            return BlockPos.ORIGIN;
         int count = 0;
         int focalX = 0;
         int focalY = 0;
@@ -20,7 +23,9 @@ public class CoordMath {
         return new BlockPos(focalX/count, focalY/count, focalZ/count);
     }
 
-    public static int getAverageDistanceFromFocus(Iterable<BlockPos> positions, @Nullable BlockPos focalPoint) {
+    public static int getAverageDistanceFromFocus(Collection<BlockPos> positions, @Nullable BlockPos focalPoint) {
+        if(positions.isEmpty())
+            return 0;
         if(focalPoint == null)
             focalPoint = getFocalPoint(positions);
         double distance = 0;

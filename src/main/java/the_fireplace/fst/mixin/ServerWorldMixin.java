@@ -45,12 +45,13 @@ public abstract class ServerWorldMixin extends World {
 			//TODO run calculations on another thread?
 			//clear tremor storage and trigger tremors
 			for(Vec3i zonePos: tremorZones.keySet()) {
-				Set<BlockPos> tremorPositions = Sets.newHashSet();
-				addTremorPositions(tremorPositions, zonePos);
+				Collection<BlockPos> tremorPositions = getTremorPositions(zonePos);
 				BlockPos fieldCenter = CoordMath.getFocalPoint(tremorPositions);
 				//Iron Pickaxe breaks 7.5 stone in 3 seconds. So every six seconds with an iron pickaxe without stopping, there is one chance of rockslide.
 				CaveinLogic.cavein(this, fieldCenter, CoordMath.getAverageDistanceFromFocus(tremorPositions, fieldCenter), tremorPositions.size()-7);
 			}
+			if(!tremorZones.isEmpty())
+				FiresSurvivalTweaks.LOGGER.debug("Not all tremor zones were removed!");
 			tremoring = false;
 		}
 	}
@@ -63,13 +64,14 @@ public abstract class ServerWorldMixin extends World {
 				getTremorZone(pos).add(pos);
 	}
 
-	private Set<BlockPos> getTremorZone(BlockPos pos) {
+	private Collection<BlockPos> getTremorZone(BlockPos pos) {
 		Vec3i zone = new Vec3i(pos.getX()/(2* CaveinLogic.MAX_TREMOR_RANGE), pos.getY()/(2* CaveinLogic.MAX_TREMOR_RANGE), pos.getZ()/(2* CaveinLogic.MAX_TREMOR_RANGE));
 		tremorZones.putIfAbsent(zone, Sets.newHashSet());
 		return tremorZones.get(zone);
 	}
 
-	private void addTremorPositions(Collection<BlockPos> posCollection, Vec3i startingZone) {
+	private Collection<BlockPos> getTremorPositions(Vec3i startingZone) {
+		Collection<BlockPos> posCollection = Sets.newHashSet();
 		Set<BlockPos> zoneContents = tremorZones.remove(startingZone);
 		if(zoneContents != null)
 			posCollection.addAll(zoneContents);
@@ -79,7 +81,8 @@ public abstract class ServerWorldMixin extends World {
 					for(int k=-1;k<=1;k++) {
 						Vec3i testVec = new Vec3i(startingZone.getX()+i, startingZone.getY()+j, startingZone.getZ()+k);
 						if(!testVec.equals(startingZone) && tremorZones.containsKey(testVec))
-							addTremorPositions(posCollection, testVec);
+							posCollection.addAll(getTremorPositions(testVec));
 					}
+		return posCollection;
 	}
 }
