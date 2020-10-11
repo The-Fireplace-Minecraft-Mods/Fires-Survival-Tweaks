@@ -58,7 +58,7 @@ public abstract class BlockMixin {
 
 	@Inject(at = @At(value="HEAD"), method = "onPlaced")
 	private void onPlaced(World world, BlockPos pos, BlockState state, @Nullable LivingEntity placer, ItemStack itemStack, CallbackInfo callbackInfo) {
-		if(world instanceof ServerWorld) {
+		if(world instanceof ServerWorld && ((Block)(Object)this).is(Blocks.SPAWNER)) {
 			BlockEntity be = world.getBlockEntity(pos);
 			if(be == null) {
 				FiresSurvivalTweaks.LOGGER.error("Null BE for placed spawner!");
