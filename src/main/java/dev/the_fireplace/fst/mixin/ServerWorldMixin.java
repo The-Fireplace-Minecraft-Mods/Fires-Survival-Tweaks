@@ -62,7 +62,7 @@ public abstract class ServerWorldMixin extends World {
 	@Inject(at = @At(value="HEAD"), method = "onBlockChanged")
 	private void onBlockChanged(BlockPos pos, BlockState oldBlock, BlockState newBlock, CallbackInfo callbackInfo) {
 		//We cannot do this during worldgen because it will cause StackOverflowError
-		if (getChunkManager().getWorldChunk(pos.getX() >> 4, pos.getZ() >> 4) != null) {
+		if (getChunkManager().getWorldChunk(pos.getX() >> 4, pos.getZ() >> 4, false) != null) {
 			if (ModConfig.getData().isEnableCaveins()
 				&& FSTBlockTags.FALLING_ROCKS.contains(oldBlock.getBlock())
 				&& !FSTBlockTags.FALLING_ROCKS.contains(newBlock.getBlock())

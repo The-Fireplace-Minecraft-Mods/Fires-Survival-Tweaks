@@ -21,9 +21,9 @@ public class SlimeGrowthLogic {
                     e /= g;
                     f /= g;
                     double h = Math.sqrt(slimeEntity.getSize())+0.25;
-                    double m = slimeEntity.getX();
-                    double n = slimeEntity.getY();
-                    double o = slimeEntity.getZ();
+                    double m = slimeEntity.x;
+                    double n = slimeEntity.y;
+                    double o = slimeEntity.z;
 
                     for(; h > 0.0F; h -= 0.22500001F) {
                         BlockPos blockPos = new BlockPos(m, n, o);

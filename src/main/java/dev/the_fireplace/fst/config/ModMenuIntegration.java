@@ -3,13 +3,15 @@ package dev.the_fireplace.fst.config;
 import dev.the_fireplace.fst.FiresSurvivalTweaks;
 import dev.the_fireplace.lib.api.chat.TranslatorManager;
 import dev.the_fireplace.lib.api.client.ConfigScreenBuilder;
-import io.github.prospector.modmenu.api.ConfigScreenFactory;
 import io.github.prospector.modmenu.api.ModMenuApi;
 import me.shedaniel.clothconfig2.api.ConfigBuilder;
 import me.shedaniel.clothconfig2.api.ConfigCategory;
 import me.shedaniel.clothconfig2.api.ConfigEntryBuilder;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
+import net.minecraft.client.gui.screen.Screen;
+
+import java.util.function.Function;
 
 @Environment(EnvType.CLIENT)
 public class ModMenuIntegration extends ConfigScreenBuilder implements ModMenuApi {
@@ -29,7 +31,7 @@ public class ModMenuIntegration extends ConfigScreenBuilder implements ModMenuAp
     }
 
     @Override
-    public ConfigScreenFactory<?> getModConfigScreenFactory() {
+    public Function<Screen, ? extends Screen> getConfigScreenFactory() {
         return parent -> {
             ConfigBuilder builder = ConfigBuilder.create()
                 .setParentScreen(parent)

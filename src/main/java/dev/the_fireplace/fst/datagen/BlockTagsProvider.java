@@ -18,18 +18,18 @@ public class BlockTagsProvider extends AbstractTagProvider<Block> {
 
     @Override
     protected void configure() {
-        this.getOrCreateTagBuilder(FSTBlockTags.FALLING_ROCKS).add(
+        this.method_10512(FSTBlockTags.FALLING_ROCKS).add(
             Blocks.STONE, Blocks.DIORITE, Blocks.GRANITE, Blocks.ANDESITE,
             Blocks.SANDSTONE, Blocks.RED_SANDSTONE, Blocks.COAL_ORE, Blocks.DIAMOND_ORE,
             Blocks.EMERALD_ORE, Blocks.GOLD_ORE, Blocks.IRON_ORE, Blocks.LAPIS_ORE,
             Blocks.NETHER_QUARTZ_ORE, Blocks.REDSTONE_ORE
         );
-        this.getOrCreateTagBuilder(FSTBlockTags.SLIME_ABSORBABLES).add(Blocks.SLIME_BLOCK, Blocks.HONEY_BLOCK);
-        this.getOrCreateTagBuilder(FSTBlockTags.MAGMA_ABSORBABLES).add(Blocks.MAGMA_BLOCK);
+        this.method_10512(FSTBlockTags.SLIME_ABSORBABLES).add(Blocks.SLIME_BLOCK);
+        this.method_10512(FSTBlockTags.MAGMA_ABSORBABLES).add(Blocks.MAGMA_BLOCK);
     }
 
     @Override
-    protected void setContainer(TagContainer<Block> tagContainer) {
+    protected void method_10511(TagContainer<Block> tagContainer) {
 
     }
 

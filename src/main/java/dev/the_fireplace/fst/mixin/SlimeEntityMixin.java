@@ -44,7 +44,7 @@ public abstract class SlimeEntityMixin extends MobEntity {
 						world.setBlockState(pos, Blocks.AIR.getDefaultState());
 						MagmaCubeEntity newCube = new MagmaCubeEntity(EntityType.MAGMA_CUBE, world);
 						((SlimeInvoker)newCube).invokeSetSize(getSize(), true);
-						newCube.updatePositionAndAngles(getX(), getY(), getZ(), yaw, pitch);
+						newCube.updatePositionAndAngles(x, y, z, yaw, pitch);
 						world.spawnEntity(newCube);
 						this.remove();
 						break;
@@ -62,7 +62,7 @@ public abstract class SlimeEntityMixin extends MobEntity {
 			if (ModConfig.getData().isEnableMagmaCubeToSlime() && isTouchingWaterOrRain()) {
 				SlimeEntity newCube = new SlimeEntity(EntityType.SLIME, world);
 				((SlimeInvoker)newCube).invokeSetSize(getSize(), true);
-				newCube.updatePositionAndAngles(getX(), getY(), getZ(), yaw, pitch);
+				newCube.updatePositionAndAngles(x, y, z, yaw, pitch);
 				world.spawnEntity(newCube);
 				this.remove();
 				return;
