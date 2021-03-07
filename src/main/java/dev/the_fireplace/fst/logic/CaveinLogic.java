@@ -1,9 +1,11 @@
 package dev.the_fireplace.fst.logic;
 
 import com.google.common.collect.Lists;
+import dev.the_fireplace.lib.impl.FireplaceLib;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.FallingBlock;
 import net.minecraft.entity.FallingBlockEntity;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import dev.the_fireplace.fst.tags.FSTBlockTags;
@@ -47,6 +49,7 @@ public class CaveinLogic {
         }
         FallingBlockEntity fallingBlockEntity = new FallingBlockEntity(world, (double)pos.getX() + 0.5D, pos.getY(), (double)pos.getZ() + 0.5D, state);
         fallingBlockEntity.setHurtEntities(true);
+
         world.spawnEntity(fallingBlockEntity);
     }
 }

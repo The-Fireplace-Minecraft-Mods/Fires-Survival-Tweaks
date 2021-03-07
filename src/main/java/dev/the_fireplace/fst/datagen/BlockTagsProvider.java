@@ -17,14 +17,23 @@ public class BlockTagsProvider extends AbstractTagProvider<Block> {
 
     @Override
     protected void configure() {
-        this.getOrCreateTagBuilder(FSTBlockTags.FALLING_ROCKS).add(Blocks.STONE, Blocks.DIORITE, Blocks.GRANITE, Blocks.ANDESITE, Blocks.NETHERRACK, Blocks.BASALT, Blocks.END_STONE, Blocks.SANDSTONE, Blocks.RED_SANDSTONE, Blocks.COAL_ORE, Blocks.DIAMOND_ORE, Blocks.EMERALD_ORE, Blocks.GOLD_ORE, Blocks.IRON_ORE, Blocks.LAPIS_ORE, Blocks.NETHER_GOLD_ORE, Blocks.NETHER_QUARTZ_ORE, Blocks.REDSTONE_ORE);
+        this.getOrCreateTagBuilder(FSTBlockTags.FALLING_ROCKS).add(
+            Blocks.STONE, Blocks.DIORITE, Blocks.GRANITE, Blocks.ANDESITE,
+            Blocks.BASALT, Blocks.SANDSTONE, Blocks.RED_SANDSTONE, Blocks.COAL_ORE, Blocks.DIAMOND_ORE,
+            Blocks.EMERALD_ORE, Blocks.GOLD_ORE, Blocks.IRON_ORE, Blocks.LAPIS_ORE, Blocks.NETHER_GOLD_ORE,
+            Blocks.NETHER_QUARTZ_ORE, Blocks.REDSTONE_ORE
+        );
         this.getOrCreateTagBuilder(FSTBlockTags.SLIME_ABSORBABLES).add(Blocks.SLIME_BLOCK, Blocks.HONEY_BLOCK);
         this.getOrCreateTagBuilder(FSTBlockTags.MAGMA_ABSORBABLES).add(Blocks.MAGMA_BLOCK);
     }
 
     @Override
     protected Path getOutput(Identifier identifier) {
-        return this.root.getOutput().resolve("data/" + identifier.getNamespace() + "/tags/blocks/" + identifier.getPath() + ".json");
+        return this.root.getOutput()
+            .resolve("data")
+            .resolve(identifier.getNamespace())
+            .resolve("tags").resolve("blocks")
+            .resolve(identifier.getPath() + ".json");
     }
 
     @Override
