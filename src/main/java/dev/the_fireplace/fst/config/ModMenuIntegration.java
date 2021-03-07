@@ -1,16 +1,15 @@
 package dev.the_fireplace.fst.config;
 
-import com.terraformersmc.modmenu.api.ConfigScreenFactory;
-import com.terraformersmc.modmenu.api.ModMenuApi;
 import dev.the_fireplace.fst.FiresSurvivalTweaks;
 import dev.the_fireplace.lib.api.chat.TranslatorManager;
 import dev.the_fireplace.lib.api.client.ConfigScreenBuilder;
+import io.github.prospector.modmenu.api.ConfigScreenFactory;
+import io.github.prospector.modmenu.api.ModMenuApi;
 import me.shedaniel.clothconfig2.api.ConfigBuilder;
 import me.shedaniel.clothconfig2.api.ConfigCategory;
 import me.shedaniel.clothconfig2.api.ConfigEntryBuilder;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.minecraft.text.StringVisitable;
 
 @Environment(EnvType.CLIENT)
 public class ModMenuIntegration extends ConfigScreenBuilder implements ModMenuApi {
@@ -23,12 +22,18 @@ public class ModMenuIntegration extends ConfigScreenBuilder implements ModMenuAp
         super(TranslatorManager.getInstance().getTranslator(FiresSurvivalTweaks.MODID));
     }
 
+    @SuppressWarnings("deprecation")
+    @Override
+    public String getModId() {
+        return FiresSurvivalTweaks.MODID;
+    }
+
     @Override
     public ConfigScreenFactory<?> getModConfigScreenFactory() {
         return parent -> {
             ConfigBuilder builder = ConfigBuilder.create()
                 .setParentScreen(parent)
-                .setTitle(translator.getTranslatedText(TRANSLATION_BASE + "title"));
+                .setTitle(translator.getTranslatedString(TRANSLATION_BASE + "title"));
 
             buildConfigCategories(builder);
 
@@ -40,8 +45,7 @@ public class ModMenuIntegration extends ConfigScreenBuilder implements ModMenuAp
     private void buildConfigCategories(ConfigBuilder builder) {
         ConfigEntryBuilder entryBuilder = builder.entryBuilder();
 
-        ConfigCategory general = builder.getOrCreateCategory(translator.getTranslatedText(TRANSLATION_BASE + "general"));
-        general.setDescription(new StringVisitable[]{translator.getTranslatedText(TRANSLATION_BASE + "general.desc")});
+        ConfigCategory general = builder.getOrCreateCategory(translator.getTranslatedString(TRANSLATION_BASE + "general"));
         addGeneralCategoryEntries(entryBuilder, general);
     }
 

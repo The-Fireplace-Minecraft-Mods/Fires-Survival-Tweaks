@@ -20,7 +20,7 @@ public class CaveinLogic {
             return;
         }
         int xOff = (world.random.nextBoolean() ? 1 : -1) * world.random.nextInt(tremorRange) + 1;
-        int yOff = (world.random.nextInt(tremorRange) + 1) % Math.min(world.getDimensionHeight() - fieldCenter.getY() - 1, fieldCenter.getY() + 1);
+        int yOff = (world.random.nextInt(tremorRange) + 1) % Math.min(world.getEffectiveHeight() - fieldCenter.getY() - 1, fieldCenter.getY() + 1);
         int zOff = (world.random.nextBoolean() ? 1 : -1) * world.random.nextInt(tremorRange) + 1;
         BlockPos targetPos = fieldCenter.add(xOff, yOff, zOff);
         //TODO Stability checking based on how many rocks have supports?
@@ -33,7 +33,9 @@ public class CaveinLogic {
             targetPos.down().north(), targetPos.down().south(), targetPos.down().east(), targetPos.down().west())
         ) {
             BlockState state = world.getBlockState(pos);
-            if (state.getBlock().isIn(FSTBlockTags.FALLING_ROCKS) && FallingBlock.canFallThrough(world.getBlockState(pos.down()))) {
+            if (FSTBlockTags.FALLING_ROCKS.contains(state.getBlock())
+                && FallingBlock.canFallThrough(world.getBlockState(pos.down()))
+            ) {
                 makeBlockFall(world, pos, state);
                 if (world.random.nextInt(tremorRange*tremorRange/((tremorChanceCount/3)+1)+1) == 0) {
                     cavein(world, pos, (int) Math.ceil(tremorRange * 0.6), 1);

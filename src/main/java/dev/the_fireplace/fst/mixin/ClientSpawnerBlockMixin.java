@@ -41,7 +41,7 @@ public abstract class ClientSpawnerBlockMixin extends BlockWithEntity {
         ItemStack spawnerStack = new ItemStack(Blocks.SPAWNER);
         CompoundTag dropItemCompound = new CompoundTag();
         MobSpawnerLogic logic = ((MobSpawnerBlockEntity) be).getLogic();
-        CompoundTag spawnerNbt = logic.toTag(new CompoundTag());
+        CompoundTag spawnerNbt = logic.serialize(new CompoundTag());
         dropItemCompound.put("spawnerdata", spawnerNbt);
         spawnerStack.setTag(dropItemCompound);
         Tag spawnData = spawnerNbt.get("SpawnData");

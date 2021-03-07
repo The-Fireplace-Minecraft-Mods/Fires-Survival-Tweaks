@@ -40,7 +40,7 @@ public abstract class SlimeEntityMixin extends MobEntity {
 			if (ModConfig.getData().isEnableSlimeGrowth() && (ModConfig.getData().getSlimeSizeLimit() <= 0 || this.getSize() < ModConfig.getData().getSlimeSizeLimit())) {
 				for (BlockPos pos : SlimeGrowthLogic.getNearbyBlocks((SlimeEntity) (Object) this)) {
 					BlockState state = world.getBlockState(pos);
-					if (ModConfig.getData().isEnableSlimeToMagmaCube() && state.isIn(FSTBlockTags.MAGMA_ABSORBABLES)) {
+					if (ModConfig.getData().isEnableSlimeToMagmaCube() && FSTBlockTags.MAGMA_ABSORBABLES.contains(state.getBlock())) {
 						world.setBlockState(pos, Blocks.AIR.getDefaultState());
 						MagmaCubeEntity newCube = new MagmaCubeEntity(EntityType.MAGMA_CUBE, world);
 						((SlimeInvoker)newCube).invokeSetSize(getSize(), true);
@@ -51,7 +51,7 @@ public abstract class SlimeEntityMixin extends MobEntity {
 					}
 					if (ModConfig.getData().getSlimeSizeLimit() > 0 && this.getSize() >= ModConfig.getData().getSlimeSizeLimit())
 						break;
-					if (state.isIn(FSTBlockTags.SLIME_ABSORBABLES)) {
+					if (FSTBlockTags.SLIME_ABSORBABLES.contains(state.getBlock())) {
 						world.setBlockState(pos, Blocks.AIR.getDefaultState());
 						this.setSize(this.getSize() + 1, true);
 						world.playSoundFromEntity(null, this, SoundEvents.ENTITY_SLIME_SQUISH, SoundCategory.HOSTILE, 0.8f, 0.8f+random.nextFloat()*2/5);
@@ -72,7 +72,7 @@ public abstract class SlimeEntityMixin extends MobEntity {
 					if (ModConfig.getData().getMagmaCubeSizeLimit() > 0 && this.getSize() >= ModConfig.getData().getMagmaCubeSizeLimit())
 						break;
 					BlockState state = world.getBlockState(pos);
-					if (state.isIn(FSTBlockTags.MAGMA_ABSORBABLES)) {
+					if (FSTBlockTags.MAGMA_ABSORBABLES.contains(state.getBlock())) {
 						world.setBlockState(pos, Blocks.AIR.getDefaultState());
 						this.setSize(this.getSize() + 1, true);
 						world.playSoundFromEntity(null, this, SoundEvents.ENTITY_MAGMA_CUBE_SQUISH, SoundCategory.HOSTILE, 0.8f, 0.7f+random.nextFloat()/2);

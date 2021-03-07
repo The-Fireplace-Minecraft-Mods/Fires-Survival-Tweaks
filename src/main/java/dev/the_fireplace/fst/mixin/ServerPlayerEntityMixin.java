@@ -17,8 +17,9 @@ import dev.the_fireplace.fst.logic.CaveinLogic;
 
 @Mixin(ServerPlayerEntity.class)
 public abstract class ServerPlayerEntityMixin extends PlayerEntity {
-	public ServerPlayerEntityMixin(World world, BlockPos pos, float yaw, GameProfile profile) {
-		super(world, pos, yaw, profile);
+
+	protected ServerPlayerEntityMixin(World world, GameProfile profile) {
+		super(world, profile);
 	}
 
 	@Inject(at = @At(value="TAIL"), method = "tick")
@@ -34,7 +35,7 @@ public abstract class ServerPlayerEntityMixin extends PlayerEntity {
 				BlockPos targetPos = getBlockPos().add(xOff, yOff, zOff);
 				BlockState state = world.getBlockState(targetPos);
 				if (state.getBlock() instanceof FallingBlock)
-					world.getBlockTickScheduler().schedule(targetPos, state.getBlock(), ((FallingBlockInvoker)state.getBlock()).invokeGetFallDelay());
+					world.getBlockTickScheduler().schedule(targetPos, state.getBlock(), state.getBlock().getTickRate(world));
 			}).start();
 		}
 		if (ModConfig.getData().isEnableCaveins()

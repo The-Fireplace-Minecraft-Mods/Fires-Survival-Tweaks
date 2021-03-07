@@ -8,10 +8,11 @@ import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3i;
 import net.minecraft.util.profiler.Profiler;
-import net.minecraft.util.registry.RegistryKey;
-import net.minecraft.world.MutableWorldProperties;
 import net.minecraft.world.World;
+import net.minecraft.world.chunk.ChunkManager;
+import net.minecraft.world.dimension.Dimension;
 import net.minecraft.world.dimension.DimensionType;
+import net.minecraft.world.level.LevelProperties;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -25,14 +26,14 @@ import dev.the_fireplace.fst.tags.FSTBlockTags;
 import java.util.Collection;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.function.Supplier;
+import java.util.function.BiFunction;
 
 @Mixin(ServerWorld.class)
 public abstract class ServerWorldMixin extends World {
 	@Shadow public abstract ServerChunkManager getChunkManager();
 
-	protected ServerWorldMixin(MutableWorldProperties properties, RegistryKey<World> registryRef, DimensionType dimensionType, Supplier<Profiler> profiler, boolean isClient, boolean debugWorld, long seed) {
-		super(properties, registryRef, dimensionType, profiler, isClient, debugWorld, seed);
+	protected ServerWorldMixin(LevelProperties levelProperties, DimensionType dimensionType, BiFunction<World, Dimension, ChunkManager> chunkManagerProvider, Profiler profiler, boolean isClient) {
+		super(levelProperties, dimensionType, chunkManagerProvider, profiler, isClient);
 	}
 
 	private final ConcurrentHashMap<Vec3i, Set<BlockPos>> tremorZones = new ConcurrentHashMap<>();
@@ -61,9 +62,14 @@ public abstract class ServerWorldMixin extends World {
 	@Inject(at = @At(value="HEAD"), method = "onBlockChanged")
 	private void onBlockChanged(BlockPos pos, BlockState oldBlock, BlockState newBlock, CallbackInfo callbackInfo) {
 		//We cannot do this during worldgen because it will cause StackOverflowError
-		if (getChunkManager().getWorldChunk(pos.getX() >> 4, pos.getZ() >> 4) != null)
-			if (ModConfig.getData().isEnableCaveins() && oldBlock.isIn(FSTBlockTags.FALLING_ROCKS) && !newBlock.isIn(FSTBlockTags.FALLING_ROCKS))
+		if (getChunkManager().getWorldChunk(pos.getX() >> 4, pos.getZ() >> 4) != null) {
+			if (ModConfig.getData().isEnableCaveins()
+				&& FSTBlockTags.FALLING_ROCKS.contains(oldBlock.getBlock())
+				&& !FSTBlockTags.FALLING_ROCKS.contains(newBlock.getBlock())
+			) {
 				getTremorZone(pos).add(pos);
+			}
+		}
 	}
 
 	private Collection<BlockPos> getTremorZone(BlockPos pos) {

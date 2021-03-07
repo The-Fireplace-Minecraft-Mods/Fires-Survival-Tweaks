@@ -37,7 +37,7 @@ public class FiresSurvivalTweaks implements ModInitializer {
 			BlockState state = world.getBlockState(hitResult.getBlockPos());
 			ItemStack stack = player.getStackInHand(hand);
 			if (!player.world.isClient()
-				&& state.isOf(Blocks.NETHER_WART)
+				&& state.getBlock().equals(Blocks.NETHER_WART)
 				&& stack.getItem().equals(Items.BLAZE_POWDER)
 			) {
 				int age = state.get(NetherWartBlock.AGE);

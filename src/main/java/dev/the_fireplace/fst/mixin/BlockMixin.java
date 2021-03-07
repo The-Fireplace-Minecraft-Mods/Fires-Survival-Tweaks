@@ -30,6 +30,7 @@ import dev.the_fireplace.fst.logic.SilkedSpawnerManager;
 
 import javax.annotation.Nullable;
 
+@SuppressWarnings("EqualsBetweenInconvertibleTypes")
 @Mixin(Block.class)
 public abstract class BlockMixin {
 	@SuppressWarnings("DuplicatedCode")
@@ -37,7 +38,7 @@ public abstract class BlockMixin {
 	private void onBreak(World world, BlockPos pos, BlockState state, PlayerEntity player, CallbackInfo callbackInfo) {
 		if (ModConfig.getData().isEnableSilkSpawners()
 			&& world instanceof ServerWorld
-			&& ((Block)(Object)this).is(Blocks.SPAWNER)
+			&& this.equals(Blocks.SPAWNER)
 			&& player.getMainHandStack().isEffectiveOn(state)
 			&& EnchantmentHelper.getEquipmentLevel(Enchantments.SILK_TOUCH, player) > 0
 		) {
@@ -49,7 +50,7 @@ public abstract class BlockMixin {
 			ItemStack spawnerStack = new ItemStack(Blocks.SPAWNER);
 			CompoundTag dropItemCompound = new CompoundTag();
 			MobSpawnerLogic logic = ((MobSpawnerBlockEntity) be).getLogic();
-			CompoundTag spawnerNbt = logic.toTag(new CompoundTag());
+			CompoundTag spawnerNbt = logic.serialize(new CompoundTag());
 			dropItemCompound.put("spawnerdata", spawnerNbt);
 			spawnerStack.setTag(dropItemCompound);
 			Tag spawnData = spawnerNbt.get("SpawnData");
@@ -64,7 +65,7 @@ public abstract class BlockMixin {
 
 	@Inject(at = @At(value="HEAD"), method = "onPlaced")
 	private void onPlaced(World world, BlockPos pos, BlockState state, @Nullable LivingEntity placer, ItemStack itemStack, CallbackInfo callbackInfo) {
-		if (world instanceof ServerWorld && ((Block)(Object)this).is(Blocks.SPAWNER)) {
+		if (world instanceof ServerWorld && this.equals(Blocks.SPAWNER)) {
 			BlockEntity be = world.getBlockEntity(pos);
 			if (be == null) {
 				FiresSurvivalTweaks.LOGGER.error("Null BE for placed spawner!");
@@ -75,7 +76,7 @@ public abstract class BlockMixin {
 				return;
 			}
 			MobSpawnerLogic logic = ((MobSpawnerBlockEntity) be).getLogic();
-			logic.fromTag(itemStack.getTag().getCompound("spawnerdata"));
+			logic.deserialize(itemStack.getTag().getCompound("spawnerdata"));
 		}
 	}
 }

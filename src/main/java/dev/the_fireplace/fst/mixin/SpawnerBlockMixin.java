@@ -1,6 +1,5 @@
 package dev.the_fireplace.fst.mixin;
 
-import dev.the_fireplace.fst.FiresSurvivalTweaks;
 import dev.the_fireplace.fst.config.ModConfig;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.BlockWithEntity;
@@ -8,6 +7,7 @@ import net.minecraft.block.SpawnerBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -21,8 +21,8 @@ public abstract class SpawnerBlockMixin extends BlockWithEntity {
 	}
 
 	@Inject(at = @At(value="HEAD"), method = "onStacksDropped", cancellable = true)
-	private void onStacksDropped(BlockState state, ServerWorld world, BlockPos pos, ItemStack stack, CallbackInfo callbackInfo) {
-		if (ModConfig.getData().isEnableSilkSpawners() && SilkedSpawnerManager.isSilkedSpawner(world, pos))
-			callbackInfo.cancel();
+	private void onStacksDropped(BlockState state, World world, BlockPos pos, ItemStack stack, CallbackInfo ci) {
+		if (ModConfig.getData().isEnableSilkSpawners() && world instanceof ServerWorld && SilkedSpawnerManager.isSilkedSpawner((ServerWorld) world, pos))
+			ci.cancel();
 	}
 }
