@@ -6,5 +6,6 @@ Switched license to MPLv2
 Default max slime/magma cube size is now 8
 Config is now in json format instead of json5
 Netherrack and Endstone no longer cave in
+Fireplace Lib is now required
 
 Fixes/Internal Changes:
