@@ -6,35 +6,39 @@ import net.minecraft.util.math.Vec3i;
 import javax.annotation.Nullable;
 import java.util.Collection;
 
-public class CoordMath {
-    public static BlockPos getFocalPoint(Collection<BlockPos> positions) {
-        if(positions.isEmpty())
+public final class CoordMath {
+    public static BlockPos getFocalPoint(Collection<? extends Vec3i> positions) {
+        if (positions.isEmpty()) {
             return BlockPos.ORIGIN;
-        int count = 0;
+        }
+        int count = positions.size();
         int focalX = 0;
         int focalY = 0;
         int focalZ = 0;
-        for(Vec3i position: positions) {
-            count++;
+        for (Vec3i position: positions) {
             focalX += position.getX();
             focalY += position.getY();
             focalZ += position.getZ();
         }
+
         return new BlockPos(focalX/count, focalY/count, focalZ/count);
     }
 
-    public static int getAverageDistanceFromFocus(Collection<BlockPos> positions, @Nullable BlockPos focalPoint) {
-        if(positions.isEmpty())
+    public static int getAverageDistanceFromFocus(Collection<? extends Vec3i> positions, @Nullable Vec3i focalPoint) {
+        if (positions.isEmpty()) {
             return 0;
-        if(focalPoint == null)
+        }
+        if (focalPoint == null) {
             focalPoint = getFocalPoint(positions);
-        double distance = 0;
-        int count = 0;
+        }
 
-        for(Vec3i position: positions) {
-            count++;
+        double distance = 0;
+        int count = positions.size();
+
+        for (Vec3i position: positions) {
             distance += getDistance(focalPoint, position);
         }
+
         return (int)Math.ceil(distance/count);
     }
 
