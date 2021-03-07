@@ -1,9 +1,12 @@
 package dev.the_fireplace.fst;
 
+import dev.the_fireplace.fst.commands.FSTCommands;
 import dev.the_fireplace.fst.config.ModConfig;
 import dev.the_fireplace.fst.datagen.BlockTagsProvider;
+import dev.the_fireplace.lib.api.chat.TranslatorManager;
 import dev.the_fireplace.lib.api.datagen.DataGeneratorFactory;
 import net.fabricmc.api.ModInitializer;
+import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.fabricmc.fabric.api.event.player.UseBlockCallback;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
@@ -24,6 +27,10 @@ public class FiresSurvivalTweaks implements ModInitializer {
 
 	@Override
 	public void onInitialize() {
+		TranslatorManager.getInstance().addTranslator(MODID);
+
+		ServerLifecycleEvents.SERVER_STARTING.register(FSTCommands::register);
+
 		UseBlockCallback.EVENT.register((player, world, hand, hitResult) -> {
 			if(!ModConfig.getData().isEnableBlazePowderNetherCropGrowth())
 				return ActionResult.PASS;

@@ -1,7 +1,11 @@
 {
+  "fst.command.reload.reloaded": "Fire's Survival Tweaks config reloaded!",
+
   "text.config.fst.title": "Fire's Survival Tweaks Config",
+
   "text.config.fst.general": "General",
   "text.config.fst.general.desc": "General Settings",
+
   "text.config.fst.option.enableBlazePowderNetherCropGrowth": "Enable Blaze Powder Fertilizer",
   "text.config.fst.option.enableBlazePowderNetherCropGrowth.desc": "Blaze Powder works like Bone Meal when used on Nether Wart.",
   "text.config.fst.option.enableInfestedBlockBlend": "Enable Infested Block Blend",
