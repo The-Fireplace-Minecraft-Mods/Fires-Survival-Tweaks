@@ -5,7 +5,6 @@
     "minecraft:diorite",
     "minecraft:granite",
     "minecraft:andesite",
-    "minecraft:basalt",
     "minecraft:sandstone",
     "minecraft:red_sandstone",
     "minecraft:coal_ore",
@@ -14,7 +13,6 @@
     "minecraft:gold_ore",
     "minecraft:iron_ore",
     "minecraft:lapis_ore",
-    "minecraft:nether_gold_ore",
     "minecraft:nether_quartz_ore",
     "minecraft:redstone_ore"
   ]

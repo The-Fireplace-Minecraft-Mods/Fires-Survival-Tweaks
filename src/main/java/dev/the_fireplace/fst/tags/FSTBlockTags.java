@@ -4,7 +4,6 @@ import dev.the_fireplace.fst.FiresSurvivalTweaks;
 import net.fabricmc.fabric.api.tag.TagRegistry;
 import net.minecraft.block.Block;
 import net.minecraft.tag.Tag;
-import net.minecraft.tag.TagContainer;
 import net.minecraft.util.Identifier;
 
 public class FSTBlockTags {
@@ -14,9 +13,5 @@ public class FSTBlockTags {
 
     private static Tag<Block> register(String id) {
         return TagRegistry.block(new Identifier(FiresSurvivalTweaks.MODID, id));
-    }
-
-    public static void setContainer(TagContainer<Block> tagContainer) {
-
     }
 }

@@ -30,7 +30,7 @@ public class BlockTagsProvider extends AbstractTagProvider<Block> {
 
     @Override
     protected void setContainer(TagContainer<Block> tagContainer) {
-        FSTBlockTags.setContainer(tagContainer);
+
     }
 
     @Override
