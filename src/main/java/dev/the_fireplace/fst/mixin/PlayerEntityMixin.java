@@ -1,5 +1,6 @@
-package the_fireplace.fst.mixin;
+package dev.the_fireplace.fst.mixin;
 
+import dev.the_fireplace.fst.config.ModConfig;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.InfestedBlock;
 import net.minecraft.entity.EntityType;
@@ -11,7 +12,7 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
-import the_fireplace.fst.FiresSurvivalTweaks;
+import dev.the_fireplace.fst.FiresSurvivalTweaks;
 
 @Mixin(PlayerEntity.class)
 public abstract class PlayerEntityMixin extends LivingEntity {
@@ -24,7 +25,7 @@ public abstract class PlayerEntityMixin extends LivingEntity {
 
 	@Inject(at = @At(value="HEAD"), method = "getBlockBreakingSpeed", cancellable = true)
 	private void getBlockBreakingSpeed(BlockState state, CallbackInfoReturnable<Float> callbackInfo) {
-		if(FiresSurvivalTweaks.config.enableInfestedBlockBlend && state.getBlock() instanceof InfestedBlock) {
+		if (ModConfig.getData().isEnableInfestedBlockBlend() && state.getBlock() instanceof InfestedBlock) {
 			callbackInfo.setReturnValue(getBlockBreakingSpeed(((InfestedBlock) state.getBlock()).getRegularBlock().getDefaultState()));
 		}
 	}

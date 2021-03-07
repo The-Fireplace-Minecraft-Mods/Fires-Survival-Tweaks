@@ -1,4 +1,4 @@
-package the_fireplace.fst.logic;
+package dev.the_fireplace.fst.logic;
 
 import com.google.common.collect.Lists;
 import net.minecraft.block.BlockState;
@@ -6,7 +6,7 @@ import net.minecraft.block.FallingBlock;
 import net.minecraft.entity.FallingBlockEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import the_fireplace.fst.tags.FSTBlockTags;
+import dev.the_fireplace.fst.tags.FSTBlockTags;
 
 import javax.annotation.Nullable;
 

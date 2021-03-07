@@ -1,5 +1,6 @@
-package the_fireplace.fst.mixin;
+package dev.the_fireplace.fst.mixin;
 
+import dev.the_fireplace.fst.config.ModConfig;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.EntityType;
@@ -15,9 +16,9 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import the_fireplace.fst.FiresSurvivalTweaks;
-import the_fireplace.fst.logic.SlimeGrowthLogic;
-import the_fireplace.fst.tags.FSTBlockTags;
+import dev.the_fireplace.fst.FiresSurvivalTweaks;
+import dev.the_fireplace.fst.logic.SlimeGrowthLogic;
+import dev.the_fireplace.fst.tags.FSTBlockTags;
 
 @Mixin(SlimeEntity.class)
 public abstract class SlimeEntityMixin extends MobEntity {
@@ -35,11 +36,11 @@ public abstract class SlimeEntityMixin extends MobEntity {
 	@Inject(at = @At(value="TAIL"), method = "tick")
 	private void tick(CallbackInfo callbackInfo) {
 		boolean isMagma = (Object)this instanceof MagmaCubeEntity;
-		if(!isMagma) {
-			if (FiresSurvivalTweaks.config.enableSlimeGrowth && (FiresSurvivalTweaks.config.slimeSizeLimit <= 0 || this.getSize() < FiresSurvivalTweaks.config.slimeSizeLimit)) {
+		if (!isMagma) {
+			if (ModConfig.getData().isEnableSlimeGrowth() && (ModConfig.getData().getSlimeSizeLimit() <= 0 || this.getSize() < ModConfig.getData().getSlimeSizeLimit())) {
 				for (BlockPos pos : SlimeGrowthLogic.getNearbyBlocks((SlimeEntity) (Object) this)) {
 					BlockState state = world.getBlockState(pos);
-					if(FiresSurvivalTweaks.config.enableSlimeToMagmaCube && state.isIn(FSTBlockTags.MAGMA_ABSORBABLES)) {
+					if (ModConfig.getData().isEnableSlimeToMagmaCube() && state.isIn(FSTBlockTags.MAGMA_ABSORBABLES)) {
 						world.setBlockState(pos, Blocks.AIR.getDefaultState());
 						MagmaCubeEntity newCube = new MagmaCubeEntity(EntityType.MAGMA_CUBE, world);
 						((SlimeInvoker)newCube).invokeSetSize(getSize(), true);
@@ -48,7 +49,7 @@ public abstract class SlimeEntityMixin extends MobEntity {
 						this.remove();
 						break;
 					}
-					if(FiresSurvivalTweaks.config.slimeSizeLimit > 0 && this.getSize() >= FiresSurvivalTweaks.config.slimeSizeLimit)
+					if (ModConfig.getData().getSlimeSizeLimit() > 0 && this.getSize() >= ModConfig.getData().getSlimeSizeLimit())
 						break;
 					if (state.isIn(FSTBlockTags.SLIME_ABSORBABLES)) {
 						world.setBlockState(pos, Blocks.AIR.getDefaultState());
@@ -58,7 +59,7 @@ public abstract class SlimeEntityMixin extends MobEntity {
 				}
 			}
 		} else {
-			if(FiresSurvivalTweaks.config.enableMagmaCubeToSlime && isTouchingWaterOrRain()) {
+			if (ModConfig.getData().isEnableMagmaCubeToSlime() && isTouchingWaterOrRain()) {
 				SlimeEntity newCube = new SlimeEntity(EntityType.SLIME, world);
 				((SlimeInvoker)newCube).invokeSetSize(getSize(), true);
 				newCube.updatePositionAndAngles(getX(), getY(), getZ(), yaw, pitch);
@@ -66,9 +67,9 @@ public abstract class SlimeEntityMixin extends MobEntity {
 				this.remove();
 				return;
 			}
-			if (FiresSurvivalTweaks.config.enableMagmaCubeGrowth && (FiresSurvivalTweaks.config.magmaCubeSizeLimit <= 0 || this.getSize() < FiresSurvivalTweaks.config.magmaCubeSizeLimit)) {
+			if (ModConfig.getData().isEnableMagmaCubeGrowth() && (ModConfig.getData().getMagmaCubeSizeLimit() <= 0 || this.getSize() < ModConfig.getData().getMagmaCubeSizeLimit())) {
 				for (BlockPos pos : SlimeGrowthLogic.getNearbyBlocks((SlimeEntity) (Object) this)) {
-					if(FiresSurvivalTweaks.config.magmaCubeSizeLimit > 0 && this.getSize() >= FiresSurvivalTweaks.config.magmaCubeSizeLimit)
+					if (ModConfig.getData().getMagmaCubeSizeLimit() > 0 && this.getSize() >= ModConfig.getData().getMagmaCubeSizeLimit())
 						break;
 					BlockState state = world.getBlockState(pos);
 					if (state.isIn(FSTBlockTags.MAGMA_ABSORBABLES)) {

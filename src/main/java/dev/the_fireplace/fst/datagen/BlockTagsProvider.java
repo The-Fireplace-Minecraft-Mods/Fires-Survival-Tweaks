@@ -1,4 +1,4 @@
-package the_fireplace.fst.datagen;
+package dev.the_fireplace.fst.datagen;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
@@ -6,7 +6,7 @@ import net.minecraft.data.DataGenerator;
 import net.minecraft.data.server.AbstractTagProvider;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
-import the_fireplace.fst.tags.FSTBlockTags;
+import dev.the_fireplace.fst.tags.FSTBlockTags;
 
 import java.nio.file.Path;
 

@@ -1,4 +1,4 @@
-package the_fireplace.fst.logic;
+package dev.the_fireplace.fst.logic;
 
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3i;

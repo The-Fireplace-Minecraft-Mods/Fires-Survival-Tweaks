@@ -1,4 +1,4 @@
-package the_fireplace.fst.mixin;
+package dev.the_fireplace.fst.mixin;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -21,7 +21,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
-import the_fireplace.fst.FiresSurvivalTweaks;
+import dev.the_fireplace.fst.FiresSurvivalTweaks;
 
 @Environment(EnvType.CLIENT)
 @Mixin(SpawnerBlock.class)
@@ -34,7 +34,7 @@ public abstract class ClientSpawnerBlockMixin extends BlockWithEntity {
     @Inject(at = @At(value="HEAD"), method = "getPickStack", cancellable = true)
     private void getPickStack(BlockView world, BlockPos pos, BlockState state, CallbackInfoReturnable<ItemStack> callbackInfo) {
         BlockEntity be = world.getBlockEntity(pos);
-        if(be == null) {
+        if (be == null) {
             FiresSurvivalTweaks.LOGGER.error("Null BE for silked spawner!");
             return;
         }
@@ -45,7 +45,7 @@ public abstract class ClientSpawnerBlockMixin extends BlockWithEntity {
         dropItemCompound.put("spawnerdata", spawnerNbt);
         spawnerStack.setTag(dropItemCompound);
         Tag spawnData = spawnerNbt.get("SpawnData");
-        if(spawnData instanceof CompoundTag && ((CompoundTag) spawnData).contains("id")) {
+        if (spawnData instanceof CompoundTag && ((CompoundTag) spawnData).contains("id")) {
             Identifier mobid = new Identifier(((CompoundTag) spawnData).getString("id"));
             spawnerStack.setCustomName(new TranslatableText(Util.createTranslationKey("entity", mobid)).append(" ").append(new TranslatableText("block.minecraft.spawner")));
         }

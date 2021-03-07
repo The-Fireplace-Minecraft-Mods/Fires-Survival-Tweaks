@@ -1,4 +1,4 @@
-package the_fireplace.fst.mixin;
+package dev.the_fireplace.fst.mixin;
 
 import net.minecraft.entity.mob.MagmaCubeEntity;
 import net.minecraft.entity.mob.SlimeEntity;

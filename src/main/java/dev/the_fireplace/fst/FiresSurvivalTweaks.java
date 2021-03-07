@@ -1,7 +1,8 @@
-package the_fireplace.fst;
+package dev.the_fireplace.fst;
 
-import me.sargunvohra.mcmods.autoconfig1u.AutoConfig;
-import me.sargunvohra.mcmods.autoconfig1u.serializer.JanksonConfigSerializer;
+import dev.the_fireplace.fst.config.ModConfig;
+import dev.the_fireplace.fst.datagen.BlockTagsProvider;
+import dev.the_fireplace.lib.api.datagen.DataGeneratorFactory;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.event.player.UseBlockCallback;
 import net.minecraft.block.BlockState;
@@ -13,33 +14,27 @@ import net.minecraft.item.Items;
 import net.minecraft.util.ActionResult;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import the_fireplace.fst.datagen.AdditiveDataGenerator;
-import the_fireplace.fst.datagen.BlockTagsProvider;
 
 import java.io.IOException;
 import java.nio.file.Paths;
-import java.util.Collections;
 
 public class FiresSurvivalTweaks implements ModInitializer {
 	public static final String MODID = "fst";
-	public static ModConfig config;
 	public static final Logger LOGGER = LogManager.getLogger(MODID);
 
 	@Override
 	public void onInitialize() {
-		AutoConfig.register(ModConfig.class, JanksonConfigSerializer::new);
-		config = AutoConfig.getConfigHolder(ModConfig.class).getConfig();
-
 		UseBlockCallback.EVENT.register((player, world, hand, hitResult) -> {
-			if(!config.enableBlazePowderNetherCropGrowth)
+			if(!ModConfig.getData().isEnableBlazePowderNetherCropGrowth())
 				return ActionResult.PASS;
 			BlockState state = world.getBlockState(hitResult.getBlockPos());
 			ItemStack stack = player.getStackInHand(hand);
-			if(!player.world.isClient()
+			if (!player.world.isClient()
 				&& state.isOf(Blocks.NETHER_WART)
-				&& stack.getItem().equals(Items.BLAZE_POWDER)) {
+				&& stack.getItem().equals(Items.BLAZE_POWDER)
+			) {
 				int age = state.get(NetherWartBlock.AGE);
-				if(age < 3) {
+				if (age < 3) {
 					state = state.getBlock().getDefaultState().with(NetherWartBlock.AGE, Math.min(3, world.random.nextInt(3 - age) + age + 1));
 					world.setBlockState(hitResult.getBlockPos(), state);
 					if (!player.isCreative()) {
@@ -55,9 +50,9 @@ public class FiresSurvivalTweaks implements ModInitializer {
 		});
 
 		//noinspection ConstantConditions
-		if(false) {
+		if (false) {
 			LOGGER.debug("Generating data...");
-			DataGenerator gen = new AdditiveDataGenerator(Paths.get("..", "src", "main", "resources"), Collections.emptySet());
+			DataGenerator gen = DataGeneratorFactory.getInstance().createAdditive(Paths.get("..", "src", "main", "resources"));
 			gen.install(new BlockTagsProvider(gen));
 			try {
 				gen.run();

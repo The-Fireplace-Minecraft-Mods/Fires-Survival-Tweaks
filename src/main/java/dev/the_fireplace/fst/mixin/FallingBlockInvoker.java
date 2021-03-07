@@ -1,4 +1,4 @@
-package the_fireplace.fst.mixin;
+package dev.the_fireplace.fst.mixin;
 
 import net.minecraft.block.FallingBlock;
 import org.spongepowered.asm.mixin.Mixin;

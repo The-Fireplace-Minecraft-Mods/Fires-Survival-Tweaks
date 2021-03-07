@@ -1,1 +1,9 @@
+Additions:
+
+Changes:
 Switched license to MPLv2
+Default max slime/magma cube size is now 8
+Config is now in json format instead of json5
+
+Fixes/Internal Changes:
+

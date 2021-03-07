@@ -1,4 +1,4 @@
-package the_fireplace.fst.logic;
+package dev.the_fireplace.fst.logic;
 
 import com.google.common.collect.Sets;
 import net.minecraft.entity.mob.SlimeEntity;
