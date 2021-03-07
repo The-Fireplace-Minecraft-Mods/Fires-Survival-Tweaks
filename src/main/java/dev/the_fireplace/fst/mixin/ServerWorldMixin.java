@@ -1,7 +1,11 @@
 package dev.the_fireplace.fst.mixin;
 
 import com.google.common.collect.Sets;
+import dev.the_fireplace.fst.FiresSurvivalTweaks;
 import dev.the_fireplace.fst.config.ModConfig;
+import dev.the_fireplace.fst.logic.CaveinLogic;
+import dev.the_fireplace.fst.logic.CoordMath;
+import dev.the_fireplace.fst.tags.FSTBlockTags;
 import net.minecraft.block.BlockState;
 import net.minecraft.server.world.ServerChunkManager;
 import net.minecraft.server.world.ServerWorld;
@@ -17,10 +21,6 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import dev.the_fireplace.fst.FiresSurvivalTweaks;
-import dev.the_fireplace.fst.logic.CaveinLogic;
-import dev.the_fireplace.fst.logic.CoordMath;
-import dev.the_fireplace.fst.tags.FSTBlockTags;
 
 import java.util.Collection;
 import java.util.Set;
@@ -60,10 +60,13 @@ public abstract class ServerWorldMixin extends World {
 
 	@Inject(at = @At(value="HEAD"), method = "onBlockChanged")
 	private void onBlockChanged(BlockPos pos, BlockState oldBlock, BlockState newBlock, CallbackInfo callbackInfo) {
-		//We cannot do this during worldgen because it will cause StackOverflowError
-		if (getChunkManager().getWorldChunk(pos.getX() >> 4, pos.getZ() >> 4) != null)
-			if (ModConfig.getData().isEnableCaveins() && oldBlock.isIn(FSTBlockTags.FALLING_ROCKS) && !newBlock.isIn(FSTBlockTags.FALLING_ROCKS))
-				getTremorZone(pos).add(pos);
+		if (ModConfig.getData().isEnableCaveins()
+			&& getChunkManager().getWorldChunk(pos.getX() >> 4, pos.getZ() >> 4) != null
+			&& oldBlock.isIn(FSTBlockTags.FALLING_ROCKS)
+			&& !newBlock.isIn(FSTBlockTags.FALLING_ROCKS)
+		) {
+			getTremorZone(pos).add(pos);
+		}
 	}
 
 	private Collection<BlockPos> getTremorZone(BlockPos pos) {
