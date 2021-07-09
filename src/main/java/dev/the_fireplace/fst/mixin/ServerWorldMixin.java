@@ -1,8 +1,9 @@
 package dev.the_fireplace.fst.mixin;
 
 import com.google.common.collect.Sets;
+import dev.the_fireplace.annotateddi.impl.AnnotatedDI;
 import dev.the_fireplace.fst.FiresSurvivalTweaks;
-import dev.the_fireplace.fst.config.ModConfig;
+import dev.the_fireplace.fst.domain.config.ConfigValues;
 import dev.the_fireplace.fst.logic.CaveinLogic;
 import dev.the_fireplace.fst.logic.CoordMath;
 import dev.the_fireplace.fst.tags.FSTBlockTags;
@@ -32,6 +33,15 @@ import java.util.function.BiFunction;
 public abstract class ServerWorldMixin extends World {
 	@Shadow public abstract ServerChunkManager getChunkManager();
 
+	private ConfigValues config = null;
+	private ConfigValues getConfig() {
+		if (config == null) {
+			config = AnnotatedDI.getInjector().getInstance(ConfigValues.class);
+		}
+
+		return config;
+	}
+
 	protected ServerWorldMixin(LevelProperties levelProperties, DimensionType dimensionType, BiFunction<World, Dimension, ChunkManager> chunkManagerProvider, Profiler profiler, boolean isClient) {
 		super(levelProperties, dimensionType, chunkManagerProvider, profiler, isClient);
 	}
@@ -42,7 +52,7 @@ public abstract class ServerWorldMixin extends World {
 	@Inject(at = @At(value="TAIL"), method = "tick")
 	private void tick(CallbackInfo callbackInfo) {
 		//noinspection ConstantConditions
-		if (ModConfig.getData().isEnableCaveins() && !tremoring && getServer().getTicks() % 40 == 0) {
+		if (getConfig().isEnableCaveins() && !tremoring && getServer().getTicks() % 40 == 0) {
 			tremoring = true;
 			//TODO run calculations on another thread?
 			//clear tremor storage and trigger tremors
@@ -61,7 +71,7 @@ public abstract class ServerWorldMixin extends World {
 
 	@Inject(at = @At(value="HEAD"), method = "onBlockChanged")
 	private void onBlockChanged(BlockPos pos, BlockState oldBlock, BlockState newBlock, CallbackInfo callbackInfo) {
-		if (ModConfig.getData().isEnableCaveins()
+		if (getConfig().isEnableCaveins()
 			&& getChunkManager().method_21730(pos.getX() >> 4, pos.getZ() >> 4) != null
 			&& FSTBlockTags.FALLING_ROCKS.contains(oldBlock.getBlock())
 			&& !FSTBlockTags.FALLING_ROCKS.contains(newBlock.getBlock())

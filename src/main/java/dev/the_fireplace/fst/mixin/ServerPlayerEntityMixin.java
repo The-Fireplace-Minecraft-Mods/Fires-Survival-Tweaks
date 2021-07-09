@@ -1,7 +1,9 @@
 package dev.the_fireplace.fst.mixin;
 
 import com.mojang.authlib.GameProfile;
-import dev.the_fireplace.fst.config.ModConfig;
+import dev.the_fireplace.annotateddi.impl.AnnotatedDI;
+import dev.the_fireplace.fst.domain.config.ConfigValues;
+import dev.the_fireplace.fst.logic.CaveinLogic;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.FallingBlock;
 import net.minecraft.entity.player.PlayerEntity;
@@ -12,11 +14,18 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import dev.the_fireplace.fst.FiresSurvivalTweaks;
-import dev.the_fireplace.fst.logic.CaveinLogic;
 
 @Mixin(ServerPlayerEntity.class)
 public abstract class ServerPlayerEntityMixin extends PlayerEntity {
+
+	private ConfigValues config = null;
+	private ConfigValues getConfig() {
+		if (config == null) {
+			config = AnnotatedDI.getInjector().getInstance(ConfigValues.class);
+		}
+
+		return config;
+	}
 
 	protected ServerPlayerEntityMixin(World world, GameProfile profile) {
 		super(world, profile);
@@ -24,7 +33,7 @@ public abstract class ServerPlayerEntityMixin extends PlayerEntity {
 
 	@Inject(at = @At(value="TAIL"), method = "tick")
 	private void tick(CallbackInfo callbackInfo) {
-		if (ModConfig.getData().isEnableFallingBlockTriggering()
+		if (getConfig().isEnableFallingBlockTriggering()
 			&& getServer() != null
 			&& getServer().getTicks() % 40 == 3
 		) {
@@ -38,7 +47,7 @@ public abstract class ServerPlayerEntityMixin extends PlayerEntity {
 					world.getBlockTickScheduler().schedule(targetPos, state.getBlock(), state.getBlock().getTickRate(world));
 			}).start();
 		}
-		if (ModConfig.getData().isEnableCaveins()
+		if (getConfig().isEnableCaveins()
 			&& getServer() != null
 			&& getServer().getTicks() % 1300 == 0
 			&& random.nextInt(1000) == 0
