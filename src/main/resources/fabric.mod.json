@@ -19,11 +19,11 @@
 
   "environment": "*",
   "entrypoints": {
-    "main": [
+    "di-main": [
       "dev.the_fireplace.fst.FiresSurvivalTweaks"
     ],
     "modmenu": [
-      "dev.the_fireplace.fst.config.ModMenuIntegration"
+      "dev.the_fireplace.fst.entrypoints.ModMenuEntrypoint"
     ]
   },
   "mixins": [
@@ -35,7 +35,7 @@
     "fabric": "*",
     "fabric-events-interaction-v0": "*",
     "minecraft": "1.15.X",
-    "fireplacelib": ">=3.1.0 <4"
+    "fireplacelib": ">=4 <5"
   },
 
   "suggests": {

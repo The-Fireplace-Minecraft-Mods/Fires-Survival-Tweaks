@@ -1,39 +1,39 @@
 package dev.the_fireplace.fst.config;
 
+import dev.the_fireplace.annotateddi.api.di.Implementation;
 import dev.the_fireplace.fst.FiresSurvivalTweaks;
-import dev.the_fireplace.lib.api.storage.access.intermediary.StorageReadBuffer;
-import dev.the_fireplace.lib.api.storage.access.intermediary.StorageWriteBuffer;
-import dev.the_fireplace.lib.api.storage.lazy.LazyConfig;
-import dev.the_fireplace.lib.api.storage.lazy.LazyConfigInitializer;
+import dev.the_fireplace.fst.domain.config.ConfigValues;
+import dev.the_fireplace.lib.api.io.interfaces.access.StorageReadBuffer;
+import dev.the_fireplace.lib.api.io.interfaces.access.StorageWriteBuffer;
+import dev.the_fireplace.lib.api.lazyio.injectables.ConfigStateManager;
+import dev.the_fireplace.lib.api.lazyio.interfaces.Config;
 
-public final class ModConfig extends LazyConfig {
-    private static final ModConfig INSTANCE = LazyConfigInitializer.lazyInitialize(new ModConfig());
-    private static final ModConfig DEFAULT_INSTANCE = new ModConfig();
-    private final Access access = new Access();
+import javax.inject.Inject;
+import javax.inject.Named;
+import javax.inject.Singleton;
 
-    public static ModConfig getInstance() {
-        return INSTANCE;
+@Implementation(ConfigValues.class)
+@Singleton
+public final class ModConfig implements Config, ConfigValues {
+    private final ConfigValues defaultConfig;
+
+    @Inject
+    public ModConfig(ConfigStateManager configStateManager, @Named("default") ConfigValues defaultConfig) {
+        this.defaultConfig = defaultConfig;
+        configStateManager.initialize(this);
     }
-    public static Access getData() {
-        return INSTANCE.access;
-    }
-    static Access getDefaultData() {
-        return DEFAULT_INSTANCE.access;
-    }
 
-    private ModConfig() {}
-
-    private boolean enableBlazePowderNetherCropGrowth = true;
-    private boolean enableInfestedBlockBlend = true;
-    private boolean enableCaveins = true;
-    private boolean enableFallingBlockTriggering = true;
-    private boolean enableSlimeToMagmaCube = true;
-    private boolean enableMagmaCubeGrowth = true;
-    private boolean enableSlimeGrowth = true;
-    private boolean enableMagmaCubeToSlime = true;
-    private short magmaCubeSizeLimit = 8;
-    private short slimeSizeLimit = 8;
-    private boolean enableSilkSpawners = true;
+    private boolean enableBlazePowderNetherCropGrowth;
+    private boolean enableInfestedBlockBlend;
+    private boolean enableCaveins;
+    private boolean enableFallingBlockTriggering;
+    private boolean enableSlimeToMagmaCube;
+    private boolean enableMagmaCubeGrowth;
+    private boolean enableSlimeGrowth;
+    private boolean enableMagmaCubeToSlime;
+    private short magmaCubeSizeLimit;
+    private short slimeSizeLimit;
+    private boolean enableSilkSpawners;
 
     @Override
     public String getId() {
@@ -42,17 +42,17 @@ public final class ModConfig extends LazyConfig {
 
     @Override
     public void readFrom(StorageReadBuffer buffer) {
-        enableBlazePowderNetherCropGrowth = buffer.readBool("enableBlazePowderNetherCropGrowth", enableBlazePowderNetherCropGrowth);
-        enableInfestedBlockBlend = buffer.readBool("enableInfestedBlockBlend", enableInfestedBlockBlend);
-        enableCaveins = buffer.readBool("enableCaveins", enableCaveins);
-        enableFallingBlockTriggering = buffer.readBool("enableFallingBlockTriggering", enableFallingBlockTriggering);
-        enableSlimeToMagmaCube = buffer.readBool("enableSlimeToMagmaCube", enableSlimeToMagmaCube);
-        enableMagmaCubeGrowth = buffer.readBool("enableMagmaCubeGrowth", enableMagmaCubeGrowth);
-        enableSlimeGrowth = buffer.readBool("enableSlimeGrowth", enableSlimeGrowth);
-        enableMagmaCubeToSlime = buffer.readBool("enableMagmaCubeToSlime", enableMagmaCubeToSlime);
-        magmaCubeSizeLimit = buffer.readShort("magmaCubeSizeLimit", magmaCubeSizeLimit);
-        slimeSizeLimit = buffer.readShort("slimeSizeLimit", slimeSizeLimit);
-        enableSilkSpawners = buffer.readBool("enableSilkSpawners", enableSilkSpawners);
+        enableBlazePowderNetherCropGrowth = buffer.readBool("enableBlazePowderNetherCropGrowth", defaultConfig.isEnableBlazePowderNetherCropGrowth());
+        enableInfestedBlockBlend = buffer.readBool("enableInfestedBlockBlend", defaultConfig.isEnableInfestedBlockBlend());
+        enableCaveins = buffer.readBool("enableCaveins", defaultConfig.isEnableCaveins());
+        enableFallingBlockTriggering = buffer.readBool("enableFallingBlockTriggering", defaultConfig.isEnableFallingBlockTriggering());
+        enableSlimeToMagmaCube = buffer.readBool("enableSlimeToMagmaCube", defaultConfig.isEnableSlimeToMagmaCube());
+        enableMagmaCubeGrowth = buffer.readBool("enableMagmaCubeGrowth", defaultConfig.isEnableMagmaCubeGrowth());
+        enableSlimeGrowth = buffer.readBool("enableSlimeGrowth", defaultConfig.isEnableSlimeGrowth());
+        enableMagmaCubeToSlime = buffer.readBool("enableMagmaCubeToSlime", defaultConfig.isEnableMagmaCubeToSlime());
+        magmaCubeSizeLimit = buffer.readShort("magmaCubeSizeLimit", defaultConfig.getMagmaCubeSizeLimit());
+        slimeSizeLimit = buffer.readShort("slimeSizeLimit", defaultConfig.getSlimeSizeLimit());
+        enableSilkSpawners = buffer.readBool("enableSilkSpawners", defaultConfig.isEnableSilkSpawners());
     }
 
     @Override
@@ -70,93 +70,113 @@ public final class ModConfig extends LazyConfig {
         buffer.writeBool("enableSilkSpawners", enableSilkSpawners);
     }
 
-    public final class Access {
-        public boolean isEnableBlazePowderNetherCropGrowth() {
-            return enableBlazePowderNetherCropGrowth;
-        }
+    @Override
+    public boolean isEnableBlazePowderNetherCropGrowth() {
+        return enableBlazePowderNetherCropGrowth;
+    }
 
-        public void setEnableBlazePowderNetherCropGrowth(boolean enableBlazePowderNetherCropGrowth) {
-            ModConfig.this.enableBlazePowderNetherCropGrowth = enableBlazePowderNetherCropGrowth;
-        }
+    @Override
+    public void setEnableBlazePowderNetherCropGrowth(boolean enableBlazePowderNetherCropGrowth) {
+        this.enableBlazePowderNetherCropGrowth = enableBlazePowderNetherCropGrowth;
+    }
 
-        public boolean isEnableInfestedBlockBlend() {
-            return enableInfestedBlockBlend;
-        }
+    @Override
+    public boolean isEnableInfestedBlockBlend() {
+        return enableInfestedBlockBlend;
+    }
 
-        public void setEnableInfestedBlockBlend(boolean enableInfestedBlockBlend) {
-            ModConfig.this.enableInfestedBlockBlend = enableInfestedBlockBlend;
-        }
+    @Override
+    public void setEnableInfestedBlockBlend(boolean enableInfestedBlockBlend) {
+        this.enableInfestedBlockBlend = enableInfestedBlockBlend;
+    }
 
-        public boolean isEnableCaveins() {
-            return enableCaveins;
-        }
+    @Override
+    public boolean isEnableCaveins() {
+        return enableCaveins;
+    }
 
-        public void setEnableCaveins(boolean enableCaveins) {
-            ModConfig.this.enableCaveins = enableCaveins;
-        }
+    @Override
+    public void setEnableCaveins(boolean enableCaveins) {
+        this.enableCaveins = enableCaveins;
+    }
 
-        public boolean isEnableFallingBlockTriggering() {
-            return enableFallingBlockTriggering;
-        }
+    @Override
+    public boolean isEnableFallingBlockTriggering() {
+        return enableFallingBlockTriggering;
+    }
 
-        public void setEnableFallingBlockTriggering(boolean enableFallingBlockTriggering) {
-            ModConfig.this.enableFallingBlockTriggering = enableFallingBlockTriggering;
-        }
+    @Override
+    public void setEnableFallingBlockTriggering(boolean enableFallingBlockTriggering) {
+        this.enableFallingBlockTriggering = enableFallingBlockTriggering;
+    }
 
-        public boolean isEnableSlimeToMagmaCube() {
-            return enableSlimeToMagmaCube;
-        }
+    @Override
+    public boolean isEnableSlimeToMagmaCube() {
+        return enableSlimeToMagmaCube;
+    }
 
-        public void setEnableSlimeToMagmaCube(boolean enableSlimeToMagmaCube) {
-            ModConfig.this.enableSlimeToMagmaCube = enableSlimeToMagmaCube;
-        }
+    @Override
+    public void setEnableSlimeToMagmaCube(boolean enableSlimeToMagmaCube) {
+        this.enableSlimeToMagmaCube = enableSlimeToMagmaCube;
+    }
 
-        public boolean isEnableMagmaCubeGrowth() {
-            return enableMagmaCubeGrowth;
-        }
+    @Override
+    public boolean isEnableMagmaCubeGrowth() {
+        return enableMagmaCubeGrowth;
+    }
 
-        public void setEnableMagmaCubeGrowth(boolean enableMagmaCubeGrowth) {
-            ModConfig.this.enableMagmaCubeGrowth = enableMagmaCubeGrowth;
-        }
+    @Override
+    public void setEnableMagmaCubeGrowth(boolean enableMagmaCubeGrowth) {
+        this.enableMagmaCubeGrowth = enableMagmaCubeGrowth;
+    }
 
-        public boolean isEnableSlimeGrowth() {
-            return enableSlimeGrowth;
-        }
+    @Override
+    public boolean isEnableSlimeGrowth() {
+        return enableSlimeGrowth;
+    }
 
-        public void setEnableSlimeGrowth(boolean enableSlimeGrowth) {
-            ModConfig.this.enableSlimeGrowth = enableSlimeGrowth;
-        }
+    @Override
+    public void setEnableSlimeGrowth(boolean enableSlimeGrowth) {
+        this.enableSlimeGrowth = enableSlimeGrowth;
+    }
 
-        public boolean isEnableMagmaCubeToSlime() {
-            return enableMagmaCubeToSlime;
-        }
+    @Override
+    public boolean isEnableMagmaCubeToSlime() {
+        return enableMagmaCubeToSlime;
+    }
 
-        public void setEnableMagmaCubeToSlime(boolean enableMagmaCubeToSlime) {
-            ModConfig.this.enableMagmaCubeToSlime = enableMagmaCubeToSlime;
-        }
+    @Override
+    public void setEnableMagmaCubeToSlime(boolean enableMagmaCubeToSlime) {
+        this.enableMagmaCubeToSlime = enableMagmaCubeToSlime;
+    }
 
-        public short getMagmaCubeSizeLimit() {
-            return magmaCubeSizeLimit;
-        }
+    @Override
+    public short getMagmaCubeSizeLimit() {
+        return magmaCubeSizeLimit;
+    }
 
-        public void setMagmaCubeSizeLimit(short magmaCubeSizeLimit) {
-            ModConfig.this.magmaCubeSizeLimit = magmaCubeSizeLimit;
-        }
+    @Override
+    public void setMagmaCubeSizeLimit(short magmaCubeSizeLimit) {
+        this.magmaCubeSizeLimit = magmaCubeSizeLimit;
+    }
 
-        public short getSlimeSizeLimit() {
-            return slimeSizeLimit;
-        }
+    @Override
+    public short getSlimeSizeLimit() {
+        return slimeSizeLimit;
+    }
 
-        public void setSlimeSizeLimit(short slimeSizeLimit) {
-            ModConfig.this.slimeSizeLimit = slimeSizeLimit;
-        }
+    @Override
+    public void setSlimeSizeLimit(short slimeSizeLimit) {
+        this.slimeSizeLimit = slimeSizeLimit;
+    }
 
-        public boolean isEnableSilkSpawners() {
-            return enableSilkSpawners;
-        }
+    @Override
+    public boolean isEnableSilkSpawners() {
+        return enableSilkSpawners;
+    }
 
-        public void setEnableSilkSpawners(boolean enableSilkSpawners) {
-            ModConfig.this.enableSilkSpawners = enableSilkSpawners;
-        }
+    @Override
+    public void setEnableSilkSpawners(boolean enableSilkSpawners) {
+        this.enableSilkSpawners = enableSilkSpawners;
     }
 }
