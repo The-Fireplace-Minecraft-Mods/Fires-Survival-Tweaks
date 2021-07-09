@@ -1,7 +1,9 @@
 package dev.the_fireplace.fst.mixin;
 
+import dev.the_fireplace.annotateddi.impl.AnnotatedDI;
 import dev.the_fireplace.fst.FiresSurvivalTweaks;
-import dev.the_fireplace.fst.config.ModConfig;
+import dev.the_fireplace.fst.domain.config.ConfigValues;
+import dev.the_fireplace.fst.logic.SilkedSpawnerManager;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
@@ -26,16 +28,23 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import dev.the_fireplace.fst.logic.SilkedSpawnerManager;
 
 import javax.annotation.Nullable;
 
 @Mixin(Block.class)
 public abstract class BlockMixin {
-	@SuppressWarnings("DuplicatedCode")
+	private ConfigValues config = null;
+	private ConfigValues getConfig() {
+		if (config == null) {
+			config = AnnotatedDI.getInjector().getInstance(ConfigValues.class);
+		}
+
+		return config;
+	}
+	
 	@Inject(at = @At(value="HEAD"), method = "onBreak")
 	private void onBreak(World world, BlockPos pos, BlockState state, PlayerEntity player, CallbackInfo callbackInfo) {
-		if (ModConfig.getData().isEnableSilkSpawners()
+		if (getConfig().isEnableSilkSpawners()
 			&& world instanceof ServerWorld
 			&& ((Block)(Object)this).is(Blocks.SPAWNER)
 			&& player.getMainHandStack().isEffectiveOn(state)
