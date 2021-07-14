@@ -1,27 +1,49 @@
 package dev.the_fireplace.fst.config;
 
 import dev.the_fireplace.fst.FiresSurvivalTweaks;
-import dev.the_fireplace.lib.api.chat.TranslatorManager;
-import dev.the_fireplace.lib.api.client.ConfigScreenBuilder;
+import dev.the_fireplace.fst.domain.config.ConfigValues;
+import dev.the_fireplace.lib.api.chat.injectables.TranslatorFactory;
+import dev.the_fireplace.lib.api.chat.interfaces.Translator;
+import dev.the_fireplace.lib.api.client.injectables.ConfigScreenBuilderFactory;
+import dev.the_fireplace.lib.api.client.interfaces.ConfigScreenBuilder;
+import dev.the_fireplace.lib.api.lazyio.injectables.ConfigStateManager;
 import io.github.prospector.modmenu.api.ModMenuApi;
-import me.shedaniel.clothconfig2.api.ConfigBuilder;
-import me.shedaniel.clothconfig2.api.ConfigCategory;
-import me.shedaniel.clothconfig2.api.ConfigEntryBuilder;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.gui.screen.Screen;
 
+import javax.inject.Inject;
+import javax.inject.Named;
+import javax.inject.Singleton;
 import java.util.function.Function;
 
 @Environment(EnvType.CLIENT)
-public class ModMenuIntegration extends ConfigScreenBuilder implements ModMenuApi {
+@Singleton
+public final class ModMenuIntegration implements ModMenuApi {
     private static final String TRANSLATION_BASE = "text.config." + FiresSurvivalTweaks.MODID + ".";
     private static final String OPTION_TRANSLATION_BASE = "text.config." + FiresSurvivalTweaks.MODID + ".option.";
-    private static final ModConfig.Access DEFAULT_CONFIG = ModConfig.getDefaultData();
-    private final ModConfig.Access configAccess = ModConfig.getData();
 
-    public ModMenuIntegration() {
-        super(TranslatorManager.getInstance().getTranslator(FiresSurvivalTweaks.MODID));
+    private final Translator translator;
+    private final ConfigStateManager configStateManager;
+    private final ModConfig config;
+    private final ConfigValues defaultConfigValues;
+    private final ConfigScreenBuilderFactory configScreenBuilderFactory;
+
+    private ConfigScreenBuilder configScreenBuilder;
+
+    @Inject
+    public ModMenuIntegration(
+        TranslatorFactory translatorFactory,
+        ConfigStateManager configStateManager,
+        ModConfig config,
+        @Named("default") ConfigValues defaultConfigValues,
+        ConfigScreenBuilderFactory configScreenBuilderFactory
+    ) {
+        this.translator = translatorFactory.getTranslator(FiresSurvivalTweaks.MODID);
+        this.configStateManager = configStateManager;
+        this.config = config;
+        this.defaultConfigValues = defaultConfigValues;
+        this.configScreenBuilderFactory = configScreenBuilderFactory;
     }
 
     @SuppressWarnings("deprecation")
@@ -33,117 +55,90 @@ public class ModMenuIntegration extends ConfigScreenBuilder implements ModMenuAp
     @Override
     public Function<Screen, ? extends Screen> getConfigScreenFactory() {
         return parent -> {
-            ConfigBuilder builder = ConfigBuilder.create()
-                .setParentScreen(parent)
-                .setTitle(translator.getTranslatedString(TRANSLATION_BASE + "title"));
+            this.configScreenBuilder = configScreenBuilderFactory.create(
+                translator,
+                TRANSLATION_BASE + "title",
+                TRANSLATION_BASE + "general",
+                parent,
+                () -> configStateManager.save(config)
+            );
+            addGeneralCategoryEntries();
 
-            buildConfigCategories(builder);
-
-            builder.setSavingRunnable(() -> ModConfig.getInstance().save());
-            return builder.build();
+            return this.configScreenBuilder.build();
         };
     }
 
-    private void buildConfigCategories(ConfigBuilder builder) {
-        ConfigEntryBuilder entryBuilder = builder.entryBuilder();
-
-        ConfigCategory general = builder.getOrCreateCategory(translator.getTranslatedString(TRANSLATION_BASE + "general"));
-        addGeneralCategoryEntries(entryBuilder, general);
-    }
-
-    private void addGeneralCategoryEntries(ConfigEntryBuilder entryBuilder, ConfigCategory global) {
-        addBoolToggle(
-            entryBuilder,
-            global,
+    private void addGeneralCategoryEntries() {
+        configScreenBuilder.addBoolToggle(
             OPTION_TRANSLATION_BASE + "enableBlazePowderNetherCropGrowth",
-            configAccess.isEnableBlazePowderNetherCropGrowth(),
-            DEFAULT_CONFIG.isEnableBlazePowderNetherCropGrowth(),
-            configAccess::setEnableBlazePowderNetherCropGrowth
+            config.isEnableBlazePowderNetherCropGrowth(),
+            defaultConfigValues.isEnableBlazePowderNetherCropGrowth(),
+            config::setEnableBlazePowderNetherCropGrowth
         );
-        addBoolToggle(
-            entryBuilder,
-            global,
+        configScreenBuilder.addBoolToggle(
             OPTION_TRANSLATION_BASE + "enableInfestedBlockBlend",
-            configAccess.isEnableInfestedBlockBlend(),
-            DEFAULT_CONFIG.isEnableInfestedBlockBlend(),
-            configAccess::setEnableInfestedBlockBlend
+            config.isEnableInfestedBlockBlend(),
+            defaultConfigValues.isEnableInfestedBlockBlend(),
+            config::setEnableInfestedBlockBlend
         );
-        addBoolToggle(
-            entryBuilder,
-            global,
+        configScreenBuilder.addBoolToggle(
             OPTION_TRANSLATION_BASE + "enableCaveins",
-            configAccess.isEnableCaveins(),
-            DEFAULT_CONFIG.isEnableCaveins(),
-            configAccess::setEnableCaveins,
-            (byte)2
+            config.isEnableCaveins(),
+            defaultConfigValues.isEnableCaveins(),
+            config::setEnableCaveins,
+            (byte) 2
         );
-        addBoolToggle(
-            entryBuilder,
-            global,
+        configScreenBuilder.addBoolToggle(
             OPTION_TRANSLATION_BASE + "enableFallingBlockTriggering",
-            configAccess.isEnableFallingBlockTriggering(),
-            DEFAULT_CONFIG.isEnableFallingBlockTriggering(),
-            configAccess::setEnableFallingBlockTriggering
+            config.isEnableFallingBlockTriggering(),
+            defaultConfigValues.isEnableFallingBlockTriggering(),
+            config::setEnableFallingBlockTriggering
         );
-        addBoolToggle(
-            entryBuilder,
-            global,
+        configScreenBuilder.addBoolToggle(
             OPTION_TRANSLATION_BASE + "enableSlimeToMagmaCube",
-            configAccess.isEnableSlimeToMagmaCube(),
-            DEFAULT_CONFIG.isEnableSlimeToMagmaCube(),
-            configAccess::setEnableSlimeToMagmaCube
+            config.isEnableSlimeToMagmaCube(),
+            defaultConfigValues.isEnableSlimeToMagmaCube(),
+            config::setEnableSlimeToMagmaCube
         );
-        addBoolToggle(
-            entryBuilder,
-            global,
+        configScreenBuilder.addBoolToggle(
             OPTION_TRANSLATION_BASE + "enableMagmaCubeToSlime",
-            configAccess.isEnableMagmaCubeToSlime(),
-            DEFAULT_CONFIG.isEnableMagmaCubeToSlime(),
-            configAccess::setEnableMagmaCubeToSlime
+            config.isEnableMagmaCubeToSlime(),
+            defaultConfigValues.isEnableMagmaCubeToSlime(),
+            config::setEnableMagmaCubeToSlime
         );
-        addBoolToggle(
-            entryBuilder,
-            global,
+        configScreenBuilder.addBoolToggle(
             OPTION_TRANSLATION_BASE + "enableSlimeGrowth",
-            configAccess.isEnableSlimeGrowth(),
-            DEFAULT_CONFIG.isEnableSlimeGrowth(),
-            configAccess::setEnableSlimeGrowth
+            config.isEnableSlimeGrowth(),
+            defaultConfigValues.isEnableSlimeGrowth(),
+            config::setEnableSlimeGrowth
         );
-        addShortField(
-            entryBuilder,
-            global,
+        configScreenBuilder.addShortField(
             OPTION_TRANSLATION_BASE + "slimeSizeLimit",
-            configAccess.getSlimeSizeLimit(),
-            DEFAULT_CONFIG.getSlimeSizeLimit(),
-            configAccess::setSlimeSizeLimit,
+            config.getSlimeSizeLimit(),
+            defaultConfigValues.getSlimeSizeLimit(),
+            config::setSlimeSizeLimit,
             (short) 0,
             Short.MAX_VALUE
         );
-        addBoolToggle(
-            entryBuilder,
-            global,
+        configScreenBuilder.addBoolToggle(
             OPTION_TRANSLATION_BASE + "enableMagmaCubeGrowth",
-            configAccess.isEnableMagmaCubeGrowth(),
-            DEFAULT_CONFIG.isEnableMagmaCubeGrowth(),
-            configAccess::setEnableMagmaCubeGrowth
+            config.isEnableMagmaCubeGrowth(),
+            defaultConfigValues.isEnableMagmaCubeGrowth(),
+            config::setEnableMagmaCubeGrowth
         );
-        addShortField(
-            entryBuilder,
-            global,
+        configScreenBuilder.addShortField(
             OPTION_TRANSLATION_BASE + "magmaCubeSizeLimit",
-            configAccess.getMagmaCubeSizeLimit(),
-            DEFAULT_CONFIG.getMagmaCubeSizeLimit(),
-            configAccess::setMagmaCubeSizeLimit,
+            config.getMagmaCubeSizeLimit(),
+            defaultConfigValues.getMagmaCubeSizeLimit(),
+            config::setMagmaCubeSizeLimit,
             (short) 0,
             Short.MAX_VALUE
         );
-        addBoolToggle(
-            entryBuilder,
-            global,
+        configScreenBuilder.addBoolToggle(
             OPTION_TRANSLATION_BASE + "enableSilkSpawners",
-            configAccess.isEnableSilkSpawners(),
-            DEFAULT_CONFIG.isEnableSilkSpawners(),
-            configAccess::setEnableSilkSpawners
+            config.isEnableSilkSpawners(),
+            defaultConfigValues.isEnableSilkSpawners(),
+            config::setEnableSilkSpawners
         );
     }
 }
