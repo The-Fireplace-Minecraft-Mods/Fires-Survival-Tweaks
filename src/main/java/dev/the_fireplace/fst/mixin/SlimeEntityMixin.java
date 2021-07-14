@@ -67,7 +67,7 @@ public abstract class SlimeEntityMixin extends MobEntity {
 	private void convertToSlime() {
 		SlimeEntity newCube = new SlimeEntity(EntityType.SLIME, world);
 		((SlimeInvoker) newCube).invokeSetSize(getSize(), true);
-		newCube.updatePositionAndAngles(getX(), getY(), getZ(), yaw, pitch);
+		newCube.updatePositionAndAngles(x, y, z, yaw, pitch);
 		world.spawnEntity(newCube);
 		this.remove();
 	}
