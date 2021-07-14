@@ -2,5 +2,6 @@ Additions:
 
 Changes:
 Updated to support Fireplace Lib 5
+Slime/Magma cube size limit options are now hidden from the config GUI if slime/magma cube growth is disabled.
 
 Fixes/Internal Changes:
