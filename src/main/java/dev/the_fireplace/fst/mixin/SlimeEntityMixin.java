@@ -79,7 +79,7 @@ public abstract class SlimeEntityMixin extends MobEntity {
 				if (config.getMagmaCubeSizeLimit() > 0 && this.getSize() >= config.getMagmaCubeSizeLimit())
 					break;
 				BlockState state = world.getBlockState(pos);
-				if (state.isIn(FSTBlockTags.MAGMA_ABSORBABLES)) {
+				if (FSTBlockTags.MAGMA_ABSORBABLES.contains(state.getBlock())) {
 					world.setBlockState(pos, Blocks.AIR.getDefaultState());
 					this.setSize(this.getSize() + 1, true);
 					world.playSoundFromEntity(null, this, SoundEvents.ENTITY_MAGMA_CUBE_SQUISH, SoundCategory.HOSTILE, 0.8f, 0.7f+random.nextFloat()/2);
