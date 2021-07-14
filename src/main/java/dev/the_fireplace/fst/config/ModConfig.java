@@ -12,7 +12,7 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import javax.inject.Singleton;
 
-@Implementation(ConfigValues.class)
+@Implementation("dev.the_fireplace.fst.domain.config.ConfigValues")
 @Singleton
 public final class ModConfig implements Config, ConfigValues {
     private final ConfigValues defaultConfig;
