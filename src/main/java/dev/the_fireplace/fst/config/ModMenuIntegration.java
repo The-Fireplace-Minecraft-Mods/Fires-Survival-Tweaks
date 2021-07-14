@@ -105,28 +105,32 @@ public final class ModMenuIntegration implements ModMenuApi {
             defaultConfigValues.isEnableMagmaCubeToSlime(),
             config::setEnableMagmaCubeToSlime
         );
+        String slimeGrowth = OPTION_TRANSLATION_BASE + "enableSlimeGrowth";
         configScreenBuilder.addBoolToggle(
-            OPTION_TRANSLATION_BASE + "enableSlimeGrowth",
+            slimeGrowth,
             config.isEnableSlimeGrowth(),
             defaultConfigValues.isEnableSlimeGrowth(),
             config::setEnableSlimeGrowth
         );
+        String slimeSizeLimit = OPTION_TRANSLATION_BASE + "slimeSizeLimit";
         configScreenBuilder.addShortField(
-            OPTION_TRANSLATION_BASE + "slimeSizeLimit",
+            slimeSizeLimit,
             config.getSlimeSizeLimit(),
             defaultConfigValues.getSlimeSizeLimit(),
             config::setSlimeSizeLimit,
             (short) 0,
             Short.MAX_VALUE
         );
+        String magmaCubeGrowth = OPTION_TRANSLATION_BASE + "enableMagmaCubeGrowth";
         configScreenBuilder.addBoolToggle(
-            OPTION_TRANSLATION_BASE + "enableMagmaCubeGrowth",
+            magmaCubeGrowth,
             config.isEnableMagmaCubeGrowth(),
             defaultConfigValues.isEnableMagmaCubeGrowth(),
             config::setEnableMagmaCubeGrowth
         );
+        String magmaCubeSizeLimit = OPTION_TRANSLATION_BASE + "magmaCubeSizeLimit";
         configScreenBuilder.addShortField(
-            OPTION_TRANSLATION_BASE + "magmaCubeSizeLimit",
+            magmaCubeSizeLimit,
             config.getMagmaCubeSizeLimit(),
             defaultConfigValues.getMagmaCubeSizeLimit(),
             config::setMagmaCubeSizeLimit,
@@ -139,5 +143,8 @@ public final class ModMenuIntegration implements ModMenuApi {
             defaultConfigValues.isEnableSilkSpawners(),
             config::setEnableSilkSpawners
         );
+
+        configScreenBuilder.addOptionDependency(slimeGrowth, slimeSizeLimit, (value) -> (boolean)value);
+        configScreenBuilder.addOptionDependency(magmaCubeGrowth, magmaCubeSizeLimit, (value) -> (boolean)value);
     }
 }
