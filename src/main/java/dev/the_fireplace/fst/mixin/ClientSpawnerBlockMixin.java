@@ -1,5 +1,6 @@
 package dev.the_fireplace.fst.mixin;
 
+import dev.the_fireplace.fst.FiresSurvivalTweaks;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.block.BlockState;
@@ -9,19 +10,19 @@ import net.minecraft.block.SpawnerBlock;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.MobSpawnerBlockEntity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.Tag;
+import net.minecraft.nbt.NbtCompound;
+import net.minecraft.nbt.NbtElement;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.Util;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.MobSpawnerLogic;
+import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
-import dev.the_fireplace.fst.FiresSurvivalTweaks;
 
 @Environment(EnvType.CLIENT)
 @Mixin(SpawnerBlock.class)
@@ -38,15 +39,19 @@ public abstract class ClientSpawnerBlockMixin extends BlockWithEntity {
             FiresSurvivalTweaks.LOGGER.error("Null BE for silked spawner!");
             return;
         }
+        if (!(world instanceof World)) {
+            FiresSurvivalTweaks.LOGGER.warn("Wrong type of world to pick block a Spawner in: {}", world.getClass().getCanonicalName());
+            return;
+        }
         ItemStack spawnerStack = new ItemStack(Blocks.SPAWNER);
-        CompoundTag dropItemCompound = new CompoundTag();
+        NbtCompound dropItemCompound = new NbtCompound();
         MobSpawnerLogic logic = ((MobSpawnerBlockEntity) be).getLogic();
-        CompoundTag spawnerNbt = logic.toTag(new CompoundTag());
+        NbtCompound spawnerNbt = logic.writeNbt((World) world, pos, new NbtCompound());
         dropItemCompound.put("spawnerdata", spawnerNbt);
         spawnerStack.setTag(dropItemCompound);
-        Tag spawnData = spawnerNbt.get("SpawnData");
-        if (spawnData instanceof CompoundTag && ((CompoundTag) spawnData).contains("id")) {
-            Identifier mobid = new Identifier(((CompoundTag) spawnData).getString("id"));
+        NbtElement spawnData = spawnerNbt.get("SpawnData");
+        if (spawnData instanceof NbtCompound && ((NbtCompound) spawnData).contains("id")) {
+            Identifier mobid = new Identifier(((NbtCompound) spawnData).getString("id"));
             spawnerStack.setCustomName(new TranslatableText(Util.createTranslationKey("entity", mobid)).append(" ").append(new TranslatableText("block.minecraft.spawner")));
         }
         callbackInfo.setReturnValue(spawnerStack);

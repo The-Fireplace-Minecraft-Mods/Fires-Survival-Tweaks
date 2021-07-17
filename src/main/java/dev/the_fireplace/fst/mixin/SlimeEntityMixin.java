@@ -6,6 +6,7 @@ import dev.the_fireplace.fst.logic.SlimeGrowthLogic;
 import dev.the_fireplace.fst.tags.FSTBlockTags;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.mob.MagmaCubeEntity;
 import net.minecraft.entity.mob.MobEntity;
@@ -27,7 +28,7 @@ public abstract class SlimeEntityMixin extends MobEntity {
 
 	@Shadow protected abstract void setSize(int size, boolean heal);
 
-	@Shadow public abstract void remove();
+	@Shadow public abstract void remove(Entity.RemovalReason reason);
 	
 	private ConfigValues config = null;
 	private ConfigValues getConfig() {
@@ -67,9 +68,9 @@ public abstract class SlimeEntityMixin extends MobEntity {
 	private void convertToSlime() {
 		SlimeEntity newCube = new SlimeEntity(EntityType.SLIME, world);
 		((SlimeInvoker) newCube).invokeSetSize(getSize(), true);
-		newCube.updatePositionAndAngles(getX(), getY(), getZ(), yaw, pitch);
+		newCube.updatePositionAndAngles(getX(), getY(), getZ(), getYaw(), getPitch());
 		world.spawnEntity(newCube);
-		this.remove();
+		this.remove(RemovalReason.DISCARDED);
 	}
 
 	private void growMagmaIfApplicable() {
@@ -101,9 +102,9 @@ public abstract class SlimeEntityMixin extends MobEntity {
 					world.setBlockState(pos, Blocks.AIR.getDefaultState());
 					MagmaCubeEntity newCube = new MagmaCubeEntity(EntityType.MAGMA_CUBE, world);
 					((SlimeInvoker)newCube).invokeSetSize(getSize(), true);
-					newCube.updatePositionAndAngles(getX(), getY(), getZ(), yaw, pitch);
+					newCube.updatePositionAndAngles(getX(), getY(), getZ(), getYaw(), getPitch());
 					world.spawnEntity(newCube);
-					this.remove();
+					this.remove(RemovalReason.DISCARDED);
 					break;
 				}
 				if (config.getSlimeSizeLimit() > 0 && this.getSize() >= config.getSlimeSizeLimit())

@@ -15,8 +15,8 @@ import net.minecraft.entity.ItemEntity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.Tag;
+import net.minecraft.nbt.NbtCompound;
+import net.minecraft.nbt.NbtElement;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Identifier;
@@ -31,6 +31,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import javax.annotation.Nullable;
 
+@SuppressWarnings("EqualsBetweenInconvertibleTypes")
 @Mixin(Block.class)
 public abstract class BlockMixin {
 	private ConfigValues config = null;
@@ -46,8 +47,8 @@ public abstract class BlockMixin {
 	private void onBreak(World world, BlockPos pos, BlockState state, PlayerEntity player, CallbackInfo callbackInfo) {
 		if (getConfig().isEnableSilkSpawners()
 			&& world instanceof ServerWorld
-			&& ((Block)(Object)this).is(Blocks.SPAWNER)
-			&& player.getMainHandStack().isEffectiveOn(state)
+			&& this.equals(Blocks.SPAWNER)
+			&& player.getMainHandStack().isSuitableFor(state)
 			&& EnchantmentHelper.getEquipmentLevel(Enchantments.SILK_TOUCH, player) > 0
 		) {
 			BlockEntity be = world.getBlockEntity(pos);
@@ -56,14 +57,14 @@ public abstract class BlockMixin {
 				return;
 			}
 			ItemStack spawnerStack = new ItemStack(Blocks.SPAWNER);
-			CompoundTag dropItemCompound = new CompoundTag();
+			NbtCompound dropItemCompound = new NbtCompound();
 			MobSpawnerLogic logic = ((MobSpawnerBlockEntity) be).getLogic();
-			CompoundTag spawnerNbt = logic.toTag(new CompoundTag());
+			NbtCompound spawnerNbt = logic.writeNbt(world, pos, new NbtCompound());
 			dropItemCompound.put("spawnerdata", spawnerNbt);
 			spawnerStack.setTag(dropItemCompound);
-			Tag spawnData = spawnerNbt.get("SpawnData");
-			if (spawnData instanceof CompoundTag && ((CompoundTag) spawnData).contains("id")) {
-				Identifier mobid = new Identifier(((CompoundTag) spawnData).getString("id"));
+			NbtElement spawnData = spawnerNbt.get("SpawnData");
+			if (spawnData instanceof NbtCompound && ((NbtCompound) spawnData).contains("id")) {
+				Identifier mobid = new Identifier(((NbtCompound) spawnData).getString("id"));
 				spawnerStack.setCustomName(new TranslatableText(Util.createTranslationKey("entity", mobid)).append(" ").append(new TranslatableText("block.minecraft.spawner")));
 			}
 			world.spawnEntity(new ItemEntity(world, pos.getX(), pos.getY(), pos.getZ(), spawnerStack));
@@ -73,7 +74,7 @@ public abstract class BlockMixin {
 
 	@Inject(at = @At(value="HEAD"), method = "onPlaced")
 	private void onPlaced(World world, BlockPos pos, BlockState state, @Nullable LivingEntity placer, ItemStack itemStack, CallbackInfo callbackInfo) {
-		if (world instanceof ServerWorld && ((Block)(Object)this).is(Blocks.SPAWNER)) {
+		if (world instanceof ServerWorld && this.equals(Blocks.SPAWNER)) {
 			BlockEntity be = world.getBlockEntity(pos);
 			if (be == null) {
 				FiresSurvivalTweaks.LOGGER.error("Null BE for placed spawner!");
@@ -84,7 +85,7 @@ public abstract class BlockMixin {
 				return;
 			}
 			MobSpawnerLogic logic = ((MobSpawnerBlockEntity) be).getLogic();
-			logic.fromTag(itemStack.getTag().getCompound("spawnerdata"));
+			logic.readNbt(world, pos, itemStack.getTag().getCompound("spawnerdata"));
 		}
 	}
 }
