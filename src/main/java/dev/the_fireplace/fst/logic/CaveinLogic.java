@@ -18,8 +18,8 @@ public class CaveinLogic {
             return;
         }
         int xOff = (world.random.nextBoolean() ? 1 : -1) * world.random.nextInt(tremorRange) + 1;
-        int maxYOffset = Math.min(world.getDimension().getHeight() - fieldCenter.getY() - 1, fieldCenter.getY() + 1);
-        if (maxYOffset <= 0) {
+        int maxYOffset = Math.min(world.getHeight() - fieldCenter.getY() - 1, fieldCenter.getY() + 1) - world.getDimension().getMinimumY();
+        if (maxYOffset < 1) {
             maxYOffset = 1;
         }
         int yOff = (world.random.nextInt(tremorRange) + 1) % maxYOffset;
