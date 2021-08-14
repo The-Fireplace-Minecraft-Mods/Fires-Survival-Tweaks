@@ -61,7 +61,7 @@ public abstract class BlockMixin {
 			MobSpawnerLogic logic = ((MobSpawnerBlockEntity) be).getLogic();
 			NbtCompound spawnerNbt = logic.writeNbt(world, pos, new NbtCompound());
 			dropItemCompound.put("spawnerdata", spawnerNbt);
-			spawnerStack.setTag(dropItemCompound);
+			spawnerStack.setNbt(dropItemCompound);
 			NbtElement spawnData = spawnerNbt.get("SpawnData");
 			if (spawnData instanceof NbtCompound && ((NbtCompound) spawnData).contains("id")) {
 				Identifier mobid = new Identifier(((NbtCompound) spawnData).getString("id"));
@@ -80,12 +80,12 @@ public abstract class BlockMixin {
 				FiresSurvivalTweaks.LOGGER.error("Null BE for placed spawner!");
 				return;
 			}
-			if (itemStack.getTag() == null) {
+			if (itemStack.getNbt() == null) {
 				FiresSurvivalTweaks.LOGGER.error("No stack tag for placed spawner!");
 				return;
 			}
 			MobSpawnerLogic logic = ((MobSpawnerBlockEntity) be).getLogic();
-			logic.readNbt(world, pos, itemStack.getTag().getCompound("spawnerdata"));
+			logic.readNbt(world, pos, itemStack.getNbt().getCompound("spawnerdata"));
 		}
 	}
 }

@@ -48,7 +48,7 @@ public abstract class ClientSpawnerBlockMixin extends BlockWithEntity {
         MobSpawnerLogic logic = ((MobSpawnerBlockEntity) be).getLogic();
         NbtCompound spawnerNbt = logic.writeNbt((World) world, pos, new NbtCompound());
         dropItemCompound.put("spawnerdata", spawnerNbt);
-        spawnerStack.setTag(dropItemCompound);
+        spawnerStack.setNbt(dropItemCompound);
         NbtElement spawnData = spawnerNbt.get("SpawnData");
         if (spawnData instanceof NbtCompound && ((NbtCompound) spawnData).contains("id")) {
             Identifier mobid = new Identifier(((NbtCompound) spawnData).getString("id"));
