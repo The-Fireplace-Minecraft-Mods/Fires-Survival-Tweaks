@@ -3,5 +3,3 @@ Additions:
 Changes:
 
 Fixes/Internal Changes:
-Fixed occasional crash when breaking block at low y levels
-Fixed crash when causing a large cave-in
