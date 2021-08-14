@@ -18,7 +18,11 @@ public class CaveinLogic {
             return;
         }
         int xOff = (world.random.nextBoolean() ? 1 : -1) * world.random.nextInt(tremorRange) + 1;
-        int yOff = (world.random.nextInt(tremorRange) + 1) % Math.min(world.getDimension().getHeight() - fieldCenter.getY() - 1, fieldCenter.getY() + 1);
+        int maxYOffset = Math.min(world.getDimension().getHeight() - fieldCenter.getY() - 1, fieldCenter.getY() + 1);
+        if (maxYOffset <= 0) {
+            maxYOffset = 1;
+        }
+        int yOff = (world.random.nextInt(tremorRange) + 1) % maxYOffset;
         int zOff = (world.random.nextBoolean() ? 1 : -1) * world.random.nextInt(tremorRange) + 1;
         BlockPos targetPos = fieldCenter.add(xOff, yOff, zOff);
         //TODO Stability checking based on how many rocks have supports?
