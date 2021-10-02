@@ -6,6 +6,7 @@ import dev.the_fireplace.lib.api.chat.injectables.TranslatorFactory;
 import dev.the_fireplace.lib.api.chat.interfaces.Translator;
 import dev.the_fireplace.lib.api.client.injectables.ConfigScreenBuilderFactory;
 import dev.the_fireplace.lib.api.client.interfaces.ConfigScreenBuilder;
+import dev.the_fireplace.lib.api.client.interfaces.OptionBuilder;
 import dev.the_fireplace.lib.api.lazyio.injectables.ConfigStateManager;
 import io.github.prospector.modmenu.api.ModMenuApi;
 import net.fabricmc.api.EnvType;
@@ -85,9 +86,8 @@ public final class ModMenuIntegration implements ModMenuApi {
             OPTION_TRANSLATION_BASE + "enableCaveins",
             config.isEnableCaveins(),
             defaultConfigValues.isEnableCaveins(),
-            config::setEnableCaveins,
-            (byte) 2
-        );
+            config::setEnableCaveins
+        ).setDescriptionRowCount((byte) 2);
         configScreenBuilder.addBoolToggle(
             OPTION_TRANSLATION_BASE + "enableFallingBlockTriggering",
             config.isEnableFallingBlockTriggering(),
@@ -106,46 +106,35 @@ public final class ModMenuIntegration implements ModMenuApi {
             defaultConfigValues.isEnableMagmaCubeToSlime(),
             config::setEnableMagmaCubeToSlime
         );
-        String slimeGrowth = OPTION_TRANSLATION_BASE + "enableSlimeGrowth";
-        configScreenBuilder.addBoolToggle(
-            slimeGrowth,
+        OptionBuilder<Boolean> enableSlimeGrowth = configScreenBuilder.addBoolToggle(
+            OPTION_TRANSLATION_BASE + "enableSlimeGrowth",
             config.isEnableSlimeGrowth(),
             defaultConfigValues.isEnableSlimeGrowth(),
             config::setEnableSlimeGrowth
         );
-        String slimeSizeLimit = OPTION_TRANSLATION_BASE + "slimeSizeLimit";
         configScreenBuilder.addShortField(
-            slimeSizeLimit,
+            OPTION_TRANSLATION_BASE + "slimeSizeLimit",
             config.getSlimeSizeLimit(),
             defaultConfigValues.getSlimeSizeLimit(),
-            config::setSlimeSizeLimit,
-            (short) 0,
-            Short.MAX_VALUE
-        );
-        String magmaCubeGrowth = OPTION_TRANSLATION_BASE + "enableMagmaCubeGrowth";
-        configScreenBuilder.addBoolToggle(
-            magmaCubeGrowth,
+            config::setSlimeSizeLimit
+        ).setMinimum((short) 0).addDependency(enableSlimeGrowth);
+        OptionBuilder<Boolean> enableMagmaCubeGrowth = configScreenBuilder.addBoolToggle(
+            OPTION_TRANSLATION_BASE + "enableMagmaCubeGrowth",
             config.isEnableMagmaCubeGrowth(),
             defaultConfigValues.isEnableMagmaCubeGrowth(),
             config::setEnableMagmaCubeGrowth
         );
-        String magmaCubeSizeLimit = OPTION_TRANSLATION_BASE + "magmaCubeSizeLimit";
         configScreenBuilder.addShortField(
-            magmaCubeSizeLimit,
+            OPTION_TRANSLATION_BASE + "magmaCubeSizeLimit",
             config.getMagmaCubeSizeLimit(),
             defaultConfigValues.getMagmaCubeSizeLimit(),
-            config::setMagmaCubeSizeLimit,
-            (short) 0,
-            Short.MAX_VALUE
-        );
+            config::setMagmaCubeSizeLimit
+        ).setMinimum((short) 0).addDependency(enableMagmaCubeGrowth);
         configScreenBuilder.addBoolToggle(
             OPTION_TRANSLATION_BASE + "enableSilkSpawners",
             config.isEnableSilkSpawners(),
             defaultConfigValues.isEnableSilkSpawners(),
             config::setEnableSilkSpawners
         );
-
-        configScreenBuilder.addOptionDependency(slimeGrowth, slimeSizeLimit, (value) -> (boolean)value);
-        configScreenBuilder.addOptionDependency(magmaCubeGrowth, magmaCubeSizeLimit, (value) -> (boolean)value);
     }
 }
