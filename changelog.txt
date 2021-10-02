@@ -1,6 +1,7 @@
 Additions:
 
 Changes:
+Updated to Fireplace Lib 6.0.6+
 
 Fixes/Internal Changes:
 Fixed occasional crash when breaking block at low y levels
