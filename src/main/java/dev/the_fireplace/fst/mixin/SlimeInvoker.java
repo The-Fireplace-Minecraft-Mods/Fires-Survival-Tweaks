@@ -1,6 +1,5 @@
 package dev.the_fireplace.fst.mixin;
 
-import net.minecraft.entity.mob.MagmaCubeEntity;
 import net.minecraft.entity.mob.SlimeEntity;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.gen.Invoker;

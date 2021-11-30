@@ -31,7 +31,7 @@ public abstract class SpawnerBlockMixin extends BlockWithEntity {
 		super(settings);
 	}
 
-	@Inject(at = @At(value="HEAD"), method = "onStacksDropped", cancellable = true)
+	@Inject(at = @At("HEAD"), method = "onStacksDropped", cancellable = true)
 	private void onStacksDropped(BlockState state, World world, BlockPos pos, ItemStack stack, CallbackInfo ci) {
 		if (getConfig().isEnableSilkSpawners() && world instanceof ServerWorld && SilkedSpawnerManager.isSilkedSpawner((ServerWorld) world, pos))
 			ci.cancel();
