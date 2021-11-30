@@ -1,8 +1,1 @@
-Additions:
-
-Changes:
-Updated to Fireplace Lib 6.0.6+
-
-Fixes/Internal Changes:
-Fixed occasional crash when breaking block at low y levels
-Fixed crash when causing a large cave-in
+Update to use newer Fabric Loader and Fireplace Lib versions
