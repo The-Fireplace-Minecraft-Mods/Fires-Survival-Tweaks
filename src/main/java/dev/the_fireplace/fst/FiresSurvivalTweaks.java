@@ -33,7 +33,7 @@ public final class FiresSurvivalTweaks implements DIModInitializer {
 		if (false) {
 			LOGGER.debug("Generating data...");
 			DataGenerator gen = diContainer.getInstance(DataGeneratorFactory.class).createAdditive(Paths.get("..", "src", "main", "resources"));
-			gen.install(new BlockTagsProvider(gen));
+			gen.addProvider(new BlockTagsProvider(gen));
 			try {
 				gen.run();
 			} catch(IOException e) {

@@ -43,8 +43,9 @@ public abstract class ServerPlayerEntityMixin extends PlayerEntity {
 				int zOff = random.nextInt(5)-2;
 				BlockPos targetPos = getBlockPos().add(xOff, yOff, zOff);
 				BlockState state = world.getBlockState(targetPos);
-				if (state.getBlock() instanceof FallingBlock)
-					world.getBlockTickScheduler().schedule(targetPos, state.getBlock(), ((FallingBlockInvoker)state.getBlock()).invokeGetFallDelay());
+				if (state.getBlock() instanceof FallingBlock) {
+					world.createAndScheduleBlockTick(targetPos, state.getBlock(), ((FallingBlockInvoker) state.getBlock()).invokeGetFallDelay());
+				}
 			}).start();
 		}
 		if (getConfig().isEnableCaveins()

@@ -59,7 +59,7 @@ public abstract class BlockMixin {
 			ItemStack spawnerStack = new ItemStack(Blocks.SPAWNER);
 			NbtCompound dropItemCompound = new NbtCompound();
 			MobSpawnerLogic logic = ((MobSpawnerBlockEntity) be).getLogic();
-			NbtCompound spawnerNbt = logic.writeNbt(world, pos, new NbtCompound());
+			NbtCompound spawnerNbt = logic.writeNbt(new NbtCompound());
 			dropItemCompound.put("spawnerdata", spawnerNbt);
 			spawnerStack.setNbt(dropItemCompound);
 			NbtElement spawnData = spawnerNbt.get("SpawnData");

@@ -18,7 +18,6 @@ import net.minecraft.util.Util;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.MobSpawnerLogic;
-import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -39,14 +38,10 @@ public abstract class ClientSpawnerBlockMixin extends BlockWithEntity {
             FiresSurvivalTweaks.LOGGER.error("Null BE for silked spawner!");
             return;
         }
-        if (!(world instanceof World)) {
-            FiresSurvivalTweaks.LOGGER.warn("Wrong type of world to pick block a Spawner in: {}", world.getClass().getCanonicalName());
-            return;
-        }
         ItemStack spawnerStack = new ItemStack(Blocks.SPAWNER);
         NbtCompound dropItemCompound = new NbtCompound();
         MobSpawnerLogic logic = ((MobSpawnerBlockEntity) be).getLogic();
-        NbtCompound spawnerNbt = logic.writeNbt((World) world, pos, new NbtCompound());
+        NbtCompound spawnerNbt = logic.writeNbt(new NbtCompound());
         dropItemCompound.put("spawnerdata", spawnerNbt);
         spawnerStack.setNbt(dropItemCompound);
         NbtElement spawnData = spawnerNbt.get("SpawnData");
