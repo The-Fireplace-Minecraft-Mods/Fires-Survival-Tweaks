@@ -42,7 +42,7 @@ public abstract class BlockMixin {
 		return config;
 	}
 	
-	@Inject(at = @At(value="HEAD"), method = "onBreak")
+	@Inject(at = @At("HEAD"), method = "onBreak")
 	private void onBreak(World world, BlockPos pos, BlockState state, PlayerEntity player, CallbackInfo callbackInfo) {
 		if (getConfig().isEnableSilkSpawners()
 			&& world instanceof ServerWorld
@@ -71,7 +71,7 @@ public abstract class BlockMixin {
 		}
 	}
 
-	@Inject(at = @At(value="HEAD"), method = "onPlaced")
+	@Inject(at = @At("HEAD"), method = "onPlaced")
 	private void onPlaced(World world, BlockPos pos, BlockState state, @Nullable LivingEntity placer, ItemStack itemStack, CallbackInfo callbackInfo) {
 		if (world instanceof ServerWorld && ((Block)(Object)this).is(Blocks.SPAWNER)) {
 			BlockEntity be = world.getBlockEntity(pos);
