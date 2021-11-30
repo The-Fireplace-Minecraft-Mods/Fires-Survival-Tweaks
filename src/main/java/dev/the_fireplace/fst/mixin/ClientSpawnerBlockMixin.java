@@ -31,7 +31,7 @@ public abstract class ClientSpawnerBlockMixin extends BlockWithEntity {
     }
 
     @SuppressWarnings("DuplicatedCode")
-    @Inject(at = @At(value="HEAD"), method = "getPickStack", cancellable = true)
+    @Inject(at = @At("HEAD"), method = "getPickStack", cancellable = true)
     private void getPickStack(BlockView world, BlockPos pos, BlockState state, CallbackInfoReturnable<ItemStack> callbackInfo) {
         BlockEntity be = world.getBlockEntity(pos);
         if (be == null) {
