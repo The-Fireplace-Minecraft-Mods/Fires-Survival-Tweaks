@@ -1,5 +1,6 @@
 package dev.the_fireplace.fst.mixin;
 
+import dev.the_fireplace.fst.FiresSurvivalTweaks;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.block.BlockState;
@@ -21,7 +22,6 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
-import dev.the_fireplace.fst.FiresSurvivalTweaks;
 
 @Environment(EnvType.CLIENT)
 @Mixin(SpawnerBlock.class)
@@ -31,7 +31,7 @@ public abstract class ClientSpawnerBlockMixin extends BlockWithEntity {
     }
 
     @SuppressWarnings("DuplicatedCode")
-    @Inject(at = @At(value="HEAD"), method = "getPickStack", cancellable = true)
+    @Inject(at = @At("HEAD"), method = "getPickStack", cancellable = true)
     private void getPickStack(BlockView world, BlockPos pos, BlockState state, CallbackInfoReturnable<ItemStack> callbackInfo) {
         BlockEntity be = world.getBlockEntity(pos);
         if (be == null) {

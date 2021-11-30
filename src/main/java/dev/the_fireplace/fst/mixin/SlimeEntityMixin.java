@@ -42,7 +42,7 @@ public abstract class SlimeEntityMixin extends MobEntity {
 		super(entityType, world);
 	}
 
-	@Inject(at = @At(value="TAIL"), method = "tick")
+	@Inject(at = @At("TAIL"), method = "tick")
 	private void tick(CallbackInfo callbackInfo) {
 		boolean isMagma = (Object)this instanceof MagmaCubeEntity;
 		if (isMagma) {
