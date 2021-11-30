@@ -31,7 +31,7 @@ public abstract class ServerPlayerEntityMixin extends PlayerEntity {
 		super(world, pos, yaw, profile);
 	}
 
-	@Inject(at = @At(value="TAIL"), method = "tick")
+	@Inject(at = @At("TAIL"), method = "tick")
 	private void tick(CallbackInfo callbackInfo) {
 		if (getConfig().isEnableFallingBlockTriggering()
 			&& getServer() != null

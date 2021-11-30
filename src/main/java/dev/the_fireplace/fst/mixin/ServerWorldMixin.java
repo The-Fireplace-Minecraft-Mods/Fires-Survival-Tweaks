@@ -48,7 +48,7 @@ public abstract class ServerWorldMixin extends World {
 	private final ConcurrentHashMap<Vec3i, Set<BlockPos>> tremorZones = new ConcurrentHashMap<>();
 	private boolean tremoring = false;
 
-	@Inject(at = @At(value="TAIL"), method = "tick")
+	@Inject(at = @At("TAIL"), method = "tick")
 	private void tick(CallbackInfo callbackInfo) {
 		//noinspection ConstantConditions
 		if (getConfig().isEnableCaveins() && !tremoring && getServer().getTicks() % 40 == 0) {
@@ -68,7 +68,7 @@ public abstract class ServerWorldMixin extends World {
 		}
 	}
 
-	@Inject(at = @At(value="HEAD"), method = "onBlockChanged")
+	@Inject(at = @At("HEAD"), method = "onBlockChanged")
 	private void onBlockChanged(BlockPos pos, BlockState oldBlock, BlockState newBlock, CallbackInfo callbackInfo) {
 		if (getConfig().isEnableCaveins()
 			&& getChunkManager().getWorldChunk(pos.getX() >> 4, pos.getZ() >> 4) != null

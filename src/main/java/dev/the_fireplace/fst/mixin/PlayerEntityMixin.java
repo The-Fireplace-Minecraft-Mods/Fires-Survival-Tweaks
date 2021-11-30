@@ -32,7 +32,7 @@ public abstract class PlayerEntityMixin extends LivingEntity {
 		super(entityType, world);
 	}
 
-	@Inject(at = @At(value="HEAD"), method = "getBlockBreakingSpeed", cancellable = true)
+	@Inject(at = @At("HEAD"), method = "getBlockBreakingSpeed", cancellable = true)
 	private void getBlockBreakingSpeed(BlockState state, CallbackInfoReturnable<Float> callbackInfo) {
 		if (getConfig().isEnableInfestedBlockBlend() && state.getBlock() instanceof InfestedBlock) {
 			callbackInfo.setReturnValue(getBlockBreakingSpeed(((InfestedBlock) state.getBlock()).getRegularBlock().getDefaultState()));
