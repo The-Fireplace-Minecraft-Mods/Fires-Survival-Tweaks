@@ -1,7 +1,7 @@
 package dev.the_fireplace.fst.mixin;
 
 import com.google.common.collect.Sets;
-import dev.the_fireplace.annotateddi.impl.AnnotatedDI;
+import dev.the_fireplace.annotateddi.api.DIContainer;
 import dev.the_fireplace.fst.FiresSurvivalTweaks;
 import dev.the_fireplace.fst.domain.config.ConfigValues;
 import dev.the_fireplace.fst.logic.CaveinLogic;
@@ -13,6 +13,7 @@ import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3i;
 import net.minecraft.util.profiler.Profiler;
+import net.minecraft.util.registry.RegistryEntry;
 import net.minecraft.util.registry.RegistryKey;
 import net.minecraft.world.MutableWorldProperties;
 import net.minecraft.world.World;
@@ -33,16 +34,17 @@ public abstract class ServerWorldMixin extends World {
 	@Shadow public abstract ServerChunkManager getChunkManager();
 
 	private ConfigValues config = null;
+
 	private ConfigValues getConfig() {
 		if (config == null) {
-			config = AnnotatedDI.getInjector().getInstance(ConfigValues.class);
+			config = DIContainer.get().getInstance(ConfigValues.class);
 		}
 
 		return config;
 	}
 
-	protected ServerWorldMixin(MutableWorldProperties properties, RegistryKey<World> registryRef, DimensionType dimensionType, Supplier<Profiler> profiler, boolean isClient, boolean debugWorld, long seed) {
-		super(properties, registryRef, dimensionType, profiler, isClient, debugWorld, seed);
+	protected ServerWorldMixin(MutableWorldProperties properties, RegistryKey<World> registryRef, RegistryEntry<DimensionType> registryEntry, Supplier<Profiler> profiler, boolean isClient, boolean debugWorld, long seed) {
+		super(properties, registryRef, registryEntry, profiler, isClient, debugWorld, seed);
 	}
 
 	private final ConcurrentHashMap<Vec3i, Set<BlockPos>> tremorZones = new ConcurrentHashMap<>();

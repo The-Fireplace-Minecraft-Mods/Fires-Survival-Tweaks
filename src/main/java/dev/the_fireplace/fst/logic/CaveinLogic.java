@@ -52,9 +52,7 @@ public class CaveinLogic {
         if (state == null) {
             state = world.getBlockState(pos);
         }
-        FallingBlockEntity fallingBlockEntity = new FallingBlockEntity(world, (double)pos.getX() + 0.5D, pos.getY(), (double)pos.getZ() + 0.5D, state);
+        FallingBlockEntity fallingBlockEntity = FallingBlockEntity.spawnFromBlock(world, pos, state);
         fallingBlockEntity.setHurtEntities(2, 40);
-
-        world.spawnEntity(fallingBlockEntity);
     }
 }
