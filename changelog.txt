@@ -1,6 +1,2 @@
-Additions:
-
-Changes:
-Updated to Fireplace Lib 6.0.6+
-
-Fixes/Internal Changes:
+Update buildscript
+Add support for Notify
