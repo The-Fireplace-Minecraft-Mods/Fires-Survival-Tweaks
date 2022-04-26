@@ -1,1 +1,2 @@
-Update to use newer Fabric Loader and Fireplace Lib versions
+Update buildscript
+Add support for Notify
