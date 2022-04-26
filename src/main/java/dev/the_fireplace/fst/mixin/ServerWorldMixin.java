@@ -1,7 +1,7 @@
 package dev.the_fireplace.fst.mixin;
 
 import com.google.common.collect.Sets;
-import dev.the_fireplace.annotateddi.impl.AnnotatedDI;
+import dev.the_fireplace.annotateddi.api.DIContainer;
 import dev.the_fireplace.fst.FiresSurvivalTweaks;
 import dev.the_fireplace.fst.domain.config.ConfigValues;
 import dev.the_fireplace.fst.logic.CaveinLogic;
@@ -36,7 +36,7 @@ public abstract class ServerWorldMixin extends World {
 	private ConfigValues config = null;
 	private ConfigValues getConfig() {
 		if (config == null) {
-			config = AnnotatedDI.getInjector().getInstance(ConfigValues.class);
+            config = DIContainer.get().getInstance(ConfigValues.class);
 		}
 
 		return config;

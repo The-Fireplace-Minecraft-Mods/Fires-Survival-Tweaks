@@ -1,7 +1,7 @@
 package dev.the_fireplace.fst.mixin;
 
 import com.mojang.authlib.GameProfile;
-import dev.the_fireplace.annotateddi.impl.AnnotatedDI;
+import dev.the_fireplace.annotateddi.api.DIContainer;
 import dev.the_fireplace.fst.domain.config.ConfigValues;
 import dev.the_fireplace.fst.logic.CaveinLogic;
 import net.minecraft.block.BlockState;
@@ -21,7 +21,7 @@ public abstract class ServerPlayerEntityMixin extends PlayerEntity {
 	private ConfigValues config = null;
 	private ConfigValues getConfig() {
 		if (config == null) {
-			config = AnnotatedDI.getInjector().getInstance(ConfigValues.class);
+			config = DIContainer.get().getInstance(ConfigValues.class);
 		}
 
 		return config;
