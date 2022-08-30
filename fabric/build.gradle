@@ -115,7 +115,7 @@ if (hasProperty('curseForgeApiKey')) {
             changelog = changelogFile
             releaseType = project.release_type
             addGameVersion project.minecraft_version
-            addGameVersion 'Java 17'
+            addGameVersion 'Java 16'
             addGameVersion 'Fabric'
             addGameVersion 'Quilt'
             mainArtifact(mainArtifactFile) {
