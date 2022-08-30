@@ -18,6 +18,16 @@ dependencies {
     compileOnly "dev.the-fireplace:Fireplace-Lib-Common:${project.fireplacelib_version}"
 }
 
+sourceSets {
+    main {
+        resources {
+            srcDirs += [
+                    'src/main/generated'
+            ]
+        }
+    }
+}
+
 java {
     withSourcesJar()
     withJavadocJar()
