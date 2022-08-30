@@ -22,6 +22,9 @@
         ],
         "fireplacelib": [
             "dev.the_fireplace.fst.entrypoints.ConfigGui"
+        ],
+        "fabric-datagen": [
+            "dev.the_fireplace.fst.entrypoints.DataGenerator"
         ]
     },
     "mixins": [
