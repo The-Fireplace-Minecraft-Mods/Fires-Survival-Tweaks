@@ -1,2 +1,3 @@
 Update buildscript
 Add support for Notify
+Add support for Fireplace Lib 7.X / Annotated DI 4.X
